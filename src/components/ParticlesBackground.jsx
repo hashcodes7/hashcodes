@@ -26,7 +26,7 @@ const ParticlesBackground = () => {
             },
             onHover: {
               enable: true,
-              mode: "grab",
+              mode: "repulse",
             },
             resize: true,
           },
@@ -34,20 +34,18 @@ const ParticlesBackground = () => {
             push: {
               quantity: 2,
             },
-            grab: {
-              distance: 140,
-              links: {
-                opacity: 0.5,
-              },
+            repulse: {
+              distance: 120,
+              duration: 0.4,
             },
           },
         },
         particles: {
           color: {
-            value: "#f97316", // Orange accent color
+            value: "#00f0ff", // Orange accent color
           },
           links: {
-            color: "#f97316",
+            color: "#00f0ff",
             distance: 150,
             enable: true,
             opacity: 0.2,

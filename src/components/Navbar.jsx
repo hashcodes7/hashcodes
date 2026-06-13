@@ -5,109 +5,144 @@ import { FaSun, FaMoon, FaCog } from 'react-icons/fa';
 const Navbar = () => {
   const [theme, setTheme] = useState('dark');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeHash, setActiveHash] = useState(window.location.hash || '#/about');
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      setActiveHash(window.location.hash || '#/about');
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   const toggleTheme = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
   const navLinks = [
-    { name: 'Expertise', href: '#skills' },
-    { name: 'Work', href: '#projects' },
-    { name: 'Philosophy', href: '#about' },
-    { name: 'About', href: '#about' },
+    { name: 'About', href: '#/about' },
+    { name: 'Articles', href: '#/articles' },
+    { name: 'Papers', href: '#/papers' },
+    { name: 'Concepts', href: '#/concepts' },
+    { name: 'Comparisons', href: '#/comparisons' },
+    { name: 'Resume', href: '#/resume' },
+    { name: 'TechStack', href: '#/techstack' },
+    { name: 'Consulting', href: '#/consulting' },
   ];
 
   return (
-    <nav style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      width: '100%',
-      zIndex: 1000,
-      padding: '1rem 2rem',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      background: 'rgba(10, 10, 10, 0.8)',
-      backdropFilter: 'blur(10px)',
-      borderBottom: '1px solid rgba(255,255,255,0.05)'
-    }}>
-      {/* Logo */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '800', fontSize: '1.25rem', color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-        <div style={{ background: 'var(--accent-color)', padding: '0.25rem', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <FaCog size={16} color="#0a0a0a" />
-        </div>
-        HARSH VERMA
-      </div>
-
-      {/* Desktop Nav */}
-      <div className="flex-center" style={{ display: 'none', '@media (minWidth: 768px)': { display: 'flex' } }}>
-        <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-          {navLinks.map((link) => (
-            <a key={link.name} href={link.href} style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-secondary)', transition: 'color 0.2s' }} className="nav-link-hover">
-              {link.name}
-            </a>
-          ))}
-        </div>
-      </div>
-
-      {/* Right Section */}
-      <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
-        <a href="#contact" className="btn-primary" style={{ display: 'none', '@media (minWidth: 768px)': { display: 'inline-flex' } }}>
-          Hire Me
-        </a>
-        
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          {theme === 'dark' ? <FaSun size={16} color="var(--text-secondary)" /> : <FaMoon size={16} color="var(--text-secondary)" />}
-          <label className="theme-switch">
-            <input type="checkbox" checked={theme === 'light'} onChange={toggleTheme} />
-            <span className="slider"></span>
-          </label>
+    <>
+      {/* Floating Centered Pill Navbar */}
+      <nav className="navbar-pill-container">
+        {/* Logo Section */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: '800', color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          <div style={{ background: 'var(--accent-color)', padding: '0.2rem', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <FaCog size={12} color="#0a0a0a" />
+          </div>
+          <span style={{ fontSize: '0.85rem' }}>HARSH</span>
         </div>
 
-        {/* Mobile Toggle */}
-        <button className="btn-icon" onClick={() => setIsMenuOpen(!isMenuOpen)} style={{ display: 'block', '@media (minWidth: 768px)': { display: 'none' } }}>
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
+        {/* Separator */}
+        <div style={{ width: '1px', height: '14px', background: 'var(--glass-border)' }} className="navbar-pill-links" />
 
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div style={{
-          position: 'absolute',
-          top: '100%',
-          left: 0,
-          right: 0,
-          padding: '2rem',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '1.5rem',
-          alignItems: 'center',
-          background: 'rgba(10, 10, 10, 0.95)',
-          backdropFilter: 'blur(10px)',
-          borderBottom: '1px solid rgba(255,255,255,0.05)'
-        }}>
+        {/* Desktop Links */}
+        <div className="navbar-pill-links">
           {navLinks.map((link) => (
             <a 
               key={link.name} 
               href={link.href} 
-              style={{ fontWeight: 600, fontSize: '1.1rem', color: 'var(--text-primary)' }}
-              onClick={() => setIsMenuOpen(false)}
+              className={`navbar-pill-link ${link.href === activeHash ? 'active' : ''}`}
             >
               {link.name}
             </a>
           ))}
-          <a href="#contact" className="btn-primary" onClick={() => setIsMenuOpen(false)}>
-            Hire Me
-          </a>
         </div>
-      )}
-    </nav>
+
+
+
+        {/* Mobile Menu Toggle Button */}
+        <button 
+          className="btn-icon mobile-toggle-btn" 
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Toggle Menu"
+          style={{ background: 'transparent', padding: '0.15rem', color: 'var(--text-primary)' }}
+        >
+          {isMenuOpen ? <X size={18} /> : <Menu size={18} />}
+        </button>
+
+        {/* Mobile Dropdown Options */}
+        {isMenuOpen && (
+          <div style={{
+            position: 'absolute',
+            top: '125%',
+            left: 0,
+            right: 0,
+            padding: '1.25rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem',
+            alignItems: 'center',
+            background: 'var(--glass-bg)',
+            backdropFilter: 'blur(24px)',
+            WebkitBackdropFilter: 'blur(24px)',
+            border: '1px solid var(--glass-border)',
+            borderRadius: '16px',
+            boxShadow: '0 12px 32px var(--glass-shadow)'
+          }}>
+            {navLinks.map((link) => (
+              <a 
+                key={link.name} 
+                href={link.href} 
+                style={{ 
+                  fontWeight: 600, 
+                  fontSize: '0.95rem', 
+                  color: link.href === activeHash ? 'var(--accent-color)' : 'var(--text-primary)' 
+                }}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {link.name}
+              </a>
+            ))}
+            <div style={{ width: '100%', height: '1px', background: 'var(--glass-border)' }} />
+            {/* Mobile dark mode option */}
+            <button 
+              onClick={() => {
+                toggleTheme();
+                setIsMenuOpen(false);
+              }}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: 'var(--text-secondary)',
+                fontSize: '0.9rem',
+                fontWeight: 600,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                cursor: 'pointer'
+              }}
+            >
+              {theme === 'dark' ? <FaSun size={14} /> : <FaMoon size={14} />}
+              Toggle Theme
+            </button>
+
+          </div>
+        )}
+      </nav>
+
+      {/* Detached Theme Toggle Circle (Desktop) */}
+      <button 
+        className="theme-toggle-floating-circle" 
+        onClick={toggleTheme} 
+        aria-label="Toggle Theme"
+      >
+        {theme === 'dark' ? <FaSun size={18} /> : <FaMoon size={18} />}
+      </button>
+    </>
   );
 };
 
