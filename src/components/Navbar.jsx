@@ -25,10 +25,10 @@ const Navbar = () => {
 
   const navLinks = [
     { name: 'About', href: '#/about' },
+    { name: 'Projects', href: '#/projects' },
     { name: 'Articles', href: '#/articles' },
     { name: 'Papers', href: '#/papers' },
     { name: 'Concepts', href: '#/concepts' },
-    { name: 'Comparisons', href: '#/comparisons' },
     { name: 'Resume', href: '#/resume' },
     { name: 'TechStack', href: '#/techstack' },
     { name: 'Consulting', href: '#/consulting' },

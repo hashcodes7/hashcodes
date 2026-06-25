@@ -2,29 +2,9 @@ import { ExternalLink } from 'lucide-react';
 import { FaGithub } from 'react-icons/fa';
 
 const Projects = () => {
-  const projects = [
-    {
-      title: 'SourceIQ - Local Multi-Document RAG Chatbot',
-      description: 'AI Chatbot to answer queries on private data. Developed a Python-based RAG Chatbot application using Hugging Face Transformers and Qwen2.5-0.5B-Instruct Model to retrieve information from knowledge sources and generate context-aware answers.',
-      tags: ['Python', 'Hugging Face', 'RAG', 'Vector DB', 'Semantic Search'],
-      github: '#',
-      live: '#'
-    },
-    {
-      title: 'MintFrame – Transformer-Based Language Model',
-      description: 'Implemented a GPT-style Transformer architecture in Python and PyTorch for enabling tokenization, embeddings, multi-head self-attention, and autoregressive text generation. Initialized with pretrained GPT-2 weights.',
-      tags: ['PyTorch', 'Transformers', 'LLM', 'Python'],
-      github: '#',
-      live: '#'
-    },
-    {
-      title: 'Inficanvas – Infinite Collaborative Canvas',
-      description: 'Engineered a hybrid rendering architecture (HTML5 Canvas + DOM) for scalable, high-performance visual interactions. Built advanced features including graph-based logic nodes and implemented offline-first persistence using IndexedDB.',
-      tags: ['HTML5 Canvas', 'JavaScript', 'IndexedDB'],
-      github: '#',
-      live: '#'
-    }
-  ];
+  // Dynamically load all project JSON files from the projects folder
+  const projectFiles = import.meta.glob('../projects/*.json', { eager: true });
+  const projects = Object.values(projectFiles).map((mod) => mod.default || mod);
 
   return (
     <section id="projects" className="section container">

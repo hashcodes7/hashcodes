@@ -5,11 +5,11 @@ import Hero from './components/Hero';
 import AIJourney from './components/AIJourney/AIJourney';
 import Experience from './components/Experience';
 import Education from './components/Education';
+import ProjectsPage from './components/ProjectsPage';
 import { 
   ArticlesPage, 
   PapersPage, 
   ConceptsPage, 
-  ComparisonsPage, 
   TechStackPage, 
   ConsultingPage 
 } from './components/ExtraSections';
@@ -41,14 +41,14 @@ function App() {
   const renderActivePage = () => {
     const basePath = currentPath.split('?')[0];
     switch (basePath) {
+      case '#/projects':
+        return <ProjectsPage />;
       case '#/articles':
         return <ArticlesPage />;
       case '#/papers':
         return <PapersPage />;
       case '#/concepts':
         return <ConceptsPage />;
-      case '#/comparisons':
-        return <ComparisonsPage />;
 
       case '#/resume':
         return (

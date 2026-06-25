@@ -1,0 +1,255 @@
+{
+  "id": "sourceiq",
+  "title": "SourceIQ – Advanced Local Multi-Document RAG Chatbot",
+  "description": "An enterprise-grade, secure, closed-context RAG chatbot engineered to ingest multi-format corporate documents (PDFs, Word files, spreadsheets, HTML) and generate factually grounded answers using local offline LLMs, hybrid semantic indexes, and cross-encoder rerankers.",
+  "tags": [
+    "Python",
+    "PyTorch",
+    "FAISS",
+    "Transformers",
+    "llama-cpp",
+    "SQLite",
+    "Streamlit"
+  ],
+  "github": "https://github.com/hashcodes7/rag-closed-context-qa",
+  "featured": true,
+  "documentation": {
+    "sections": [
+      {
+        "id": "overview",
+        "label": "System Overview",
+        "icon": "Info",
+        "blocks": [
+          {
+            "type": "text",
+            "title": "System Overview & Purpose",
+            "value": "SourceIQ is a secure, local, closed-context Retrieval-Augmented Generation (RAG) assistant specifically designed for corporate deployments where data privacy is paramount. Unlike general LLM interfaces, it is locked down to answer queries utilizing only the context derived from a private knowledge repository. If information is not found in the documents, the system halts generation with a strict fallback expression rather than guessing or using parametric pre-trained biases."
+          },
+          {
+            "type": "grid",
+            "title": "🚀 Core Capabilities",
+            "items": [
+              {
+                "title": "Local Inference Runtimes",
+                "desc": "Runs fully offline models (GGUF, Quantized Transformers) on consumer hardware without external data leakage."
+              },
+              {
+                "title": "Multi-Format Ingestion",
+                "desc": "Processes PDFs, Word documents, HTML links, and spreadsheets (parsing rows to structural contexts)."
+              },
+              {
+                "title": "Two-Stage Retrieval",
+                "desc": "Combines dense semantic FAISS search and sparse lexical BM25 matching fused via RRF and Cross-Encoder rerankers."
+              },
+              {
+                "title": "Grounded Generation",
+                "desc": "Strict system guidelines that enforce zero-hallucinations, complete with exact source citation and telemetry tracking."
+              }
+            ]
+          },
+          {
+            "type": "tags",
+            "title": "⚙️ Complete Technology Stack",
+            "items": [
+              "Python 3.10+",
+              "PyTorch",
+              "Hugging Face Transformers",
+              "llama-cpp-python",
+              "FAISS (Facebook AI Similarity Search)",
+              "SentenceTransformers",
+              "CrossEncoders",
+              "SQLite3",
+              "PyMuPDF (fitz)",
+              "python-docx",
+              "BeautifulSoup4",
+              "openpyxl",
+              "Streamlit"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "architecture",
+        "label": "RAG Architecture",
+        "icon": "Layers",
+        "subtabs": [
+          {
+            "id": "ingestion",
+            "label": "1. Ingestion & Indexing",
+            "blocks": [
+              {
+                "type": "text",
+                "title": "Ingestion & Indexing Pipeline",
+                "value": "Processes folders containing messy business documents and converts them into structured semantic lookup systems. This is built fully offline to support fast startup via cached binaries."
+              },
+              {
+                "type": "diagram",
+                "name": "ingestion"
+              },
+              {
+                "type": "details",
+                "items": [
+                  {
+                    "title": "1. Document Extraction & Parsing",
+                    "desc": "The system monitors the source folders. When triggered, it maps document parsing:\n• PDF: Parsed page-by-page using PyMuPDF (fitz), joining text blocks.\n• DOCX: Parsed utilizing python-docx paragraph runs extraction.\n• XLSX/XLSM: Parsed row-by-row utilizing openpyxl, translating database spreadsheet cells into structural string arrays.\n• HTML/HTM: Script and style tags are scrubbed via BeautifulSoup4 before raw body extraction."
+                  },
+                  {
+                    "title": "2. Double-Pass Chunking & Parent mapping",
+                    "desc": "Traditional RAG splits text into arbitrary sized chunks, causing context breaks. SourceIQ employs Parent-Child Mapping:\n• Parent Chunking: First, documents are divided into large blocks of 1200–1500 characters using semantic similarity sentence breaks. The cosine similarity of consecutive sentence embeddings is calculated; a similarity drop below 0.5 triggers a new parent block.\n• Child Chunking: Next, each parent block is segmented into small child chunks of 400 characters (with 50 character overlap).\n• Mapping: Only the child chunks are embedded and loaded into search indexes. The parent chunks are registered in a lookup dictionary mapped to unique IDs."
+                  },
+                  {
+                    "title": "3. FAISS & BM25 Vector Serialization",
+                    "desc": "Child chunks are embedded using SentenceTransformer(all-MiniLM-L6-v2), yielding 384-dimensional dense vectors. These are L2 normalized and stored in a FAISS HNSW graph index (IndexHNSWFlat) for semantic similarity scans. In parallel, text terms are tokenized and registered in a custom SimpleBM25 index to support sparse lexical scans. The results, registry checksum hashes, and parent maps are serialized to local folders."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "retrieval",
+            "label": "2. Retrieval & Reranking",
+            "blocks": [
+              {
+                "type": "text",
+                "title": "Two-Stage Hybrid Retrieval",
+                "value": "Retrieves context matching both conceptual meaning and exact keyword identifiers. The fetched matches are fused and filtered before final expansion."
+              },
+              {
+                "type": "diagram",
+                "name": "retrieval"
+              },
+              {
+                "type": "details",
+                "items": [
+                  {
+                    "title": "1. Query Expansion (HyDE)",
+                    "desc": "If enabled, the system expands short queries. It generates a hypothetical answer via the LLM (e.g. \"Write a one-sentence technical answer...\"). This hypothetical document contains semantic terms matching target expository texts. It is appended to the query, and vectorized for the dense search."
+                  },
+                  {
+                    "title": "2. Parallel Search & Reciprocal Rank Fusion",
+                    "desc": "The query runs across parallel search pipelines. The dense vector search queries the FAISS HNSW graph; the sparse lexical search queries the BM25 dictionary. The resulting lists of indices are merged using Reciprocal Rank Fusion (RRF), scoring candidates using the rank summation:\nRRF(d) = sum( 1 / (60 + rank_i(d)) )\nThis aggregates relative matches without score calibration."
+                  },
+                  {
+                    "title": "3. Cross-Encoder & Context Expansion",
+                    "desc": "The top candidate chunks are processed by a CrossEncoder(ms-marco-MiniLM-L-6-v2) rerank model. The model computes full token-to-token cross-attention between query and passage. Additionally, a Namespace Boost heuristic increases scores by 0.25 if the document folder name matches query keywords. Finally, the top child chunk indices are mapped back to their original parent IDs, and the full parent texts are pulled to construct the context payload."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "model",
+            "label": "3. Model & Quantization",
+            "blocks": [
+              {
+                "type": "text",
+                "title": "Model Execution & Quantization",
+                "value": "Optimizes LLM loading and inference speeds. Features a dual-execution pipeline backing local hardware execution and cloud API routing."
+              },
+              {
+                "type": "diagram",
+                "name": "model"
+              },
+              {
+                "type": "details",
+                "items": [
+                  {
+                    "title": "1. Local GGUF Inference (llama.cpp)",
+                    "desc": "For standard CPU hardware setups, the engine runs local GGUF models (e.g. Qwen2.5-0.5B-Instruct in Q4_K_M layout) using the llama-cpp-python package. To prevent thread contention, it restricts CPU core workers to a calculated optimal threshold:\nOptimalThreads = max( 1, cpu_count // 2 )\nThis optimizes context cache access without stalling operating system scheduling."
+                  },
+                  {
+                    "title": "2. PyTorch Quantization (BitsAndBytes)",
+                    "desc": "If CUDA acceleration is available, PyTorch transformers are loaded via BitsAndBytesConfig. The weights are quantized to 4-bit NormalFloat (NF4) or 8-bit formats, mapping large layers into GPU memory segments with near-zero accuracy drops. The parameters use double-quantization (quantizing quantization scale factors) to compress the model."
+                  },
+                  {
+                    "title": "3. Cloud API Integration & Fallbacks",
+                    "desc": "When cloud services are configured, the engine interfaces directly with Google Gemini API models (gemini-1.5-pro or gemini-1.5-flash). It maps secure API calls, checks environmental tokens, and falls back to local runtimes if connections fail."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "generation",
+            "label": "4. State & Generation",
+            "blocks": [
+              {
+                "type": "text",
+                "title": "Conversation State & Generation",
+                "value": "Manages session history buffers and formats prompt payloads. Enforces factual grounding rules during generation."
+              },
+              {
+                "type": "diagram",
+                "name": "generation"
+              },
+              {
+                "type": "details",
+                "items": [
+                  {
+                    "title": "1. State Persistence via SQLite3",
+                    "desc": "Session buffers are not stored temporarily in memory. SourceIQ logs session histories to an SQLite database (rag_history.db). User configuration schemas, metadata references, and conversation messages are stored using parameter binding to prevent SQL injection."
+                  },
+                  {
+                    "title": "2. Context Budgeting & Truncation",
+                    "desc": "Before prompt compilation, the system calculates the length of the system instruction and rolling chat messages. If the size of the retrieved context exceeds the remaining context window capacity (n_ctx), the context payload is truncated to prevent model errors."
+                  },
+                  {
+                    "title": "3. Grounded Prompt Engineering & Streaming",
+                    "desc": "The prompt formats system instructions to restrict answers to the provided context. If the answer cannot be found in the context, the model is instructed to output the fallback phrase: \"I think this info isn't yet added to my knowledge base.\" The model can bypass this rule for questions about its own identity (e.g. \"Who created you?\"). During generation, a background thread and a TextIteratorStreamer yield tokens dynamically to output text in real-time in the UI."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "database",
+        "label": "Database & Users",
+        "icon": "Database",
+        "blocks": [
+          {
+            "type": "text",
+            "title": "SQLite Schema & User Security",
+            "value": "SourceIQ manages user login states, access permissions, and session buffers locally."
+          },
+          {
+            "type": "text",
+            "title": "🔐 Password Encryption (PBKDF2)",
+            "value": "User passwords are not stored in plain text. The system uses a PBKDF2-HMAC-SHA256 hashing algorithm with a random 16-byte salt and 100,000 computation iterations to secure passwords:\npbkdf2_hmac('sha256', password, salt, 100000)"
+          },
+          {
+            "type": "code",
+            "title": "📊 SQLite Schema Configuration",
+            "language": "sql",
+            "value": "-- 💬 Chat Message History Schema\nCREATE TABLE IF NOT EXISTS messages (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    session_id TEXT,   -- Maps to Username\n    role TEXT,         -- 'user' or 'assistant'\n    content TEXT,      -- Message contents\n    sources TEXT,      -- JSON array of document citations\n    metrics TEXT,      -- JSON dictionary of retrieval times\n    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP\n);\n\n-- 👥 User Accounts & Roles Schema\nCREATE TABLE IF NOT EXISTS users (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    username TEXT UNIQUE NOT NULL,\n    email TEXT UNIQUE NOT NULL,\n    password_hash TEXT NOT NULL,\n    role TEXT NOT NULL DEFAULT 'user', -- 'user' or 'admin'\n    theme_preference TEXT NOT NULL DEFAULT 'dark',\n    created_at DATETIME DEFAULT CURRENT_TIMESTAMP\n);"
+          }
+        ]
+      },
+      {
+        "id": "devops",
+        "label": "Deployment & DevOps",
+        "icon": "Terminal",
+        "blocks": [
+          {
+            "type": "text",
+            "title": "Deployment & DevOps Configurations",
+            "value": "Configurations for deploying the chatbot in enterprise Linux servers."
+          },
+          {
+            "type": "code",
+            "title": "1. Nginx Reverse Proxy (nginx_askbot.conf)",
+            "language": "nginx",
+            "value": "server {\n    listen 80;\n    server_name askbot.freseniusmedicalcare.com;\n    return 301 https://$host$request_uri;\n}\n\nserver {\n    listen 443 ssl;\n    server_name askbot.freseniusmedicalcare.com;\n\n    ssl_certificate /etc/nginx/ssl/askbot.crt;\n    ssl_certificate_key /etc/nginx/ssl/askbot.key;\n\n    location / {\n        proxy_pass http://localhost:8501;\n        proxy_set_header Host $host;\n        proxy_set_header X-Real-IP $remote_addr;\n        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n        proxy_set_header X-Forwarded-Proto $scheme;\n        \n        # WebSockets support for Streamlit real-time updates\n        proxy_http_version 1.1;\n        proxy_set_header Upgrade $http_upgrade;\n        proxy_set_header Connection \"upgrade\";\n        proxy_read_timeout 86400;\n    }\n}"
+          },
+          {
+            "type": "code",
+            "title": "2. Server Startup Script (start_app.sh)",
+            "language": "bash",
+            "value": "#!/bin/bash\n# start_app.sh - Run Streamlit app as a background process daemon\n\nAPP_DIR=\"/var/www/rag-closed-context-qa\"\nLOG_FILE=\"/var/log/sourceiq_app.log\"\n\necho \"[*] Initializing SourceIQ Application...\"\ncd $APP_DIR\n\n# Activate virtual environment\nsource venv/bin/activate\n\n# Start Streamlit application in the background\nnohup streamlit run ui.py --server.port 8501 --server.address 127.0.0.1 > $LOG_FILE 2>&1 &\n\necho \"[+] Application launched in background. Output routed to $LOG_FILE.\""
+          }
+        ]
+      }
+    ]
+  }
+}

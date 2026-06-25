@@ -1,0 +1,15 @@
+{
+  "id": "mintframe",
+  "title": "MintFrame – Transformer-Based Language Model",
+  "description": "Implementation of a GPT-style decoder-only Transformer architecture from scratch in PyTorch. Includes custom byte-pair tokenization, absolute positional embeddings, multi-head causal self-attention, and auto-regressive generation, loaded with pretrained GPT-2 weights.",
+  "tags": [
+    "PyTorch",
+    "Python",
+    "LLM",
+    "Deep Learning",
+    "Transformers"
+  ],
+  "github": "#",
+  "live": "#",
+  "featured": false
+}
