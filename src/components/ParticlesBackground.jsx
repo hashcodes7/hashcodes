@@ -3,7 +3,7 @@ import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 
 const ParticlesBackground = () => {
-  const particlesInit = useCallback(async engine => {
+  const particlesInit = useCallback(async (engine) => {
     await loadFull(engine);
   }, []);
 
@@ -82,7 +82,7 @@ const ParticlesBackground = () => {
           },
         },
         detectRetina: true,
-        fullScreen: { enable: true, zIndex: -1 }
+        fullScreen: { enable: true, zIndex: -1 },
       }}
     />
   );

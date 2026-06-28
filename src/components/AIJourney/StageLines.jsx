@@ -1,6 +1,6 @@
-import { useRef, useMemo } from 'react';
-import { useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
+import { useRef, useMemo } from "react";
+import { useFrame } from "@react-three/fiber";
+import * as THREE from "three";
 
 // Simple deterministic LCG PRNG to ensure react purity rules
 const lcg = (seed) => {
@@ -39,10 +39,10 @@ const StageLines = ({ scrollProgress }) => {
       [1.5, 1.5, 0],
       [-1.5, 1.5, 1],
       [-1.5, -1.5, -1],
-      [1.5, -1.5, 0.5]
+      [1.5, -1.5, 0.5],
     ];
     // Generate some random web connections within each cluster center
-    centers.forEach(center => {
+    centers.forEach((center) => {
       const numPoints = 8;
       const points = [];
       for (let i = 0; i < numPoints; i++) {
@@ -51,11 +51,11 @@ const StageLines = ({ scrollProgress }) => {
         points.push([
           center[0] + Math.cos(theta) * r,
           center[1] + Math.sin(theta) * r,
-          center[2] + (nextRand() - 0.5) * 0.4
+          center[2] + (nextRand() - 0.5) * 0.4,
         ]);
       }
       // Connect points to center and to each other
-      points.forEach(p => {
+      points.forEach((p) => {
         pairs.push([center, p]);
       });
       for (let i = 0; i < numPoints; i++) {
@@ -92,22 +92,22 @@ const StageLines = ({ scrollProgress }) => {
   // 3. RAG (Stage 5) - Thick pipeline paths
   const ragGeometry = useMemo(() => {
     const pairs = [];
-    const node0 = [-3, 1.5, 0];    // User
-    const node1 = [-1, 0, 0];      // Retriever
-    const node2 = [-1, -2, 0];     // Vector DB
-    const node3 = [1, 0, 0];       // LLM
-    const node4 = [3, 1.5, 0];     // Response
+    const node0 = [-3, 1.5, 0]; // User
+    const node1 = [-1, 0, 0]; // Retriever
+    const node2 = [-1, -2, 0]; // Vector DB
+    const node3 = [1, 0, 0]; // LLM
+    const node4 = [3, 1.5, 0]; // Response
 
     // Helper to generate double/triple lines for a "pipe" effect
     const addPipe = (p1, p2, offset = 0.05) => {
       pairs.push([p1, p2]);
       pairs.push([
         [p1[0], p1[1] + offset, p1[2]],
-        [p2[0], p2[1] + offset, p2[2]]
+        [p2[0], p2[1] + offset, p2[2]],
       ]);
       pairs.push([
         [p1[0], p1[1] - offset, p1[2]],
-        [p2[0], p2[1] - offset, p2[2]]
+        [p2[0], p2[1] - offset, p2[2]],
       ]);
     };
 
@@ -127,14 +127,22 @@ const StageLines = ({ scrollProgress }) => {
     const agents = [];
     for (let i = 0; i < numAgents; i++) {
       const angle = (i / numAgents) * Math.PI * 2 - Math.PI / 2;
-      agents.push([Math.cos(angle) * agentRadius, Math.sin(angle) * agentRadius, 0]);
+      agents.push([
+        Math.cos(angle) * agentRadius,
+        Math.sin(angle) * agentRadius,
+        0,
+      ]);
     }
 
     const toolRadius = 3.0;
     const tools = [];
     for (let i = 0; i < numAgents; i++) {
-      const angle = (i / numAgents) * Math.PI * 2 - Math.PI / 2 + (Math.PI / 5);
-      tools.push([Math.cos(angle) * toolRadius, Math.sin(angle) * toolRadius, 0]);
+      const angle = (i / numAgents) * Math.PI * 2 - Math.PI / 2 + Math.PI / 5;
+      tools.push([
+        Math.cos(angle) * toolRadius,
+        Math.sin(angle) * toolRadius,
+        0,
+      ]);
     }
 
     // Connect agents in a star/ring
@@ -159,10 +167,10 @@ const StageLines = ({ scrollProgress }) => {
     const centers = [
       [-2.5, -0.5, 0],
       [0, 1.8, 0],
-      [2.5, -0.5, 0]
+      [2.5, -0.5, 0],
     ];
 
-    centers.forEach(center => {
+    centers.forEach((center) => {
       const points = [];
       const numPoints = 6;
       for (let i = 0; i < numPoints; i++) {
@@ -171,10 +179,10 @@ const StageLines = ({ scrollProgress }) => {
         points.push([
           center[0] + Math.cos(angle) * r,
           center[1] + Math.sin(angle) * r,
-          center[2] + (nextRand() - 0.5) * 0.1
+          center[2] + (nextRand() - 0.5) * 0.1,
         ]);
       }
-      points.forEach(p => {
+      points.forEach((p) => {
         pairs.push([center, p]);
       });
       for (let i = 0; i < numPoints; i++) {
@@ -203,7 +211,7 @@ const StageLines = ({ scrollProgress }) => {
       points.push([
         r * Math.sin(phi) * Math.cos(theta),
         r * Math.sin(phi) * Math.sin(theta),
-        r * Math.cos(phi)
+        r * Math.cos(phi),
       ]);
     }
 
@@ -214,7 +222,8 @@ const StageLines = ({ scrollProgress }) => {
         const dy = points[i][1] - points[j][1];
         const dz = points[i][2] - points[j][2];
         const distSq = dx * dx + dy * dy + dz * dz;
-        if (distSq < 3.5) { // distance threshold squared
+        if (distSq < 3.5) {
+          // distance threshold squared
           pairs.push([points[i], points[j]]);
         }
       }
@@ -230,8 +239,15 @@ const StageLines = ({ scrollProgress }) => {
     const factor = progress - index;
 
     // Reset all opacities
-    const refs = [embeddingsRef, transformerRef, ragRef, agentRef, projectsRef, ecosystemRef];
-    refs.forEach(ref => {
+    const refs = [
+      embeddingsRef,
+      transformerRef,
+      ragRef,
+      agentRef,
+      projectsRef,
+      ecosystemRef,
+    ];
+    refs.forEach((ref) => {
       if (ref.current) {
         ref.current.material.opacity = 0;
         ref.current.visible = false;

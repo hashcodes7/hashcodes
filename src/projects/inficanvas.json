@@ -2,13 +2,7 @@
   "id": "inficanvas",
   "title": "Inficanvas – Infinite Collaborative Canvas",
   "description": "A high-performance HTML5 infinite zoomable canvas engineered for visual diagramming. Features a hybrid rendering architecture, graph-based logic node connectors, real-time bounding box collision detection, and offline-first IndexedDB persistence.",
-  "tags": [
-    "HTML5 Canvas",
-    "JavaScript",
-    "CSS3",
-    "IndexedDB",
-    "Web Operations"
-  ],
+  "tags": ["HTML5 Canvas", "JavaScript", "CSS3", "IndexedDB", "Web Operations"],
   "github": "https://github.com/hashcodes7/CodeCanvas_extension",
   "live": "#",
   "featured": false
