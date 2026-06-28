@@ -3,6 +3,8 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import MatrixMultiplicationVisualizer from "../components/MatrixMultiplicationVisualizer";
 import SoftmaxVisualizer from "../components/SoftmaxVisualizer";
 import CausalMaskVisualizer from "../components/CausalMaskVisualizer";
+import GeluVisualizer from "../components/GeluVisualizer";
+import ReluVisualizer from "../components/ReluVisualizer";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Copy, Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
@@ -84,24 +86,30 @@ const NavButton = ({ direction, targetTopic }) => {
   );
 };
 
-const TopicLink = ({ targetTopic, children }) => (
+const TopicLink = ({ targetTopic, children, isChapterHeader = false }) => (
   <button
     onClick={() => window.dispatchEvent(new CustomEvent('navigate-topic', { detail: targetTopic }))}
     style={{
       background: "transparent",
       border: "none",
-      color: "var(--accent-color)",
+      color: isChapterHeader ? "#fff" : "var(--accent-color)",
       cursor: "pointer",
       padding: 0,
       font: "inherit",
       textAlign: "left",
-      textDecoration: "underline",
-      textUnderlineOffset: "3px",
-      fontWeight: 600,
-      transition: "opacity 0.2s, color 0.2s",
+      fontSize: isChapterHeader ? "1.05rem" : "0.95rem",
+      fontWeight: isChapterHeader ? 600 : 400,
+      textDecoration: "none",
+      transition: "all 0.2s ease",
     }}
-    onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.7")}
-    onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.color = isChapterHeader ? "var(--accent-color)" : "#ffffff";
+      if (!isChapterHeader) e.currentTarget.style.textDecoration = "underline";
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.color = isChapterHeader ? "#fff" : "var(--accent-color)";
+      if (!isChapterHeader) e.currentTarget.style.textDecoration = "none";
+    }}
   >
     {children}
   </button>
@@ -126,7 +134,7 @@ const Callout = ({ type, title, children }) => {
       marginBottom: '2rem',
       marginTop: '1rem'
     }}>
-      <div style={{ fontWeight: 800, color: theme.color, marginBottom: '0.75rem', fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+      <div style={{ fontWeight: 600, color: theme.color, marginBottom: '0.75rem', fontSize: '1.05rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         {title}
       </div>
       <div style={{ color: 'var(--text-primary)', lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>
@@ -213,77 +221,104 @@ export const llmChaptersData = [
         summary: "Overview and complete index of all LLM architecture chapters",
         content: (
           <>
-            <h2 id="course-index" style={{ color: "#fff", fontSize: "1.75rem", fontWeight: 800, marginTop: "1rem", marginBottom: "1rem" }}>
-              📚 Interactive LLM Architecture Course Index
-            </h2>
             Welcome to the complete, step-by-step mathematical breakdown of Large Language Models (Decoder-only Transformer Architecture)! Below is the structured index of all course modules:
-            <ul style={{ lineHeight: "2", marginTop: "1.25rem", color: "var(--text-secondary)", listStyleType: "none", paddingLeft: 0 }}>
-              <li style={{ marginBottom: "1rem" }}>
-                <strong style={{ fontSize: "1.1rem" }}><TopicLink targetTopic="Chapter 0.1 - Course Index">Chapter 0: Setup & Architecture Ingredients</TopicLink></strong>
-                <ul style={{ paddingLeft: "1.5rem", marginTop: "0.25rem" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1.25rem", marginTop: "1.5rem" }}>
+              <div style={{ background: "rgba(255, 255, 255, 0.03)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "12px", padding: "1.25rem" }}>
+                <div style={{ marginBottom: "0.75rem", borderBottom: "1px solid rgba(255, 255, 255, 0.06)", paddingBottom: "0.5rem" }}>
+                  <TopicLink targetTopic="Chapter 0.1 - Course Index" isChapterHeader={true}>Chapter 0: Setup & Architecture Ingredients</TopicLink>
+                </div>
+                <ul style={{ paddingLeft: "1.25rem", margin: 0, lineHeight: "1.8", listStyleType: "circle", color: "var(--text-secondary)" }}>
                   <li><TopicLink targetTopic="Chapter 0.1 - Course Index">0.1 Course Index</TopicLink></li>
                   <li><TopicLink targetTopic="Chapter 0.2 - Architecture Ingredients">0.2 Architecture Ingredients</TopicLink></li>
                 </ul>
-              </li>
-              <li style={{ marginBottom: "1rem" }}>
-                <strong style={{ fontSize: "1.1rem" }}><TopicLink targetTopic="Chapter 1.1 - Dot Products">Chapter 1: Pre-Requisite Maths</TopicLink></strong>
-                <ul style={{ paddingLeft: "1.5rem", marginTop: "0.25rem" }}>
+              </div>
+              <div style={{ background: "rgba(255, 255, 255, 0.03)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "12px", padding: "1.25rem" }}>
+                <div style={{ marginBottom: "0.75rem", borderBottom: "1px solid rgba(255, 255, 255, 0.06)", paddingBottom: "0.5rem" }}>
+                  <TopicLink targetTopic="Chapter 1.1 - Dot Products" isChapterHeader={true}>Chapter 1: Pre-Requisite Maths</TopicLink>
+                </div>
+                <ul style={{ paddingLeft: "1.25rem", margin: 0, lineHeight: "1.8", listStyleType: "circle", color: "var(--text-secondary)" }}>
                   <li><TopicLink targetTopic="Chapter 1.1 - Dot Products">1.1 Dot Products</TopicLink></li>
                   <li><TopicLink targetTopic="Chapter 1.2 - Matrix Multiplication">1.2 Matrix Multiplication</TopicLink></li>
                 </ul>
-              </li>
-              <li style={{ marginBottom: "1rem" }}>
-                <strong style={{ fontSize: "1.1rem" }}><TopicLink targetTopic="Chapter 2.1 - Tokenization & Input Prompt">Chapter 2: Input Processing & Embeddings</TopicLink></strong>
-                <ul style={{ paddingLeft: "1.5rem", marginTop: "0.25rem" }}>
+              </div>
+              <div style={{ background: "rgba(255, 255, 255, 0.03)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "12px", padding: "1.25rem" }}>
+                <div style={{ marginBottom: "0.75rem", borderBottom: "1px solid rgba(255, 255, 255, 0.06)", paddingBottom: "0.5rem" }}>
+                  <TopicLink targetTopic="Chapter 2.1 - Tokenization & Input Prompt" isChapterHeader={true}>Chapter 2: Input Processing & Embeddings</TopicLink>
+                </div>
+                <ul style={{ paddingLeft: "1.25rem", margin: 0, lineHeight: "1.8", listStyleType: "circle", color: "var(--text-secondary)" }}>
                   <li><TopicLink targetTopic="Chapter 2.1 - Tokenization & Input Prompt">2.1 Tokenization & Input Prompt</TopicLink></li>
                   <li><TopicLink targetTopic="Chapter 2.2 - Token Embedding Lookup (We Matrix)">2.2 Token Embedding Lookup (<InlineMath math={String.raw`W_E`} />)</TopicLink></li>
                   <li><TopicLink targetTopic="Chapter 2.3 - Positional Embeddings & Combined Input Matrix">2.3 Positional Embeddings (<InlineMath math={String.raw`W_P`} />)</TopicLink></li>
                 </ul>
-              </li>
-              <li style={{ marginBottom: "1rem" }}>
-                <strong style={{ fontSize: "1.1rem" }}><TopicLink targetTopic="Chapter 3.1 - Weight Matrices (WQ, WK, WV) & Projections">Chapter 3: Single-Head Self-Attention Mechanics</TopicLink></strong>
-                <ul style={{ paddingLeft: "1.5rem", marginTop: "0.25rem" }}>
-                  <li><TopicLink targetTopic="Chapter 3.1 - Weight Matrices (WQ, WK, WV) & Projections">3.1 Weight Matrices (<InlineMath math={String.raw`W_Q, W_K, W_V`} />) & Projections</TopicLink></li>
-                  <li><TopicLink targetTopic="Chapter 3.2 - Raw Attention Scores & Dimension Scaling">3.2 Raw Attention Scores & Dimension Scaling</TopicLink></li>
-                  <li><TopicLink targetTopic="Chapter 3.3 - Causal Masking, Softmax Weights & Context Vector">3.3 Causal Masking, Softmax Weights & Context Vector</TopicLink></li>
+              </div>
+              <div style={{ background: "rgba(255, 255, 255, 0.03)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "12px", padding: "1.25rem" }}>
+                <div style={{ marginBottom: "0.75rem", borderBottom: "1px solid rgba(255, 255, 255, 0.06)", paddingBottom: "0.5rem" }}>
+                  <TopicLink targetTopic="Chapter 3.1 - Weight Matrices (WQ, WK, WV) & Projections" isChapterHeader={true}>Chapter 3: Single-Head Self-Attention</TopicLink>
+                </div>
+                <ul style={{ paddingLeft: "1.25rem", margin: 0, lineHeight: "1.8", listStyleType: "circle", color: "var(--text-secondary)" }}>
+                  <li><TopicLink targetTopic="Chapter 3.1 - Weight Matrices (WQ, WK, WV) & Projections">3.1 Weight Matrices (<InlineMath math={String.raw`W_Q, W_K, W_V`} />)</TopicLink></li>
+                  <li><TopicLink targetTopic="Chapter 3.2 - Raw Attention Scores & Dimension Scaling">3.2 Raw Attention Scores & Scaling</TopicLink></li>
+                  <li><TopicLink targetTopic="Chapter 3.3 - Causal Masking, Softmax Weights & Context Vector">3.3 Masking, Softmax & Context Vector</TopicLink></li>
                 </ul>
-              </li>
-              <li style={{ marginBottom: "1rem" }}>
-                <strong style={{ fontSize: "1.1rem" }}><TopicLink targetTopic="Chapter 4.1 - Multi-Head Self-Attention & Concatenation">Chapter 4: Multi-Head Attention & Transformer Block</TopicLink></strong>
-                <ul style={{ paddingLeft: "1.5rem", marginTop: "0.25rem" }}>
-                  <li><TopicLink targetTopic="Chapter 4.1 - Multi-Head Self-Attention & Concatenation">4.1 Multi-Head Self-Attention & Concatenation</TopicLink></li>
+              </div>
+              <div style={{ background: "rgba(255, 255, 255, 0.03)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "12px", padding: "1.25rem" }}>
+                <div style={{ marginBottom: "0.75rem", borderBottom: "1px solid rgba(255, 255, 255, 0.06)", paddingBottom: "0.5rem" }}>
+                  <TopicLink targetTopic="Chapter 4.1 - Multi-Head Self-Attention & Concatenation" isChapterHeader={true}>Chapter 4: Multi-Head Attention</TopicLink>
+                </div>
+                <ul style={{ paddingLeft: "1.25rem", margin: 0, lineHeight: "1.8", listStyleType: "circle", color: "var(--text-secondary)" }}>
+                  <li><TopicLink targetTopic="Chapter 4.1 - Multi-Head Self-Attention & Concatenation">4.1 Multi-Head Self-Attention</TopicLink></li>
                   <li><TopicLink targetTopic="Chapter 4.2 - Output Projection (WO)">4.2 Output Projection (<InlineMath math={String.raw`W_O`} />)</TopicLink></li>
                 </ul>
-              </li>
-              <li style={{ marginBottom: "1rem" }}>
-                <strong style={{ fontSize: "1.1rem" }}><TopicLink targetTopic="Chapter 5.1 - 1st Residual Connection">Chapter 5: Pre FFN Cleanup</TopicLink></strong>
-                <ul style={{ paddingLeft: "1.5rem", marginTop: "0.25rem" }}>
+              </div>
+              <div style={{ background: "rgba(255, 255, 255, 0.03)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "12px", padding: "1.25rem" }}>
+                <div style={{ marginBottom: "0.75rem", borderBottom: "1px solid rgba(255, 255, 255, 0.06)", paddingBottom: "0.5rem" }}>
+                  <TopicLink targetTopic="Chapter 5.1 - 1st Residual Connection" isChapterHeader={true}>Chapter 5: Pre FFN Cleanup</TopicLink>
+                </div>
+                <ul style={{ paddingLeft: "1.25rem", margin: 0, lineHeight: "1.8", listStyleType: "circle", color: "var(--text-secondary)" }}>
                   <li><TopicLink targetTopic="Chapter 5.1 - 1st Residual Connection">5.1 1st Residual Connection</TopicLink></li>
                   <li><TopicLink targetTopic="Chapter 5.2 - 1st Layer Normalization">5.2 1st Layer Normalization</TopicLink></li>
                 </ul>
-              </li>
-              <li style={{ marginBottom: "1rem" }}>
-                <strong style={{ fontSize: "1.1rem" }}><TopicLink targetTopic="Chapter 6.1 - First Linear Layer (W1 Feature Expansion)">Chapter 6: Feed-Forward Network (FFN)</TopicLink></strong>
-                <ul style={{ paddingLeft: "1.5rem", marginTop: "0.25rem" }}>
-                  <li><TopicLink targetTopic="Chapter 6.1 - First Linear Layer (W1 Feature Expansion)">6.1 First Linear Layer (<InlineMath math={String.raw`W_1`} /> Feature Expansion)</TopicLink></li>
+              </div>
+              <div style={{ background: "rgba(255, 255, 255, 0.03)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "12px", padding: "1.25rem" }}>
+                <div style={{ marginBottom: "0.75rem", borderBottom: "1px solid rgba(255, 255, 255, 0.06)", paddingBottom: "0.5rem" }}>
+                  <TopicLink targetTopic="Chapter 6.1 - First Linear Layer (W1 Feature Expansion)" isChapterHeader={true}>Chapter 6: Feed-Forward Network (FFN)</TopicLink>
+                </div>
+                <ul style={{ paddingLeft: "1.25rem", margin: 0, lineHeight: "1.8", listStyleType: "circle", color: "var(--text-secondary)" }}>
+                  <li><TopicLink targetTopic="Chapter 6.1 - First Linear Layer (W1 Feature Expansion)">6.1 First Linear Layer (<InlineMath math={String.raw`W_1`} />)</TopicLink></li>
                   <li><TopicLink targetTopic="Chapter 6.2 - GELU Activation Function">6.2 GELU Activation Function</TopicLink></li>
-                  <li><TopicLink targetTopic="Chapter 6.3 - Second Linear Layer (W2 Model Projection)">6.3 Second Linear Layer (<InlineMath math={String.raw`W_2`} /> Model Projection)</TopicLink></li>
+                  <li><TopicLink targetTopic="Chapter 6.3 - Second Linear Layer (W2 Model Projection)">6.3 Second Linear Layer (<InlineMath math={String.raw`W_2`} />)</TopicLink></li>
                 </ul>
-              </li>
-              <li style={{ marginBottom: "1rem" }}>
-                <strong style={{ fontSize: "1.1rem" }}><TopicLink targetTopic="Chapter 7.1 - 2nd Residual Connection">Chapter 7: Post FFN Cleanup</TopicLink></strong>
-                <ul style={{ paddingLeft: "1.5rem", marginTop: "0.25rem" }}>
+              </div>
+              <div style={{ background: "rgba(255, 255, 255, 0.03)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "12px", padding: "1.25rem" }}>
+                <div style={{ marginBottom: "0.75rem", borderBottom: "1px solid rgba(255, 255, 255, 0.06)", paddingBottom: "0.5rem" }}>
+                  <TopicLink targetTopic="Chapter 7.1 - 2nd Residual Connection" isChapterHeader={true}>Chapter 7: Post FFN Cleanup</TopicLink>
+                </div>
+                <ul style={{ paddingLeft: "1.25rem", margin: 0, lineHeight: "1.8", listStyleType: "circle", color: "var(--text-secondary)" }}>
                   <li><TopicLink targetTopic="Chapter 7.1 - 2nd Residual Connection">7.1 2nd Residual Connection</TopicLink></li>
                   <li><TopicLink targetTopic="Chapter 7.2 - 2nd Layer Normalization">7.2 2nd Layer Normalization</TopicLink></li>
                 </ul>
-              </li>
-              <li style={{ marginBottom: "1rem" }}>
-                <strong style={{ fontSize: "1.1rem" }}><TopicLink targetTopic="Chapter 8.1 - LM Head Projection & Next Word Prediction (&quot;Delhi&quot;)">Chapter 8: Next Word Generation & LM Head</TopicLink></strong>
-                <ul style={{ paddingLeft: "1.5rem", marginTop: "0.25rem" }}>
-                  <li><TopicLink targetTopic="Chapter 8.1 - LM Head Projection & Next Word Prediction (&quot;Delhi&quot;)">8.1 LM Head Projection & Next Word Prediction (&quot;Delhi&quot;)</TopicLink></li>
+              </div>
+              <div style={{ background: "rgba(255, 255, 255, 0.03)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "12px", padding: "1.25rem" }}>
+                <div style={{ marginBottom: "0.75rem", borderBottom: "1px solid rgba(255, 255, 255, 0.06)", paddingBottom: "0.5rem" }}>
+                  <TopicLink targetTopic="Chapter 8.1 - LM Head Projection & Next Word Prediction (&quot;Delhi&quot;)" isChapterHeader={true}>Chapter 8: Next Word Generation</TopicLink>
+                </div>
+                <ul style={{ paddingLeft: "1.25rem", margin: 0, lineHeight: "1.8", listStyleType: "circle", color: "var(--text-secondary)" }}>
+                  <li><TopicLink targetTopic="Chapter 8.1 - LM Head Projection & Next Word Prediction (&quot;Delhi&quot;)">8.1 LM Head Projection & Prediction</TopicLink></li>
                 </ul>
-              </li>
-            </ul>
+              </div>
+              <div style={{ background: "rgba(255, 255, 255, 0.03)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "12px", padding: "1.25rem" }}>
+                <div style={{ marginBottom: "0.75rem", borderBottom: "1px solid rgba(255, 255, 255, 0.06)", paddingBottom: "0.5rem" }}>
+                  <TopicLink targetTopic="Chapter 9.1 - Activation Functions (ReLU vs. GELU vs. SwiGLU)" isChapterHeader={true}>Chapter 9: Optional Alternatives & Modern Variants</TopicLink>
+                </div>
+                <ul style={{ paddingLeft: "1.25rem", margin: 0, lineHeight: "1.8", listStyleType: "circle", color: "var(--text-secondary)" }}>
+                  <li><TopicLink targetTopic="Chapter 9.1 - Activation Functions (ReLU vs. GELU vs. SwiGLU)">9.1 Activation Functions (ReLU, GELU, SwiGLU)</TopicLink></li>
+                  <li><TopicLink targetTopic="Chapter 9.2 - Normalization Alternatives (LayerNorm vs. RMSNorm)">9.2 Normalization (LayerNorm vs. RMSNorm)</TopicLink></li>
+                  <li><TopicLink targetTopic="Chapter 9.3 - Positional Encoding Variants (Absolute vs. RoPE vs. ALiBi)">9.3 Positional Encodings (RoPE & ALiBi)</TopicLink></li>
+                  <li><TopicLink targetTopic="Chapter 9.4 - Attention Variants (MHA vs. MQA vs. GQA & FlashAttention)">9.4 Attention Variants (GQA & FlashAttention)</TopicLink></li>
+                  <li><TopicLink targetTopic="Chapter 9.5 - Scaling & Efficiency (Mixture of Experts - MoE & KV Caching)">9.5 Scaling & Speedups (MoE & KV Caching)</TopicLink></li>
+                </ul>
+              </div>
+            </div>
             <div className="nav-container" style={{ display: "flex", flexWrap: "nowrap", alignItems: "center", justifyContent: "space-between", width: "100%", marginTop: "3rem", borderTop: "1px solid rgba(255, 255, 255, 0.08)", paddingTop: "1.5rem" }}>
               <NavButton direction="prev" targetTopic="None" />
               <span style={{ color: "var(--text-secondary)" }}>|</span>
@@ -297,7 +332,7 @@ export const llmChaptersData = [
         summary: "Pre-trained weight matrices, vectors, and hyperparameter assumptions used throughout this course",
         content: (
           <>
-            <h2 id="architecture-ingredients" style={{ color: "#fff", fontSize: "1.75rem", fontWeight: 800, marginTop: "1rem", marginBottom: "1rem" }}>
+            <h2 id="architecture-ingredients" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
               🛠️ Architecture Ingredients & Pre-Trained Weight Matrices
             </h2>
             Below are all the static weight matrices and parameters assumed to be learned during model training. These exact values are referenced and multiplied throughout the interactive visualizations in this course:
@@ -368,7 +403,7 @@ export const llmChaptersData = [
         summary: "Detailed breakdown of Chapter 1.1 - Dot Products",
         content: (
           <>
-            <h2 id="calculating-dot-products" style={{ color: "#fff", fontSize: "1.75rem", fontWeight: 800, marginTop: "1rem", marginBottom: "1rem" }}>
+            <h2 id="calculating-dot-products" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
               Calculating Dot Products
             </h2>
             suppose we have a tensor with list of values
@@ -401,7 +436,7 @@ print(inputs)`}</CodeBlock>
         summary: "Detailed breakdown of Chapter 1.2 - Matrix Multiplication",
         content: (
           <>
-            <h2 id="matrix-multiplication" style={{ color: "#fff", fontSize: "1.75rem", fontWeight: 800, marginTop: "1rem", marginBottom: "1rem" }}>
+            <h2 id="matrix-multiplication" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
               ✖️ Matrix Multiplication
             </h2>
             Matrix multiplication is essentially just doing many <strong>Dot Products</strong> all at once. Let's visualize how a <InlineMath math={String.raw`2 \times 2`} /> matrix multiplies with another <InlineMath math={String.raw`2 \times 2`} /> matrix mathematically.
@@ -436,7 +471,7 @@ print(inputs)`}</CodeBlock>
         summary: "Converting raw prompt into token IDs",
         content: (
           <>
-            <h2 id="input-tokenization" style={{ color: "#fff", fontSize: "1.75rem", fontWeight: 800, marginTop: "1rem", marginBottom: "1rem" }}>
+            <h2 id="input-tokenization" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
               🔤 Tokenizing the Input Prompt
             </h2>
             Let me take our example prompt: <strong>&quot;Tomorrow I am flying to&quot;</strong>.
@@ -456,7 +491,7 @@ token_ids = [49488, 314, 716, 7348, 284]`}</CodeBlock>
         summary: "Looking up token IDs in the embedding matrix",
         content: (
           <>
-            <h2 id="embedding-lookup" style={{ color: "#fff", fontSize: "1.75rem", fontWeight: 800, marginTop: "1rem", marginBottom: "1rem" }}>
+            <h2 id="embedding-lookup" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
               📦 Token Embedding Matrix Lookup (<InlineMath math={String.raw`W_e`} />)
             </h2>
             Each token ID is looked up in the <strong>token embedding matrix</strong> <InlineMath math={String.raw`W_e`} /> of size <InlineMath math={String.raw`(50257 \times 3)`} /> (where vocabulary size is 50,257 and model dimension is 3).
@@ -489,7 +524,7 @@ token_ids = [49488, 314, 716, 7348, 284]`}</CodeBlock>
         summary: "Adding positional embeddings to create the final input matrix",
         content: (
           <>
-            <h2 id="positional-embeddings" style={{ color: "#fff", fontSize: "1.75rem", fontWeight: 800, marginTop: "1rem", marginBottom: "1rem" }}>
+            <h2 id="positional-embeddings" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
               📍 Positional Embeddings & Input Matrix Construction
             </h2>
             Transformers process tokens concurrently, so we look up positional embeddings for each index (0 to 4) and add them element-wise to the token embeddings:
@@ -502,6 +537,9 @@ token_ids = [49488, 314, 716, 7348, 284]`}</CodeBlock>
 [-0.08,  0.71,  0.65] + [ 0.50,  0.00, -0.05] = [ 0.42,  0.71,  0.60]`}</CodeBlock>
             </Callout>
             <BlockMath math={String.raw`\mathbf{X}_{\text{input}} = \begin{bmatrix} 0.72 & -0.15 & 0.38 \\ -0.11 & 0.74 & 0.17 \\ 0.47 & 0.49 & -0.56 \\ 1.31 & -0.64 & 0.37 \\ 0.42 & 0.71 & 0.60 \end{bmatrix}`} />
+            <Callout type="tip" title="💡 Modern Architectural Alternative">
+              Modern LLMs (such as LLaMA, Gemma, and Mistral) replace static position vector addition with <strong>Rotary Position Embeddings (RoPE)</strong>. Explore how geometric rotation works in <TopicLink targetTopic="Chapter 9.3 - Positional Encoding Variants (Absolute vs. RoPE vs. ALiBi)">Chapter 9.3 (RoPE & ALiBi)</TopicLink>.
+            </Callout>
             <div className="nav-container" style={{ display: "flex", flexWrap: "nowrap", alignItems: "center", justifyContent: "space-between", width: "100%", marginTop: "3rem", borderTop: "1px solid rgba(255, 255, 255, 0.08)", paddingTop: "1.5rem" }}>
               <NavButton direction="prev" targetTopic="Chapter 2.2 - Token Embedding Lookup (We Matrix)" />
               <span style={{ color: "var(--text-secondary)" }}>|</span>
@@ -520,7 +558,7 @@ token_ids = [49488, 314, 716, 7348, 284]`}</CodeBlock>
         summary: "Understanding weight matrices and calculating Query, Key, Value vectors",
         content: (
           <>
-            <h2 id="weight-matrices-qkv" style={{ color: "#fff", fontSize: "1.75rem", fontWeight: 800, marginTop: "1rem", marginBottom: "1rem" }}>
+            <h2 id="weight-matrices-qkv" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
               🔑 Weight Matrices (<InlineMath math={String.raw`W_Q, W_K, W_V`} />) & QKV Projections
             </h2>
             <Callout type="info" title="Training vs. Inference Weight Origins">
@@ -570,7 +608,7 @@ token_ids = [49488, 314, 716, 7348, 284]`}</CodeBlock>
         summary: "Calculating QK^T dot products and scaling by sqrt(dk)",
         content: (
           <>
-            <h2 id="attention-scores-scaling" style={{ color: "#fff", fontSize: "1.75rem", fontWeight: 800, marginTop: "1rem", marginBottom: "1rem" }}>
+            <h2 id="attention-scores-scaling" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
               ⚡ Calculating & Scaling Raw Attention Scores
             </h2>
             We compute raw attention scores by taking the matrix multiplication of Query matrix <InlineMath math={String.raw`Q`} /> with the transpose of Key matrix <InlineMath math={String.raw`K^T`} />:
@@ -600,7 +638,7 @@ token_ids = [49488, 314, 716, 7348, 284]`}</CodeBlock>
         summary: "Applying causal mask, softmax, and multiplying with Value matrix V",
         content: (
           <>
-            <h2 id="masking-softmax-context" style={{ color: "#fff", fontSize: "1.75rem", fontWeight: 800, marginTop: "1rem", marginBottom: "1rem" }}>
+            <h2 id="masking-softmax-context" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
               🎭 Causal Masking, Softmax & Final Context Vector
             </h2>
             In autoregressive LLMs (like GPT), tokens cannot look into the future. We apply an upper-triangular causal mask of <InlineMath math={String.raw`-\infty`} />:
@@ -641,10 +679,13 @@ token_ids = [49488, 314, 716, 7348, 284]`}</CodeBlock>
         summary: "Calculating multi-head attention and concatenating outputs",
         content: (
           <>
-            <h2 id="multi-head-attention" style={{ color: "#fff", fontSize: "1.75rem", fontWeight: 800, marginTop: "1rem", marginBottom: "1rem" }}>
+            <h2 id="multi-head-attention" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
               🧠 Multi-Head Self-Attention Mechanism
             </h2>
             We repeat the self-attention process across 3 independent attention heads (each producing 2-dimensional context vectors per token):
+            <Callout type="tip" title="💡 Modern Architectural Alternative">
+              Standard Multi-Head Attention maintains separate Key &amp; Value vectors for every head. For high-speed production inference, models like LLaMA 3 use <strong>Grouped-Query Attention (GQA)</strong> and <strong>FlashAttention</strong>. Learn how in <TopicLink targetTopic="Chapter 9.4 - Attention Variants (MHA vs. MQA vs. GQA & FlashAttention)">Chapter 9.4 (GQA & FlashAttention)</TopicLink>.
+            </Callout>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem", marginTop: "1rem", marginBottom: "1.5rem" }}>
               <Callout type="tip" title="Head 1 (5×2)">
                 <CodeBlock language="text">{`[ 0.083, -0.260]
@@ -684,7 +725,7 @@ token_ids = [49488, 314, 716, 7348, 284]`}</CodeBlock>
         summary: "Projecting multi-head attention outputs back to model dimension using WO",
         content: (
           <>
-            <h2 id="output-projection" style={{ color: "#fff", fontSize: "1.75rem", fontWeight: 800, marginTop: "1rem", marginBottom: "1rem" }}>
+            <h2 id="output-projection" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
               ⚙️ Output Projection Matrix (<InlineMath math={String.raw`W_O`} />)
             </h2>
             We multiply the concatenated attention matrix <InlineMath math={String.raw`(5 \times 6)`} /> by the Output Projection Matrix <InlineMath math={String.raw`W_O`} /> <InlineMath math={String.raw`(6 \times 3)`} /> to project back to the model dimension:
@@ -713,7 +754,7 @@ token_ids = [49488, 314, 716, 7348, 284]`}</CodeBlock>
         summary: "Adding original input matrix to attention output matrix",
         content: (
           <>
-            <h2 id="first-residual-connection" style={{ color: "#fff", fontSize: "1.75rem", fontWeight: 800, marginTop: "1rem", marginBottom: "1rem" }}>
+            <h2 id="first-residual-connection" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
               🔗 1st Residual Connection
             </h2>
             We add the original input matrix <InlineMath math={String.raw`\mathbf{X}_{\text{input}}`} /> to the multi-head attention output matrix:
@@ -734,13 +775,16 @@ token_ids = [49488, 314, 716, 7348, 284]`}</CodeBlock>
         summary: "Detailed mathematical step-by-step breakdown of 1st Layer Normalization",
         content: (
           <>
-            <h2 id="layer-norm-mechanics" style={{ color: "#fff", fontSize: "1.75rem", fontWeight: 800, marginTop: "1rem", marginBottom: "1rem" }}>
+            <h2 id="layer-norm-mechanics" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
               🧪 1st Layer Normalization (Step-by-Step Breakdown)
             </h2>
             Layer Normalization stabilizes deep neural network training by normalizing inputs across feature dimensions independently for each sequence token (row-by-row).
             <br /><br />
             Let&apos;s take our <strong>Residual Output 1</strong> matrix:
             <BlockMath math={String.raw`\text{Residual Output}_1 = \begin{bmatrix} 1.133 & -0.299 & 0.503 \\ -0.176 & 0.911 & 0.143 \\ 0.766 & 0.781 & -0.518 \\ 1.601 & -0.669 & 0.368 \\ 0.663 & 0.779 & 0.648 \end{bmatrix}`} />
+            <Callout type="tip" title="💡 Modern Architectural Alternative">
+              While standard LayerNorm computes both mean and variance, models like LLaMA use <strong>RMSNorm (Root Mean Square Normalization)</strong> to eliminate mean-centering and boost GPU throughput. Learn more in <TopicLink targetTopic="Chapter 9.2 - Normalization Alternatives (LayerNorm vs. RMSNorm)">Chapter 9.2 (RMSNorm)</TopicLink>.
+            </Callout>
 
             <Callout type="example" title="Step-by-Step Walkthrough for Row 1: [1.133, -0.299, 0.503]">
               <p><strong>Step 1: Calculate Row Mean (<InlineMath math={String.raw`\mu`} />)</strong></p>
@@ -789,9 +833,6 @@ Variance = (0.472 + 0.555 + 0.003) / 3 = 0.343`}</CodeBlock>
         summary: "Expanding token vectors from 3 model dimensions to 6 hidden dimensions using weight matrix W1",
         content: (
           <>
-            <h2 id="ffn-w1" style={{ color: "#fff", fontSize: "1.75rem", fontWeight: 800, marginTop: "1rem", marginBottom: "1rem" }}>
-              1️⃣ First Linear Layer (<InlineMath math={String.raw`W_1`} /> Feature Expansion)
-            </h2>
             Since our token vectors only have 3 feature dimensions, we expand them to 6 hidden dimensions using weight matrix <InlineMath math={String.raw`W_1`} /> (<InlineMath math={String.raw`3 \times 6`} />):
             <BlockMath math={String.raw`W_1 = \begin{bmatrix} 0.4 & -0.2 & 0.1 & 0.6 & -0.5 & 0.3 \\ -0.1 & 0.8 & -0.4 & 0.2 & 0.7 & -0.6 \\ 0.5 & 0.3 & 0.9 & -0.2 & 0.1 & 0.4 \end{bmatrix}`} />
             Multiplying <InlineMath math={String.raw`\text{LayerNorm Output}_1 \times W_1`} /> yields the pre-activation hidden matrix (<InlineMath math={String.raw`5 \times 6`} />):
@@ -801,6 +842,9 @@ Variance = (0.472 + 0.555 + 0.003) / 3 = 0.343`}</CodeBlock>
               matrixB={[[0.4, -0.2, 0.1, 0.6, -0.5, 0.3], [-0.1, 0.8, -0.4, 0.2, 0.7, -0.6], [0.5, 0.3, 0.9, -0.2, 0.1, 0.4]]}
               nameA="LN<sub>1</sub>" nameB="W<sub>1</sub>" nameRes="Hidden"
             />
+            <Callout type="tip" title="💡 Modern Architectural Alternative">
+              Instead of routing every token through a single dense FFN, sparse scaling architectures like Mixtral and DeepSeek dynamically route tokens to specialized expert subnetworks using <strong>Mixture of Experts (MoE)</strong>. Discover how in <TopicLink targetTopic="Chapter 9.5 - Scaling & Efficiency (Mixture of Experts - MoE & KV Caching)">Chapter 9.5 (MoE Architecture)</TopicLink>.
+            </Callout>
             <div className="nav-container" style={{ display: "flex", flexWrap: "nowrap", alignItems: "center", justifyContent: "space-between", width: "100%", marginTop: "3rem", borderTop: "1px solid rgba(255, 255, 255, 0.08)", paddingTop: "1.5rem" }}>
               <NavButton direction="prev" targetTopic="Chapter 5.2 - 1st Layer Normalization" />
               <span style={{ color: "var(--text-secondary)" }}>|</span>
@@ -814,15 +858,17 @@ Variance = (0.472 + 0.555 + 0.003) / 3 = 0.343`}</CodeBlock>
         summary: "Applying non-linear GELU activation function element-wise to hidden representations",
         content: (
           <>
-            <h2 id="ffn-gelu" style={{ color: "#fff", fontSize: "1.75rem", fontWeight: 800, marginTop: "1rem", marginBottom: "1rem" }}>
-              2️⃣ GELU Activation Function
-            </h2>
-            The Gaussian Error Linear Unit (GELU) introduces non-linearity, smoothly preventing values from becoming too negative:
+            The Gaussian Error Linear Unit (GELU) introduces smooth non-linearity to neural representations. Unlike ReLU which hard-clamps negative numbers to zero, GELU allows small negative gradients to flow back, preventing dead neurons:
+            <BlockMath math={String.raw`\text{GELU}(x) = x \cdot \Phi(x) \approx 0.5x \cdot \left(1 + \tanh\left(\sqrt{\frac{2}{\pi}} \left(x + 0.044715 x^3\right)\right)\right)`} />
+            <GeluVisualizer />
             <Callout type="info" title="Sample GELU Transformations">
               <CodeBlock language="text">{`GELU(0.772)  ≈  0.603
 GELU(-1.460) ≈ -0.106
 GELU(0.856)  ≈  0.689
 GELU(-1.752) ≈ -0.070`}</CodeBlock>
+            </Callout>
+            <Callout type="tip" title="💡 Modern Activation Alternatives">
+              While GELU is standard in GPT-2, models like LLaMA use <strong>SwiGLU</strong>, and earlier models used <strong>ReLU</strong>. Compare formulas and interactive activation curves in <TopicLink targetTopic="Chapter 9.1 - Activation Functions (ReLU vs. GELU vs. SwiGLU)">Chapter 9.1 (Activation Functions)</TopicLink>.
             </Callout>
             Applying GELU element-wise yields the activated hidden matrix (<InlineMath math={String.raw`5 \times 6`} />):
             <BlockMath math={String.raw`\text{FFN Hidden Layer (After GELU)} = \begin{bmatrix} 0.603 & -0.106 & 0.689 & 0.357 & -0.070 & 1.319 \\ -0.167 & 1.082 & -0.170 & -0.139 & 1.354 & -0.141 \\ -0.153 & 0.064 & -0.103 & -0.161 & -0.003 & -0.167 \\ 0.391 & -0.135 & 0.293 & 0.414 & -0.105 & 0.854 \\ -0.158 & 0.378 & -0.154 & 0.140 & 0.473 & -0.165 \end{bmatrix}`} />
@@ -839,9 +885,6 @@ GELU(-1.752) ≈ -0.070`}</CodeBlock>
         summary: "Projecting 6 hidden dimensions back to the original 3 model dimensions using weight matrix W2",
         content: (
           <>
-            <h2 id="ffn-w2" style={{ color: "#fff", fontSize: "1.75rem", fontWeight: 800, marginTop: "1rem", marginBottom: "1rem" }}>
-              3️⃣ Second Linear Layer (<InlineMath math={String.raw`W_2`} /> Model Projection)
-            </h2>
             We project back from 6 hidden dimensions to the original 3 model dimensions using weight matrix <InlineMath math={String.raw`W_2`} /> (<InlineMath math={String.raw`6 \times 3`} />):
             <BlockMath math={String.raw`W_2 = \begin{bmatrix} 0.2 & -0.4 & 0.5 \\ -0.3 & 0.6 & 0.1 \\ 0.7 & -0.2 & -0.5 \\ 0.1 & 0.3 & 0.8 \\ -0.6 & 0.5 & 0.2 \\ 0.4 & -0.1 & 0.3 \end{bmatrix}`} />
             Multiplying <InlineMath math={String.raw`\text{GELU Output} \times W_2`} /> yields the final FFN output matrix (<InlineMath math={String.raw`5 \times 3`} />):
@@ -867,7 +910,7 @@ GELU(-1.752) ≈ -0.070`}</CodeBlock>
         summary: "Adding LayerNorm 1 output to FFN output",
         content: (
           <>
-            <h2 id="second-residual-connection" style={{ color: "#fff", fontSize: "1.75rem", fontWeight: 800, marginTop: "1rem", marginBottom: "1rem" }}>
+            <h2 id="second-residual-connection" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
               🔗 2nd Residual Connection
             </h2>
             We add the output of the first Layer Normalization (<InlineMath math={String.raw`\text{LayerNorm Output}_1`} />) to the output of the Feed-Forward Network (<InlineMath math={String.raw`\text{FFN Output}`} />):
@@ -888,13 +931,16 @@ GELU(-1.752) ≈ -0.070`}</CodeBlock>
         summary: "Detailed mathematical step-by-step breakdown of 2nd Layer Normalization",
         content: (
           <>
-            <h2 id="second-layer-norm-mechanics" style={{ color: "#fff", fontSize: "1.75rem", fontWeight: 800, marginTop: "1rem", marginBottom: "1rem" }}>
+            <h2 id="second-layer-norm-mechanics" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
               🧪 2nd Layer Normalization (Step-by-Step Breakdown)
             </h2>
             The second Layer Normalization stabilizes representations right before sending them to subsequent Transformer blocks or the final language model head.
             <br /><br />
             Let&apos;s take our <strong>Residual Output 2</strong> matrix:
             <BlockMath math={String.raw`\text{Residual Output}_2 = \begin{bmatrix} 2.628 & -2.084 & 0.703 \\ -1.960 & 2.710 & -0.701 \\ 0.500 & 0.817 & -1.425 \\ 2.146 & -1.491 & 0.220 \\ -0.499 & 1.473 & -0.890 \end{bmatrix}`} />
+            <Callout type="tip" title="💡 Modern Architectural Alternative">
+              Recall that modern LLMs often replace standard 2nd LayerNorm with <strong>RMSNorm</strong> for faster memory bandwidth. See the full formula and comparison in <TopicLink targetTopic="Chapter 9.2 - Normalization Alternatives (LayerNorm vs. RMSNorm)">Chapter 9.2 (RMSNorm)</TopicLink>.
+            </Callout>
 
             <Callout type="example" title="Step-by-Step Walkthrough for Row 1: [2.628, -2.084, 0.703]">
               <p><strong>Step 1: Calculate Row Mean (<InlineMath math={String.raw`\mu`} />)</strong></p>
@@ -946,7 +992,7 @@ Variance = (4.893 + 6.250 + 0.082) / 3 = 3.742`}</CodeBlock>
         summary: "Multiplying final hidden state by LM Head to predict the next word",
         content: (
           <>
-            <h2 id="lm-head-prediction" style={{ color: "#fff", fontSize: "1.75rem", fontWeight: 800, marginTop: "1rem", marginBottom: "1rem" }}>
+            <h2 id="lm-head-prediction" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
               🎯 LM Head Projection & Next-Word Prediction
             </h2>
             Since this is the final layer block in inference, we extract only the <strong>last token's hidden state</strong> (Position 4, corresponding to word <em>"to"</em>):
@@ -987,8 +1033,154 @@ Variance = (4.893 + 6.250 + 0.082) / 3 = 3.742`}</CodeBlock>
               <br /><br />
               <strong style={{ fontSize: "1.2rem", color: "var(--accent-color)" }}>&quot;Tomorrow I am flying to Delhi&quot;</strong>
             </Callout>
+            <Callout type="tip" title="💡 Production Speedup: KV Caching">
+              During step-by-step next-word generation, recomputing attention for previous tokens is inefficient. Production inference servers use <strong>Key-Value (KV) Caching</strong> to store past states. Read how in <TopicLink targetTopic="Chapter 9.5 - Scaling & Efficiency (Mixture of Experts - MoE & KV Caching)">Chapter 9.5 (KV Caching)</TopicLink>.
+            </Callout>
             <div className="nav-container" style={{ display: "flex", flexWrap: "nowrap", alignItems: "center", justifyContent: "space-between", width: "100%", marginTop: "3rem", borderTop: "1px solid rgba(255, 255, 255, 0.08)", paddingTop: "1.5rem" }}>
               <NavButton direction="prev" targetTopic="Chapter 7.2 - 2nd Layer Normalization" />
+              <span style={{ color: "var(--text-secondary)" }}>|</span>
+              <NavButton direction="next" targetTopic="Chapter 9.1 - ReLU Activation Function (Alternative to GELU)" />
+            </div>
+          </>
+        ),
+      },
+    ],
+  },
+  {
+    title: "Chapter 9 Optional Alternatives",
+    topics: [
+      {
+        title: "Chapter 9.1 - Activation Functions (ReLU vs. GELU vs. SwiGLU)",
+        summary: "Exploring alternative activation functions in Transformer Feed-Forward Networks",
+        content: (
+          <>
+            <h2 id="activation-variants" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
+              ⚡ Chapter 9.1: Activation Functions (ReLU vs. GELU vs. SwiGLU)
+            </h2>
+            While our core walkthrough uses <strong>GELU</strong> (standard in GPT-2 & BERT), modern large language models leverage alternative non-linear activations to optimize gradient flow and feature expression.
+            <br /><br />
+            <strong style={{ color: "#fff", fontSize: "1.1rem" }}>1. Rectified Linear Unit (ReLU)</strong><br />
+            Used in the original 2017 Transformer (<em>&quot;Attention Is All You Need&quot;</em>). It strictly zeroes out negative values:
+            <BlockMath math={String.raw`\text{ReLU}(x) = \max(0, x)`} />
+            <ReluVisualizer />
+
+            <strong style={{ color: "#fff", fontSize: "1.1rem", marginTop: "1.5rem", display: "block" }}>2. SwiGLU (Swish-Gated Linear Unit)</strong><br />
+            Used in state-of-the-art LLMs like <strong>LLaMA 1/2/3, PaLM, and Mistral</strong>. SwiGLU replaces the standard 2-layer FFN with a 3-matrix gated architecture:
+            <BlockMath math={String.raw`\text{SwiGLU}(x) = \text{Swish}_1(x W_1) \otimes (x W_3) W_2`} />
+            <Callout type="tip" title="Why SwiGLU Outperforms GELU">
+              Gated Linear Units (GLUs) allow the network to dynamically control how much information flows through each hidden dimension by multiplying two parallel linear projections (<InlineMath math={String.raw`W_1`} /> and <InlineMath math={String.raw`W_3`} />). Empirical benchmarks show SwiGLU significantly improves downstream reasoning performance.
+            </Callout>
+
+            <div className="nav-container" style={{ display: "flex", flexWrap: "nowrap", alignItems: "center", justifyContent: "space-between", width: "100%", marginTop: "3rem", borderTop: "1px solid rgba(255, 255, 255, 0.08)", paddingTop: "1.5rem" }}>
+              <NavButton direction="prev" targetTopic="Chapter 8.1 - LM Head Projection & Next Word Prediction (&quot;Delhi&quot;)" />
+              <span style={{ color: "var(--text-secondary)" }}>|</span>
+              <NavButton direction="next" targetTopic="Chapter 9.2 - Normalization Alternatives (LayerNorm vs. RMSNorm)" />
+            </div>
+          </>
+        ),
+      },
+      {
+        title: "Chapter 9.2 - Normalization Alternatives (LayerNorm vs. RMSNorm)",
+        summary: "Comparing standard Layer Normalization with Root Mean Square Normalization (RMSNorm)",
+        content: (
+          <>
+            <h2 id="norm-variants" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
+              🧪 Chapter 9.2: Normalization Alternatives (LayerNorm vs. RMSNorm)
+            </h2>
+            In Chapters 5.2 and 7.2, we executed standard <strong>Layer Normalization</strong>, which computes both row-wise mean (<InlineMath math={String.raw`\mu`} strokeWidth={1.5} />) and variance (<InlineMath math={String.raw`\sigma^2`} />):
+            <BlockMath math={String.raw`\text{LayerNorm}(x) = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} \odot \gamma + \beta`} />
+
+            <h3 style={{ color: "#fff", fontSize: "1.2rem", fontWeight: 600, marginTop: "2rem", marginBottom: "0.75rem" }}>
+              RMSNorm (Root Mean Square Normalization)
+            </h3>
+            Adopted by <strong>LLaMA, Gemma, and Mistral</strong>, RMSNorm assumes that scaling invariance is the primary driver of LayerNorm's success, rendering mean-centering (<InlineMath math={String.raw`x - \mu`} />) unnecessary.
+            <BlockMath math={String.raw`\text{RMSNorm}(x) = \frac{x}{\text{RMS}(x)} \odot \gamma, \quad \text{where } \text{RMS}(x) = \sqrt{\frac{1}{d} \sum_{i=1}^d x_i^2 + \epsilon}`} />
+
+            <Callout type="info" title="Computational Efficiency of RMSNorm">
+              By skipping mean calculation and bias subtraction (<InlineMath math={String.raw`\beta = 0`} />), RMSNorm reduces GPU memory access operations (IOPS) and boosts training throughput by 10% to 50% without degrading model accuracy.
+            </Callout>
+
+            <div className="nav-container" style={{ display: "flex", flexWrap: "nowrap", alignItems: "center", justifyContent: "space-between", width: "100%", marginTop: "3rem", borderTop: "1px solid rgba(255, 255, 255, 0.08)", paddingTop: "1.5rem" }}>
+              <NavButton direction="prev" targetTopic="Chapter 9.1 - Activation Functions (ReLU vs. GELU vs. SwiGLU)" />
+              <span style={{ color: "var(--text-secondary)" }}>|</span>
+              <NavButton direction="next" targetTopic="Chapter 9.3 - Positional Encoding Variants (Absolute vs. RoPE vs. ALiBi)" />
+            </div>
+          </>
+        ),
+      },
+      {
+        title: "Chapter 9.3 - Positional Encoding Variants (Absolute vs. RoPE vs. ALiBi)",
+        summary: "Understanding modern relative position encodings like Rotary Position Embeddings (RoPE)",
+        content: (
+          <>
+            <h2 id="positional-variants" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
+              📍 Chapter 9.3: Positional Encoding Variants (Absolute vs. RoPE vs. ALiBi)
+            </h2>
+            In Chapter 2.3, we used <strong>Absolute Positional Embeddings</strong> (<InlineMath math={String.raw`W_P`} />), where a static vector is directly added to token vectors. However, absolute embeddings struggle to extrapolate to context lengths longer than trained.
+            <br /><br />
+            <strong style={{ color: "#fff", fontSize: "1.1rem" }}>Rotary Position Embedding (RoPE)</strong><br />
+            Used in <strong>LLaMA, GPT-NeoX, and Mistral</strong>. Instead of adding vectors, RoPE rotates the Query and Key vectors in 2D vector pairs by an angle proportional to their sequence position <InlineMath math={String.raw`m`} />:
+            <BlockMath math={String.raw`R_{\Theta, m}^d = \begin{bmatrix} \cos m\theta_1 & -\sin m\theta_1 & 0 & 0 \\ \sin m\theta_1 & \cos m\theta_1 & 0 & 0 \\ 0 & 0 & \cos m\theta_2 & -\sin m\theta_2 \\ 0 & 0 & \sin m\theta_2 & \cos m\theta_2 \end{bmatrix}`} />
+            <Callout type="success" title="Relative Geometric Attention">
+              Because dot products between rotated Queries and Keys preserve relative distance (<InlineMath math={String.raw`m - n`} />), RoPE enables seamless context window extension (e.g., from 4k to 128k tokens) via frequency scaling.
+            </Callout>
+
+            <div className="nav-container" style={{ display: "flex", flexWrap: "nowrap", alignItems: "center", justifyContent: "space-between", width: "100%", marginTop: "3rem", borderTop: "1px solid rgba(255, 255, 255, 0.08)", paddingTop: "1.5rem" }}>
+              <NavButton direction="prev" targetTopic="Chapter 9.2 - Normalization Alternatives (LayerNorm vs. RMSNorm)" />
+              <span style={{ color: "var(--text-secondary)" }}>|</span>
+              <NavButton direction="next" targetTopic="Chapter 9.4 - Attention Variants (MHA vs. MQA vs. GQA & FlashAttention)" />
+            </div>
+          </>
+        ),
+      },
+      {
+        title: "Chapter 9.4 - Attention Variants (MHA vs. MQA vs. GQA & FlashAttention)",
+        summary: "Exploring Multi-Query Attention (MQA), Grouped-Query Attention (GQA), and memory-efficient FlashAttention",
+        content: (
+          <>
+            <h2 id="attention-variants" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
+              🧠 Chapter 9.4: Attention Variants (MHA vs. MQA vs. GQA & FlashAttention)
+            </h2>
+            Standard <strong>Multi-Head Attention (MHA)</strong> maintains separate Query, Key, and Value heads for every attention head. While expressive, loading huge Key/Value matrices during inference creates massive GPU memory bottlenecks.
+            <br /><br />
+            <ul style={{ paddingLeft: "1.5rem", lineHeight: "1.8", color: "var(--text-secondary)" }}>
+              <li><strong style={{ color: "#fff" }}>Multi-Query Attention (MQA)</strong>: All Query heads share a single key and value head. Extremely fast inference, but can slightly degrade model capability.</li>
+              <li><strong style={{ color: "#fff" }}>Grouped-Query Attention (GQA)</strong>: Used in <strong>LLaMA 2/3 (70B) & Mistral</strong>. Query heads are partitioned into $G$ groups, with each group sharing one Key and Value head. Delivers near-MHA quality at near-MQA generation speeds!</li>
+            </ul>
+
+            <h3 style={{ color: "#fff", fontSize: "1.2rem", fontWeight: 600, marginTop: "2rem", marginBottom: "0.75rem" }}>
+              FlashAttention (IO-Aware Exact Attention)
+            </h3>
+            Standard attention computes and materializes intermediate <InlineMath math={String.raw`(N \times N)`} /> score matrices in slow GPU High Bandwidth Memory (HBM). <strong>FlashAttention</strong> tiles the attention matrix into blocks processed directly inside fast GPU SRAM using online softmax scaling, achieving 2-4x speedups without approximation!
+
+            <div className="nav-container" style={{ display: "flex", flexWrap: "nowrap", alignItems: "center", justifyContent: "space-between", width: "100%", marginTop: "3rem", borderTop: "1px solid rgba(255, 255, 255, 0.08)", paddingTop: "1.5rem" }}>
+              <NavButton direction="prev" targetTopic="Chapter 9.3 - Positional Encoding Variants (Absolute vs. RoPE vs. ALiBi)" />
+              <span style={{ color: "var(--text-secondary)" }}>|</span>
+              <NavButton direction="next" targetTopic="Chapter 9.5 - Scaling & Efficiency (Mixture of Experts - MoE & KV Caching)" />
+            </div>
+          </>
+        ),
+      },
+      {
+        title: "Chapter 9.5 - Scaling & Efficiency (Mixture of Experts - MoE & KV Caching)",
+        summary: "Understanding Mixture of Experts (MoE) routing networks and Key-Value (KV) Caching for fast inference",
+        content: (
+          <>
+            <h2 id="scaling-variants" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
+              🚀 Chapter 9.5: Scaling & Efficiency (Mixture of Experts - MoE & KV Caching)
+            </h2>
+            <strong style={{ color: "#fff", fontSize: "1.1rem" }}>1. Mixture of Experts (MoE) Architecture</strong><br />
+            Used in <strong>Mixtral 8x7B, DeepSeek-V2/V3, and GPT-4</strong>. Instead of passing every token through one dense Feed-Forward Network (FFN), MoE replaces the FFN layer with multiple independent &quot;Expert&quot; networks. A lightweight <strong>Router (Gating Network)</strong> dynamically selects the top-$k$ experts (e.g., 2 out of 8) for each token:
+            <BlockMath math={String.raw`y = \sum_{i=1}^N \text{Softmax}(\text{TopK}(x \cdot W_{\text{gate}}))_i \cdot \text{Expert}_i(x)`} />
+            <Callout type="example" title="Sparse Computation Efficiency">
+              MoE allows a model to have 47 Billion total parameters while only activating 13 Billion parameters per token, delivering massive model capacity at a fraction of the inference compute cost!
+            </Callout>
+
+            <strong style={{ color: "#fff", fontSize: "1.1rem", marginTop: "1.5rem", display: "block" }}>2. Key-Value (KV) Caching in Autoregressive Generation</strong><br />
+            During step-by-step next-token generation, earlier tokens' Key and Value vectors do not change. By storing (<InlineMath math={String.raw`K`} /> and <InlineMath math={String.raw`V`} />) tensors in GPU memory, the model avoids recomputing attention for previous tokens at every new step, turning $O(N^2)$ generation time into $O(N)$!
+
+            <div className="nav-container" style={{ display: "flex", flexWrap: "nowrap", alignItems: "center", justifyContent: "space-between", width: "100%", marginTop: "3rem", borderTop: "1px solid rgba(255, 255, 255, 0.08)", paddingTop: "1.5rem" }}>
+              <NavButton direction="prev" targetTopic="Chapter 9.4 - Attention Variants (MHA vs. MQA vs. GQA & FlashAttention)" />
               <span style={{ color: "var(--text-secondary)" }}>|</span>
               <NavButton direction="next" targetTopic="None" />
             </div>

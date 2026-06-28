@@ -43,8 +43,8 @@ export default function MatrixMultiplicationVisualizer({ matrixA, matrixB, nameA
       position: absolute;
       top: 0;
       bottom: 0;
-      width: 10px;
-      border: 2px solid rgba(255, 255, 255, 0.2);
+      width: 8px;
+      border: 2px solid rgba(255, 255, 255, 0.18);
     }
     .matrix-bracket::before {
       left: 0;
@@ -59,35 +59,39 @@ export default function MatrixMultiplicationVisualizer({ matrixA, matrixB, nameA
     .matrix-cell {
       display: flex;
       align-items: center;
-      justifyContent: center;
-      min-width: 44px;
-      height: 28px;
-      padding: 0 4px;
-      margin: 2px;
-      border-radius: 6px;
-      background: #232323;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #fff;
-      font-weight: 600;
-      font-size: 0.75rem;
+      justify-content: center;
+      min-width: 48px;
+      height: 32px;
+      padding: 0 6px;
+      margin: 3px;
+      border-radius: 8px;
+      background: rgba(17, 24, 39, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #f3f4f6;
+      font-weight: 500;
+      font-size: 0.82rem;
       transition: all 0.2s ease;
       user-select: none;
     }
     .matrix-cell.active-a {
-      background: rgba(59, 130, 246, 0.15);
-      border-color: rgba(59, 130, 246, 0.5);
+      background: rgba(56, 189, 248, 0.15);
+      border-color: rgba(56, 189, 248, 0.5);
+      color: #38bdf8;
     }
     .matrix-cell.active-b {
-      background: rgba(16, 185, 129, 0.15);
-      border-color: rgba(16, 185, 129, 0.5);
+      background: rgba(52, 211, 153, 0.15);
+      border-color: rgba(52, 211, 153, 0.5);
+      color: #34d399;
     }
     .matrix-cell.active-res {
-      background: rgba(59, 130, 246, 0.15);
-      border-color: rgba(59, 130, 246, 0.5);
+      background: rgba(129, 140, 248, 0.2);
+      border-color: rgba(129, 140, 248, 0.6);
+      color: #818cf8;
+      box-shadow: 0 0 12px rgba(129, 140, 248, 0.25);
       cursor: pointer;
     }
     .matrix-cell.res-hover:hover {
-      border-color: rgba(255, 255, 255, 0.5);
+      border-color: rgba(255, 255, 255, 0.4);
       cursor: pointer;
     }
   `;
@@ -98,29 +102,42 @@ export default function MatrixMultiplicationVisualizer({ matrixA, matrixB, nameA
     const result = multiplyCell(r, c);
 
     return (
-      <div style={{ marginTop: "30px", fontSize: "1.1rem", fontFamily: "serif", letterSpacing: "0.5px", color: "#ddd" }}>
-        <i>({nameRes})</i><sub>{r + 1}{c + 1}</sub> = {" "}
+      <div style={{
+        marginTop: "1.5rem",
+        padding: "0.85rem 1.5rem",
+        background: "rgba(17, 24, 39, 0.8)",
+        borderRadius: "10px",
+        border: "1px solid rgba(255, 255, 255, 0.08)",
+        fontSize: "1rem",
+        fontFamily: "'Fira Code', monospace, serif",
+        letterSpacing: "0.5px",
+        color: "#e2e8f0",
+        boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.05)"
+      }}>
+        <span style={{ color: "#818cf8", fontWeight: 600 }}>({nameRes})<sub>{r + 1}{c + 1}</sub></span> = {" "}
         {Array.from({ length: colsA }).map((_, k) => (
           <span key={k}>
-            ({A[r][k]} &middot; {B[k][c]})
+            (<span style={{ color: "#38bdf8" }}>{A[r][k]}</span> &middot; <span style={{ color: "#34d399" }}>{B[k][c]}</span>)
             {k < colsA - 1 ? " + " : ""}
           </span>
         ))}
-        {" "} = {result.toFixed ? result.toFixed(3) : result}
+        {" "} = <strong style={{ color: "#818cf8", fontWeight: 700 }}>{result.toFixed ? result.toFixed(3) : result}</strong>
       </div>
     );
   };
 
   return (
     <div style={{ 
-      padding: "20px", 
-      background: "#1a1a1a", 
-      borderRadius: "12px", 
-      border: "1px solid rgba(255,255,255,0.05)", 
+      padding: "1.75rem", 
+      background: "rgba(17, 24, 39, 0.4)", 
+      borderRadius: "16px", 
+      border: "1px solid rgba(255,255,255,0.07)", 
+      backdropFilter: "blur(12px)",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      marginBottom: "2rem" 
+      marginBottom: "2rem",
+      boxShadow: "0 10px 30px rgba(0,0,0,0.25)" 
     }}>
       <style>{bracketBeforeAfter}</style>
 

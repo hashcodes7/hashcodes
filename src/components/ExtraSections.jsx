@@ -4423,14 +4423,14 @@ export const LearnPage = () => {
             style={{
               flex: "1 1 0%",
               minWidth: 0,
-              padding: isMobile ? "2rem 1.5rem" : "3rem 4rem",
-              background: "var(--bg-secondary)",
+              padding: isMobile ? "2rem 1.5rem" : "3.5rem 4.5rem",
+              background: "var(--bg-primary)",
             }}
           >
             {activeTopic && (
               <div
                 ref={readerRef}
-                style={{ maxWidth: "800px", margin: "0 auto" }}
+                style={{ maxWidth: "820px", margin: "0 auto" }}
               >
                 <div
                   style={{
@@ -4448,12 +4448,13 @@ export const LearnPage = () => {
                         gap: "0.5rem",
                         color: "var(--accent-color)",
                         fontSize: "0.8rem",
-                        fontWeight: 800,
-                        letterSpacing: "0.1em",
+                        fontWeight: 600,
+                        letterSpacing: "0.08em",
                         textTransform: "uppercase",
                         marginBottom: "1rem",
-                        background: "rgba(0, 240, 255, 0.1)",
-                        padding: "0.3rem 0.75rem",
+                        background: "rgba(56, 189, 248, 0.1)",
+                        border: "1px solid rgba(56, 189, 248, 0.2)",
+                        padding: "0.35rem 0.85rem",
                         borderRadius: "20px",
                       }}
                     >

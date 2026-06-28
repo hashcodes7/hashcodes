@@ -24,16 +24,17 @@ export default function SoftmaxVisualizer({
 
   return (
     <div style={{
-      padding: "20px",
-      background: "#1a1a1a",
-      borderRadius: "12px",
-      border: "1px solid rgba(255,255,255,0.05)",
-      color: "#fff",
-      fontFamily: "Inter, sans-serif",
-      marginBottom: "1.5rem"
+      padding: "1.75rem",
+      background: "rgba(17, 24, 39, 0.4)",
+      borderRadius: "16px",
+      border: "1px solid rgba(255,255,255,0.07)",
+      backdropFilter: "blur(12px)",
+      color: "#f3f4f6",
+      marginBottom: "2rem",
+      boxShadow: "0 10px 30px rgba(0,0,0,0.25)"
     }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "15px", flexWrap: "wrap", gap: "10px" }}>
-        <h4 style={{ margin: 0, color: "var(--accent-color, #00f0ff)", fontSize: "1.1rem", fontWeight: "600" }}>
+        <h4 style={{ margin: 0, color: "var(--accent-color)", fontSize: "1.1rem", fontWeight: "600" }}>
           📊 Interactive Softmax & Temperature Visualizer
         </h4>
         
