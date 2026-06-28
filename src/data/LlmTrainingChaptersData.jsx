@@ -212,7 +212,7 @@ const CodeBlock = ({ language, children }) => {
   );
 };
 
-export const llmChaptersData = [
+export const llmTrainingChaptersData = [
   {
     title: "Chapter 0 : Index",
     topics: [
@@ -300,12 +300,13 @@ export const llmChaptersData = [
               </div>
               <div style={{ background: "rgba(255, 255, 255, 0.03)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "12px", padding: "1.25rem" }}>
                 <div style={{ marginBottom: "0.75rem", borderBottom: "1px solid rgba(255, 255, 255, 0.06)", paddingBottom: "0.5rem" }}>
-                  <TopicLink targetTopic="Chapter 8.1 - LM Head Projection & Logits Calculation (&quot;Delhi&quot;)" isChapterHeader={true}>Chapter 8: Next Word Generation</TopicLink>
+                  <TopicLink targetTopic="Chapter 8.1 - Sequence Logits & Parallel Token Evaluation" isChapterHeader={true}>Chapter 8: LLM Training Pipeline</TopicLink>
                 </div>
                 <ul style={{ paddingLeft: "1.25rem", margin: 0, lineHeight: "1.8", listStyleType: "circle", color: "var(--text-secondary)" }}>
-                  <li><TopicLink targetTopic="Chapter 8.1 - LM Head Projection & Logits Calculation (&quot;Delhi&quot;)">8.1 LM Head Projection & Logits</TopicLink></li>
-                  <li><TopicLink targetTopic="Chapter 8.2 - Softmax Probabilities & Sampling Strategies (Temperature, Top-K, Top-P)">8.2 Sampling (Temperature, Top-K, Top-P)</TopicLink></li>
-                  <li><TopicLink targetTopic="Chapter 8.3 - Autoregressive Generation Loop & Decoding">8.3 Autoregressive Generation Loop</TopicLink></li>
+                  <li><TopicLink targetTopic="Chapter 8.1 - Sequence Logits & Parallel Token Evaluation">8.1 Sequence Logits & Parallel Evaluation</TopicLink></li>
+                  <li><TopicLink targetTopic="Chapter 8.2 - Target Shift & Cross-Entropy Loss Calculation">8.2 Cross-Entropy Loss Calculation</TopicLink></li>
+                  <li><TopicLink targetTopic="Chapter 8.3 - Layer-by-Layer Matrix Gradient Backpropagation">8.3 Layer-by-Layer Matrix Gradient Backprop</TopicLink></li>
+                  <li><TopicLink targetTopic="Chapter 8.4 - Optimizer Mechanics, Mixed Precision & Distributed Training (FSDP / ZeRO)">8.4 AdamW, Mixed Precision & FSDP</TopicLink></li>
                 </ul>
               </div>
               <div style={{ background: "rgba(255, 255, 255, 0.03)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "12px", padding: "1.25rem" }}>
@@ -318,6 +319,16 @@ export const llmChaptersData = [
                   <li><TopicLink targetTopic="Chapter 9.3 - Positional Encoding Variants (Absolute vs. RoPE vs. ALiBi)">9.3 Positional Encodings (RoPE & ALiBi)</TopicLink></li>
                   <li><TopicLink targetTopic="Chapter 9.4 - Attention Variants (MHA vs. MQA vs. GQA & FlashAttention)">9.4 Attention Variants (GQA & FlashAttention)</TopicLink></li>
                   <li><TopicLink targetTopic="Chapter 9.5 - Scaling & Efficiency (Mixture of Experts - MoE & KV Caching)">9.5 Scaling & Speedups (MoE & KV Caching)</TopicLink></li>
+                </ul>
+              </div>
+              <div style={{ background: "rgba(255, 255, 255, 0.03)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "12px", padding: "1.25rem" }}>
+                <div style={{ marginBottom: "0.75rem", borderBottom: "1px solid rgba(255, 255, 255, 0.06)", paddingBottom: "0.5rem" }}>
+                  <TopicLink targetTopic="Chapter 10.1 - Supervised Fine-Tuning (SFT / Instruction Tuning)" isChapterHeader={true}>Chapter 10: Post-Training Alignment & PEFT</TopicLink>
+                </div>
+                <ul style={{ paddingLeft: "1.25rem", margin: 0, lineHeight: "1.8", listStyleType: "circle", color: "var(--text-secondary)" }}>
+                  <li><TopicLink targetTopic="Chapter 10.1 - Supervised Fine-Tuning (SFT / Instruction Tuning)">10.1 Supervised Fine-Tuning (SFT)</TopicLink></li>
+                  <li><TopicLink targetTopic="Chapter 10.2 - Preference Alignment (RLHF vs. Direct Preference Optimization - DPO)">10.2 Preference Alignment (RLHF & DPO)</TopicLink></li>
+                  <li><TopicLink targetTopic="Chapter 10.3 - Parameter-Efficient Fine-Tuning (PEFT / LoRA - Low-Rank Adaptation)">10.3 PEFT & LoRA Adaptation</TopicLink></li>
                 </ul>
               </div>
             </div>
@@ -476,6 +487,9 @@ print(inputs)`}</CodeBlock>
             <h2 id="input-tokenization" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
               🔤 Tokenizing the Input Prompt
             </h2>
+            <Callout type="info" title="🔄 Dual-Phase Step: Executed in both Inference & Training">
+              Tokenizing raw text into numerical token IDs is a required first step in both <strong>Inference</strong> and <strong>Training</strong>. During inference, we process single prompts; during training, we process massive batches of raw text sequences concurrently.
+            </Callout>
             Let me take our example prompt: <strong>&quot;Tomorrow I am flying to&quot;</strong>.
             When passed into our BPE tokenizer (like GPT-2), each word is mapped to a specific numerical Token ID:
             <CodeBlock language="python">{`prompt = "Tomorrow I am flying to"
@@ -563,6 +577,9 @@ token_ids = [49488, 314, 716, 7348, 284]`}</CodeBlock>
             <h2 id="weight-matrices-qkv" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
               🔑 Weight Matrices (<InlineMath math={String.raw`W_Q, W_K, W_V`} />) & QKV Projections
             </h2>
+            <Callout type="info" title="🔄 Dual-Phase Step: Forward Pass in Inference & Training">
+              Linear Q, K, V matrix projections are performed during forward passes in both <strong>Inference</strong> and <strong>Training</strong>. During inference, these weight matrices remain fixed; during training, they receive backpropagated gradients (<InlineMath math={String.raw`\frac{\partial \mathcal{L}}{\partial W_Q}`} />) to update their values.
+            </Callout>
             <Callout type="info" title="Training vs. Inference Weight Origins">
               Weight matrices are <strong>not random during inference</strong>. They were initialized randomly before training, but during training they were updated millions/billions of times using gradient descent!
               <ul style={{ margin: "0.5rem 0 0 0", paddingLeft: "1.2rem", lineHeight: "1.8" }}>
@@ -979,7 +996,7 @@ Variance = (4.893 + 6.250 + 0.082) / 3 = 3.742`}</CodeBlock>
             <div className="nav-container" style={{ display: "flex", flexWrap: "nowrap", alignItems: "center", justifyContent: "space-between", width: "100%", marginTop: "3rem", borderTop: "1px solid rgba(255, 255, 255, 0.08)", paddingTop: "1.5rem" }}>
               <NavButton direction="prev" targetTopic="Chapter 7.1 - 2nd Residual Connection" />
               <span style={{ color: "var(--text-secondary)" }}>|</span>
-              <NavButton direction="next" targetTopic="Chapter 8.1 - LM Head Projection & Logits Calculation (&quot;Delhi&quot;)" />
+              <NavButton direction="next" targetTopic="Chapter 8.1 - Sequence Logits & Parallel Token Evaluation" />
             </div>
           </>
         ),
@@ -987,107 +1004,138 @@ Variance = (4.893 + 6.250 + 0.082) / 3 = 3.742`}</CodeBlock>
     ],
   },
   {
-    title: "Chapter 8 Next Word Generation & LM Head (Inference)",
+    title: "Chapter 8 LLM Training Pipeline (Loss & Backpropagation)",
     topics: [
       {
-        title: "Chapter 8.1 - LM Head Projection & Logits Calculation (\"Delhi\")",
-        summary: "Multiplying final hidden state by LM Head to calculate vocabulary logits",
+        title: "Chapter 8.1 - Sequence Logits & Parallel Token Evaluation",
+        summary: "Computing parallel prediction logits for all sequence tokens during autoregressive training",
         content: (
           <>
-            <h2 id="lm-head-prediction" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
-              🎯 LM Head Projection & Logits Calculation
+            <h2 id="training-logits" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
+              🏋️‍♂️ Sequence Logits & Parallel Token Training Evaluation
             </h2>
-            Since this is the final layer block in inference, we extract only the <strong>last token's hidden state</strong> (Position 4, corresponding to word <em>"to"</em>):
-            <BlockMath math={String.raw`\mathbf{h}_{\text{last}} = \begin{bmatrix} -0.41 & 1.38 & -0.97 \end{bmatrix}`} />
-            <h3>The LM Head Matrix</h3>
-            The <strong>LM Head Matrix</strong> projects from the Model Dimension (3) to Vocabulary Size (5 sample words in our dictionary):
-            <BlockMath math={String.raw`W_{\text{LM Head}} = \begin{bmatrix} 0.3 & -0.2 & 0.7 & 0.1 & -0.4 \\ -0.5 & 0.8 & -0.1 & 0.6 & 0.2 \\ 0.4 & 0.3 & -0.6 & 0.5 & -0.7 \end{bmatrix}`} />
-            <h3>Multiplying Last Hidden State by LM Head</h3>
-            <BlockMath math={String.raw`\text{Logits} = \mathbf{h}_{\text{last}} \times W_{\text{LM Head}} = \begin{bmatrix} -1.201 & 0.891 & 0.131 & 0.307 & \mathbf{1.078} \end{bmatrix}`} />
-            <MatrixMultiplicationVisualizer
-              matrixA={[[-0.41, 1.38, -0.97]]}
-              matrixB={[[0.3, -0.2, 0.7, 0.1, -0.4], [-0.5, 0.8, -0.1, 0.6, 0.2], [0.4, 0.3, -0.6, 0.5, -0.7]]}
-              nameA="h<sub>last</sub>" nameB="W<sub>LM</sub>" nameRes="Logits"
-            />
-            <table style={{ width: "100%", borderCollapse: "collapse", marginTop: "1.5rem", marginBottom: "1.5rem" }}>
-              <thead>
-                <tr style={{ borderBottom: "2px solid rgba(255,255,255,0.1)", textAlign: "left" }}>
-                  <th style={{ padding: "0.75rem", color: "#fff" }}>Index</th>
-                  <th style={{ padding: "0.75rem", color: "#fff" }}>Token ID</th>
-                  <th style={{ padding: "0.75rem", color: "#fff" }}>Vocabulary Word</th>
-                  <th style={{ padding: "0.75rem", color: "#fff" }}>Output Logit Score</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}><td style={{ padding: "0.75rem" }}>0</td><td style={{ padding: "0.75rem" }}>49488</td><td style={{ padding: "0.75rem" }}>&quot;I&quot;</td><td style={{ padding: "0.75rem" }}>-1.201</td></tr>
-                <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}><td style={{ padding: "0.75rem" }}>1</td><td style={{ padding: "0.75rem" }}>314</td><td style={{ padding: "0.75rem" }}>&quot;am&quot;</td><td style={{ padding: "0.75rem" }}>0.891</td></tr>
-                <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}><td style={{ padding: "0.75rem" }}>2</td><td style={{ padding: "0.75rem" }}>716</td><td style={{ padding: "0.75rem" }}>&quot;learning&quot;</td><td style={{ padding: "0.75rem" }}>0.131</td></tr>
-                <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}><td style={{ padding: "0.75rem" }}>3</td><td style={{ padding: "0.75rem" }}>7348</td><td style={{ padding: "0.75rem" }}>&quot;to&quot;</td><td style={{ padding: "0.75rem" }}>0.307</td></tr>
-                <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.05)", background: "rgba(16, 185, 129, 0.1)" }}><td style={{ padding: "0.75rem", fontWeight: 700, color: "#10b981" }}>4</td><td style={{ padding: "0.75rem", fontWeight: 700, color: "#10b981" }}>284</td><td style={{ padding: "0.75rem", fontWeight: 700, color: "#10b981" }}>&quot;Delhi&quot;</td><td style={{ padding: "0.75rem", fontWeight: 700, color: "#10b981" }}>1.078 (MAX)</td></tr>
-              </tbody>
-            </table>
+            <Callout type="warning" title="🏋️ Training-Exclusive Step: Parallel Sequence Loss Evaluation">
+              While inference only calculates logits for the very last token position to pick the next word, <strong>training calculates logits across ALL sequence positions in parallel</strong> to evaluate cross-entropy loss for every token simultaneously!
+            </Callout>
+            In inference (Chapter 8), we only extracted the last token vector to generate a single new word. During <strong>training</strong>, however, we train the model on <em>every single token position simultaneously</em> in parallel, thanks to causal masking!
+            <br /><br />
+            We multiply the entire final hidden state matrix <InlineMath math={String.raw`\mathbf{H}_{\text{final}}`} /> (<InlineMath math={String.raw`5 \times 3`} />) by the LM Head Matrix <InlineMath math={String.raw`W_{\text{LM Head}}`} /> (<InlineMath math={String.raw`3 \times 5`} />) to obtain prediction logits for all 5 sequence positions:
+            <BlockMath math={String.raw`\text{Logits}_{\text{seq}} = \mathbf{H}_{\text{final}} \times W_{\text{LM Head}} = \begin{bmatrix} 0.81 & -0.42 & 0.15 & 0.94 & -0.31 \\ -0.25 & 1.12 & -0.80 & 0.45 & 0.10 \\ 0.14 & 0.38 & 1.25 & -0.60 & 0.22 \\ -0.90 & 0.41 & 0.05 & 1.18 & -0.12 \\ -1.201 & 0.891 & 0.131 & 0.307 & \mathbf{1.078} \end{bmatrix}_{(5 \times 5)}`} />
+
+            <Callout type="info" title="Parallel Autoregressive Supervision">
+              Each row <InlineMath math={String.raw`i`} /> in this matrix represents the model&apos;s unnormalized logit predictions for what token should come immediately after position <InlineMath math={String.raw`i`} />!
+            </Callout>
+
             <div className="nav-container" style={{ display: "flex", flexWrap: "nowrap", alignItems: "center", justifyContent: "space-between", width: "100%", marginTop: "3rem", borderTop: "1px solid rgba(255, 255, 255, 0.08)", paddingTop: "1.5rem" }}>
               <NavButton direction="prev" targetTopic="Chapter 7.2 - 2nd Layer Normalization" />
               <span style={{ color: "var(--text-secondary)" }}>|</span>
-              <NavButton direction="next" targetTopic="Chapter 8.2 - Softmax Probabilities & Sampling Strategies (Temperature, Top-K, Top-P)" />
+              <NavButton direction="next" targetTopic="Chapter 8.2 - Target Shift & Cross-Entropy Loss Calculation" />
             </div>
           </>
         ),
       },
       {
-        title: "Chapter 8.2 - Softmax Probabilities & Sampling Strategies (Temperature, Top-K, Top-P)",
-        summary: "Converting logits to probabilities and controlling randomness via Temperature, Top-K, and Top-P sampling",
+        title: "Chapter 8.2 - Target Shift & Cross-Entropy Loss Calculation",
+        summary: "Pairing shifted inputs with ground truth targets and computing Cross-Entropy Loss",
         content: (
           <>
-            <h2 id="sampling-strategies" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
-              🎲 Softmax Probabilities & Sampling Strategies
+            <h2 id="cross-entropy-loss" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
+              📉 Target Shifting & Cross-Entropy Loss Calculation
             </h2>
-            Raw logits are converted into a probability distribution using the <strong>Softmax</strong> function. However, in text generation, picking the maximum probability token every time (Greedy Search) can cause repetitive, robotic text!
+            To train an autoregressive model, target labels are created by shifting the input sequence right by 1 position:
+            <CodeBlock language="text">{`Input Tokens (X) :  ["Tomorrow", "I",    "am",      "flying", "to"]
+Target Tokens (Y):  ["I",        "am",   "flying",  "to",     "Delhi"]`}</CodeBlock>
+
+            <h3 style={{ color: "#fff", fontSize: "1.2rem", fontWeight: 600, marginTop: "2rem", marginBottom: "0.75rem" }}>
+              The Cross-Entropy Loss Formula
+            </h3>
+            For each token position <InlineMath math={String.raw`i`} />, we apply Softmax to turn logits into predicted probabilities <InlineMath math={String.raw`P(y_i \mid x_{<i})`} />, and compute the Negative Log-Likelihood (NLL):
+            <BlockMath math={String.raw`\mathcal{L} = -\frac{1}{N} \sum_{i=1}^N \log P(y_i \mid x_{<i})`} />
+
+            <Callout type="example" title="Sample Loss Computation Across Batch">
+              <CodeBlock language="text">{`Position 0 ("Tomorrow" ➔ "I")      : P("I")      = 0.35 ➔ Loss = -log(0.35) = 1.05
+Position 1 ("I" ➔ "am")          : P("am")     = 0.48 ➔ Loss = -log(0.48) = 0.73
+Position 2 ("am" ➔ "flying")     : P("flying") = 0.52 ➔ Loss = -log(0.52) = 0.65
+Position 3 ("flying" ➔ "to")     : P("to")     = 0.41 ➔ Loss = -log(0.41) = 0.89
+Position 4 ("to" ➔ "Delhi")      : P("Delhi")  = 0.38 ➔ Loss = -log(0.38) = 0.97
+
+Average Batch Cross-Entropy Loss L = (1.05 + 0.73 + 0.65 + 0.89 + 0.97) / 5 = 0.858`}</CodeBlock>
+            </Callout>
+
+            <div className="nav-container" style={{ display: "flex", flexWrap: "nowrap", alignItems: "center", justifyContent: "space-between", width: "100%", marginTop: "3rem", borderTop: "1px solid rgba(255, 255, 255, 0.08)", paddingTop: "1.5rem" }}>
+              <NavButton direction="prev" targetTopic="Chapter 8.1 - Sequence Logits & Parallel Token Evaluation" />
+              <span style={{ color: "var(--text-secondary)" }}>|</span>
+              <NavButton direction="next" targetTopic="Chapter 8.3 - Backpropagation & AdamW Optimizer Updates" />
+            </div>
+          </>
+        ),
+      },
+      {
+        title: "Chapter 8.3 - Layer-by-Layer Matrix Gradient Backpropagation",
+        summary: "Detailed matrix gradient derivations for every weight parameter layer during backward pass",
+        content: (
+          <>
+            <h2 id="matrix-backpropagation" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
+              🔄 Layer-by-Layer Matrix Gradient Backpropagation
+            </h2>
+            <Callout type="warning" title="🏋️ Training-Exclusive Step: Backward Pass & Gradient Calculation">
+              Automatic differentiation backpropagation does NOT occur during inference. It is strictly executed during <strong>Training</strong> to compute gradients (<InlineMath math={String.raw`\frac{\partial \mathcal{L}}{\partial W}`} />) for updating weight matrices!
+            </Callout>
+            Once the scalar loss <InlineMath math={String.raw`\mathcal{L}`} /> is calculated, automatic differentiation constructs the backward computational graph to compute gradients wrt <strong>every weight matrix</strong>.
             <br /><br />
-            <strong style={{ color: "#fff", fontSize: "1.1rem" }}>1. Temperature Scaling (<InlineMath math={String.raw`T`} />)</strong><br />
-            Logits are divided by temperature <InlineMath math={String.raw`T`} /> before Softmax:
-            <BlockMath math={String.raw`P(y_i) = \frac{e^{z_i / T}}{\sum_j e^{z_j / T}}`} />
+            <strong style={{ color: "#fff", fontSize: "1.1rem" }}>The Matrix Calculus Golden Rules</strong><br />
+            For any linear layer output <InlineMath math={String.raw`Y = X W + b`} /> receiving incoming gradient tensor <InlineMath math={String.raw`\delta = \frac{\partial \mathcal{L}}{\partial Y}`} />:
+            <BlockMath math={String.raw`\frac{\partial \mathcal{L}}{\partial W} = X^T \cdot \delta, \quad \frac{\partial \mathcal{L}}{\partial X} = \delta \cdot W^T, \quad \frac{\partial \mathcal{L}}{\partial b} = \sum_{\text{rows}} \delta`} />
+
+            <h3 style={{ color: "#fff", fontSize: "1.2rem", fontWeight: 600, marginTop: "2rem", marginBottom: "0.75rem" }}>
+              Step-by-Step Backward Flow Through Layers
+            </h3>
             <ul style={{ paddingLeft: "1.5rem", lineHeight: "1.8", color: "var(--text-secondary)" }}>
-              <li><strong style={{ color: "#fff" }}>Low Temperature (<InlineMath math={String.raw`T \to 0`} />):</strong> Sharpen probabilities towards deterministic, greedy selection.</li>
-              <li><strong style={{ color: "#fff" }}>High Temperature (<InlineMath math={String.raw`T > 1`} />):</strong> Flattens probabilities for creative, varied generation.</li>
+              <li><strong style={{ color: "#fff" }}>1. LM Head Matrix Gradient:</strong> <InlineMath math={String.raw`\frac{\partial \mathcal{L}}{\partial W_{\text{LM Head}}} = \mathbf{H}_{\text{final}}^T \cdot (\text{Probabilities} - \text{OneHot}(Y))`} /></li>
+              <li><strong style={{ color: "#fff" }}>2. LayerNorm 2 Gradients:</strong> Differentiating through RMSNorm/LayerNorm updates scale parameter <InlineMath math={String.raw`\gamma_2`} /> and shifts <InlineMath math={String.raw`\beta_2`} />.</li>
+              <li><strong style={{ color: "#fff" }}>3. Feed-Forward Network (FFN) Gradients:</strong>
+                <BlockMath math={String.raw`\frac{\partial \mathcal{L}}{\partial W_2} = \mathbf{H}_{\text{GELU}}^T \cdot \delta_{\text{FFN2}}, \quad \delta_{\text{pre-act}} = (\delta_{\text{FFN2}} W_2^T) \odot \text{GELU}'(\mathbf{H}_{\text{pre-act}})`} />
+                <BlockMath math={String.raw`\frac{\partial \mathcal{L}}{\partial W_1} = \mathbf{X}_{\text{LN1}}^T \cdot \delta_{\text{pre-act}}`} />
+              </li>
+              <li><strong style={{ color: "#fff" }}>4. Residual Connection Gradient Split:</strong> At skip connections (<InlineMath math={String.raw`Y = X + F(X)`} strokeWidth={1.5} />), gradients fork equally: <InlineMath math={String.raw`\delta_{\text{in}} = \delta_{\text{out}}`} />.</li>
+              <li><strong style={{ color: "#fff" }}>5. Attention Weight Gradients (<InlineMath math={String.raw`W_O, W_Q, W_K, W_V`} />):</strong> Gradients pass through Output Projection <InlineMath math={String.raw`W_O`} />, un-split into attention heads, flow through Softmax derivatives (<InlineMath math={String.raw`\text{diag}(s) - s s^T`} />), and compute:
+                <BlockMath math={String.raw`\frac{\partial \mathcal{L}}{\partial W_Q} = X^T \delta_Q, \quad \frac{\partial \mathcal{L}}{\partial W_K} = X^T \delta_K, \quad \frac{\partial \mathcal{L}}{\partial W_V} = X^T \delta_V`} />
+              </li>
+              <li><strong style={{ color: "#fff" }}>6. Embedding Matrix Gradients (<InlineMath math={String.raw`W_E, W_P`} />):</strong> Incoming input gradients <InlineMath math={String.raw`\frac{\partial \mathcal{L}}{\partial \mathbf{X}_{\text{input}}}`} /> are accumulated into rows of the token lookup table <InlineMath math={String.raw`W_E`} /> and positional table <InlineMath math={String.raw`W_P`} />.</li>
             </ul>
 
-            <strong style={{ color: "#fff", fontSize: "1.1rem", marginTop: "1.5rem", display: "block" }}>2. Top-K Sampling</strong><br />
-            Truncates the vocabulary to only the top <InlineMath math={String.raw`K`} /> highest probability candidate tokens (e.g., <InlineMath math={String.raw`K = 50`} />), zeroing out unlikely noise tokens before sampling.
-
-            <strong style={{ color: "#fff", fontSize: "1.1rem", marginTop: "1.5rem", display: "block" }}>3. Top-P (Nucleus) Sampling</strong><br />
-            Dynamically selects the smallest set of top tokens whose cumulative probability exceeds <InlineMath math={String.raw`P`} /> (e.g., <InlineMath math={String.raw`P = 0.90`} />).
-
             <div className="nav-container" style={{ display: "flex", flexWrap: "nowrap", alignItems: "center", justifyContent: "space-between", width: "100%", marginTop: "3rem", borderTop: "1px solid rgba(255, 255, 255, 0.08)", paddingTop: "1.5rem" }}>
-              <NavButton direction="prev" targetTopic="Chapter 8.1 - LM Head Projection & Logits Calculation (&quot;Delhi&quot;)" />
+              <NavButton direction="prev" targetTopic="Chapter 8.2 - Target Shift & Cross-Entropy Loss Calculation" />
               <span style={{ color: "var(--text-secondary)" }}>|</span>
-              <NavButton direction="next" targetTopic="Chapter 8.3 - Autoregressive Generation Loop & Decoding" />
+              <NavButton direction="next" targetTopic="Chapter 8.4 - Optimizer Mechanics, Mixed Precision & Distributed Training (FSDP / ZeRO)" />
             </div>
           </>
         ),
       },
       {
-        title: "Chapter 8.3 - Autoregressive Generation Loop & Decoding",
-        summary: "Appending generated tokens back to the prompt and looping autoregressively until completion",
+        title: "Chapter 8.4 - Optimizer Mechanics, Mixed Precision & Distributed Training (FSDP / ZeRO)",
+        summary: "Understanding AdamW momentum, learning rate schedules, mixed precision FP16/BF16, and FSDP GPU sharding",
         content: (
           <>
-            <h2 id="autoregressive-loop" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
-              🔁 Autoregressive Next-Token Generation Loop
+            <h2 id="optimizer-distributed" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
+              ⚙️ Optimizer Mechanics, Mixed Precision & Distributed GPU Training
             </h2>
-            Large Language Models generate text one token at a time in an <strong>autoregressive loop</strong>. Once token ID `284` (<strong>"Delhi"</strong>) is sampled, it is appended to our input prompt:
-            <CodeBlock language="text">{`Step 1 Input : "Tomorrow I am flying to" ➔ Model Predicts: "Delhi"
-Step 2 Input : "Tomorrow I am flying to Delhi" ➔ Model Predicts: "next"`}</CodeBlock>
+            <strong style={{ color: "#fff", fontSize: "1.1rem" }}>1. AdamW Update Equations & Hyperparameters</strong><br />
+            AdamW tracks exponentially decaying moving averages of past gradients (<InlineMath math={String.raw`m_t`} />) and squared gradients (<InlineMath math={String.raw`v_t`} />) with standard hyperparameters <InlineMath math={String.raw`\beta_1 = 0.9, \beta_2 = 0.95, \epsilon = 10^{-8}`} />:
+            <BlockMath math={String.raw`m_t = \beta_1 m_{t-1} + (1-\beta_1) g_t, \quad v_t = \beta_2 v_{t-1} + (1-\beta_2) g_t^2`} />
+            <BlockMath math={String.raw`W_{t+1} = W_t - \eta_t \left( \frac{m_t / (1-\beta_1^t)}{\sqrt{v_t / (1-\beta_2^t)} + \epsilon} + \lambda W_t \right)`} />
 
-            <Callout type="success" title="End-to-End Inference Completed!">
-              The model repeats this forward pass cycle, appending each newly generated token to the context window until an End-of-Sequence (<code>&lt;EOS&gt;</code>) token is generated!
-            </Callout>
+            <strong style={{ color: "#fff", fontSize: "1.1rem", marginTop: "1.5rem", display: "block" }}>2. Learning Rate Schedules & Gradient Clipping</strong><br />
+            To stabilize early training, LLMs use <strong>Linear Warmup</strong> for the first ~2,000 steps followed by <strong>Cosine Learning Rate Decay</strong> down to 10% of maximum <InlineMath math={String.raw`\eta`} strokeWidth={1.5} />. Gradients are clipped if their global L2 norm exceeds 1.0 (<InlineMath math={String.raw`\|g\| \le 1.0`} />) to prevent exploding gradients.
 
-            <Callout type="tip" title="💡 Production Speedup: KV Caching">
-              During step-by-step next-word generation, recomputing attention for previous tokens is inefficient. Production inference servers use <strong>Key-Value (KV) Caching</strong> to store past states. Read how in <TopicLink targetTopic="Chapter 9.5 - Scaling & Efficiency (Mixture of Experts - MoE & KV Caching)">Chapter 9.5 (KV Caching)</TopicLink>.
-            </Callout>
+            <strong style={{ color: "#fff", fontSize: "1.1rem", marginTop: "1.5rem", display: "block" }}>3. Mixed Precision (BF16 & FP8)</strong><br />
+            Training in pure FP32 (32-bit float) consumes massive memory. Modern clusters use <strong>Bfloat16 (BF16)</strong> or FP8 for matrix multiplications while maintaining FP32 master weights for AdamW accumulator precision.
+
+            <strong style={{ color: "#fff", fontSize: "1.1rem", marginTop: "1.5rem", display: "block" }}>4. Distributed Training Sharding (FSDP & ZeRO-3)</strong><br />
+            When a model (e.g., 70 Billion parameters) exceeds a single GPU&apos;s memory, <strong>Fully Sharded Data Parallel (FSDP / DeepSpeed ZeRO-3)</strong> shards model weights, gradients, and optimizer states evenly across hundreds of GPUs, gathering parameters just-in-time during forward and backward passes!
 
             <div className="nav-container" style={{ display: "flex", flexWrap: "nowrap", alignItems: "center", justifyContent: "space-between", width: "100%", marginTop: "3rem", borderTop: "1px solid rgba(255, 255, 255, 0.08)", paddingTop: "1.5rem" }}>
-              <NavButton direction="prev" targetTopic="Chapter 8.2 - Softmax Probabilities & Sampling Strategies (Temperature, Top-K, Top-P)" />
+              <NavButton direction="prev" targetTopic="Chapter 8.3 - Layer-by-Layer Matrix Gradient Backpropagation" />
               <span style={{ color: "var(--text-secondary)" }}>|</span>
               <NavButton direction="next" targetTopic="Chapter 9.1 - Activation Functions (ReLU vs. GELU vs. SwiGLU)" />
             </div>
@@ -1231,6 +1279,81 @@ Step 2 Input : "Tomorrow I am flying to Delhi" ➔ Model Predicts: "next"`}</Cod
 
             <div className="nav-container" style={{ display: "flex", flexWrap: "nowrap", alignItems: "center", justifyContent: "space-between", width: "100%", marginTop: "3rem", borderTop: "1px solid rgba(255, 255, 255, 0.08)", paddingTop: "1.5rem" }}>
               <NavButton direction="prev" targetTopic="Chapter 9.4 - Attention Variants (MHA vs. MQA vs. GQA & FlashAttention)" />
+              <span style={{ color: "var(--text-secondary)" }}>|</span>
+              <NavButton direction="next" targetTopic="Chapter 10.1 - Supervised Fine-Tuning (SFT / Instruction Tuning)" />
+            </div>
+          </>
+        ),
+      },
+    ],
+  },
+  {
+    title: "Chapter 10 Post-Training Alignment & PEFT",
+    topics: [
+      {
+        title: "Chapter 10.1 - Supervised Fine-Tuning (SFT / Instruction Tuning)",
+        summary: "Transforming base next-token predictors into helpful conversational assistants via instruction datasets",
+        content: (
+          <>
+            <h2 id="sft-instruction" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
+              🎯 Chapter 10.1: Supervised Fine-Tuning (SFT / Instruction Tuning)
+            </h2>
+            Pre-trained LLMs are raw base models trained strictly to autocomplete internet text. <strong>Supervised Fine-Tuning (SFT)</strong> trains the base model on curated datasets of instruction-response pairs formatted with special chat templates (e.g., <code>&lt;|im_start|&gt;user...&lt;|im_start|&gt;assistant</code>).
+            <br /><br />
+            During SFT training, Cross-Entropy Loss is calculated <strong>only on the assistant response tokens</strong>, masking out prompt tokens so the model learns to follow instructions without wasting capacity predicting user queries.
+
+            <div className="nav-container" style={{ display: "flex", flexWrap: "nowrap", alignItems: "center", justifyContent: "space-between", width: "100%", marginTop: "3rem", borderTop: "1px solid rgba(255, 255, 255, 0.08)", paddingTop: "1.5rem" }}>
+              <NavButton direction="prev" targetTopic="Chapter 9.5 - Scaling & Efficiency (Mixture of Experts - MoE & KV Caching)" />
+              <span style={{ color: "var(--text-secondary)" }}>|</span>
+              <NavButton direction="next" targetTopic="Chapter 10.2 - Preference Alignment (RLHF vs. Direct Preference Optimization - DPO)" />
+            </div>
+          </>
+        ),
+      },
+      {
+        title: "Chapter 10.2 - Preference Alignment (RLHF vs. Direct Preference Optimization - DPO)",
+        summary: "Aligning models with human values using Reward Modeling, PPO, and Direct Preference Optimization (DPO)",
+        content: (
+          <>
+            <h2 id="preference-alignment" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
+              🤝 Chapter 10.2: Preference Alignment (RLHF vs. DPO)
+            </h2>
+            SFT alone can produce harmful or hallucinated outputs. Preference alignment steers the model to be helpful, honest, and harmless.
+            <br /><br />
+            <strong style={{ color: "#fff", fontSize: "1.1rem" }}>1. Reinforcement Learning from Human Feedback (RLHF with PPO)</strong><br />
+            Train a separate <strong>Reward Model</strong> on human preference pairs (<InlineMath math={String.raw`y_w`} /> chosen vs. <InlineMath math={String.raw`y_l`} /> rejected). Then optimize the LLM using Proximal Policy Optimization (PPO) with a KL-divergence penalty to prevent model drift.
+
+            <strong style={{ color: "#fff", fontSize: "1.1rem", marginTop: "1.5rem", display: "block" }}>2. Direct Preference Optimization (DPO)</strong><br />
+            Used in <strong>Llama 3 & Zephyr</strong>. DPO mathematically eliminates the need for a separate Reward Model or complex RL PPO training by deriving an exact closed-form loss directly on preference pairs:
+            <BlockMath math={String.raw`\mathcal{L}_{\text{DPO}}(\theta) = -\mathbb{E}_{(x, y_w, y_l)} \left[ \log \sigma \left( \beta \log \frac{\pi_\theta(y_w \mid x)}{\pi_{\text{ref}}(y_w \mid x)} - \beta \log \frac{\pi_\theta(y_l \mid x)}{\pi_{\text{ref}}(y_l \mid x)} \right) \right]`} />
+
+            <div className="nav-container" style={{ display: "flex", flexWrap: "nowrap", alignItems: "center", justifyContent: "space-between", width: "100%", marginTop: "3rem", borderTop: "1px solid rgba(255, 255, 255, 0.08)", paddingTop: "1.5rem" }}>
+              <NavButton direction="prev" targetTopic="Chapter 10.1 - Supervised Fine-Tuning (SFT / Instruction Tuning)" />
+              <span style={{ color: "var(--text-secondary)" }}>|</span>
+              <NavButton direction="next" targetTopic="Chapter 10.3 - Parameter-Efficient Fine-Tuning (PEFT / LoRA - Low-Rank Adaptation)" />
+            </div>
+          </>
+        ),
+      },
+      {
+        title: "Chapter 10.3 - Parameter-Efficient Fine-Tuning (PEFT / LoRA - Low-Rank Adaptation)",
+        summary: "Fine-tuning multi-billion parameter LLMs on consumer hardware by training low-rank matrix decompositions",
+        content: (
+          <>
+            <h2 id="lora-peft" style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 600, marginTop: "1rem", marginBottom: "1rem" }}>
+              🎨 Chapter 10.3: Parameter-Efficient Fine-Tuning (LoRA)
+            </h2>
+            Full fine-tuning of a 70B parameter model requires updating and storing optimizer states for all 70B parameters (~560 GB GPU VRAM).
+            <br /><br />
+            <strong style={{ color: "#fff", fontSize: "1.1rem" }}>LoRA Matrix Decomposition</strong><br />
+            LoRA freezes pre-trained weight matrix <InlineMath math={String.raw`W_0 \in \mathbb{R}^{d \times k}`} /> and injects trainable rank decomposition matrices <InlineMath math={String.raw`B \in \mathbb{R}^{d \times r}`} /> and <InlineMath math={String.raw`A \in \mathbb{R}^{r \times k}`} /> where rank <InlineMath math={String.raw`r \ll \min(d, k)`} /> (e.g., <InlineMath math={String.raw`r = 8`} />):
+            <BlockMath math={String.raw`h = W_0 x + \Delta W x = W_0 x + \frac{\alpha}{r} (B A) x`} />
+            <Callout type="success" title="99.9% Parameter Reduction">
+              By training only small low-rank matrices <InlineMath math={String.raw`A`} /> and <InlineMath math={String.raw`B`} />, LoRA reduces trainable parameters by over 99.9% and allows fine-tuning giant LLMs on a single GPU!
+            </Callout>
+
+            <div className="nav-container" style={{ display: "flex", flexWrap: "nowrap", alignItems: "center", justifyContent: "space-between", width: "100%", marginTop: "3rem", borderTop: "1px solid rgba(255, 255, 255, 0.08)", paddingTop: "1.5rem" }}>
+              <NavButton direction="prev" targetTopic="Chapter 10.2 - Preference Alignment (RLHF vs. Direct Preference Optimization - DPO)" />
               <span style={{ color: "var(--text-secondary)" }}>|</span>
               <NavButton direction="next" targetTopic="None" />
             </div>

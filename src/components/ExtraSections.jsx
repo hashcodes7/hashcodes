@@ -16,9 +16,13 @@ import {
   Smartphone,
   Server,
   Database,
+  Volume2,
+  VolumeX,
 } from "lucide-react";
 import { AlgorithmDetailPane } from "./AlgorithmDetailPane";
 import { llmChaptersData } from "../data/LlmChaptersData";
+import { llmTrainingChaptersData } from "../data/LlmTrainingChaptersData";
+import { ragChaptersData } from "../data/RagChaptersData";
 
 const ARTICLES_DATA = [
   {
@@ -3514,14 +3518,14 @@ const LEARN_CATEGORIES = [
         topics: llmChaptersData,
       },
       {
+        id: "llm-training-from-scratch",
+        title: "LLM From Scratch (Training - Next Word Generation)",
+        topics: llmTrainingChaptersData,
+      },
+      {
         id: "rag",
         title: "RAG Architecture",
-        topics: [
-          {
-            title: "Retrieval Mechanisms",
-            content: "Detailed breakdown of dense vs sparse retrieval.",
-          },
-        ],
+        topics: ragChaptersData,
       },
       {
         id: "recsys",
@@ -3842,6 +3846,7 @@ const LEARN_CATEGORIES = [
 
 export const LearnPage = () => {
   const [activeCategory, setActiveCategory] = useState(null);
+  const [activeSubCategoryId, setActiveSubCategoryId] = useState(null);
   const [expandedGroups, setExpandedGroups] = useState({});
   const [activeTopic, setActiveTopic] = useState(null);
   const [hoveredCategoryIdx, setHoveredCategoryIdx] = useState(null);
@@ -3850,7 +3855,46 @@ export const LearnPage = () => {
   const [pageSections, setPageSections] = useState([]);
   const [activeSection, setActiveSection] = useState("");
   const [scrollPercent, setScrollPercent] = useState(0);
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const readerRef = useRef(null);
+
+  useEffect(() => {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+    setIsSpeaking(false);
+  }, [activeTopic]);
+
+  const handleToggleSpeech = () => {
+    if (!('speechSynthesis' in window)) {
+      alert("Speech Synthesis is not supported in your browser.");
+      return;
+    }
+
+    if (isSpeaking) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+    } else {
+      const contentEl = document.querySelector('.custom-chapter-content');
+      if (!contentEl) return;
+      
+      const textToRead = activeTopic.title + ". " + (contentEl.innerText || contentEl.textContent || "");
+      const cleanText = textToRead.replace(/\s+/g, ' ').trim();
+
+      if (!cleanText) return;
+
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+
+      utterance.onend = () => setIsSpeaking(false);
+      utterance.onerror = () => setIsSpeaking(false);
+
+      window.speechSynthesis.speak(utterance);
+      setIsSpeaking(true);
+    }
+  };
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 1024);
@@ -3874,6 +3918,7 @@ export const LearnPage = () => {
             let foundTopic = null;
             for (const sub of cat.subCategories) {
               if (sub.id === subId || sub.routeId === subId) {
+                setActiveSubCategoryId(sub.id);
                 const items =
                   sub.items ||
                   (sub.groups
@@ -3896,6 +3941,8 @@ export const LearnPage = () => {
               }
             }
             if (foundTopic) setActiveTopic(foundTopic);
+          } else if (cat.subCategories && cat.subCategories.length > 0) {
+            setActiveSubCategoryId(cat.subCategories[0].id);
           }
         } else {
           // If not a top-level category, check if it's a subcategory of any category
@@ -3906,6 +3953,7 @@ export const LearnPage = () => {
             for (const sub of c.subCategories || []) {
               if (sub.id === catId || sub.routeId === catId) {
                 foundParent = c;
+                setActiveSubCategoryId(sub.id);
                 const items =
                   sub.items ||
                   (sub.groups
@@ -3987,6 +4035,7 @@ export const LearnPage = () => {
       if (!activeCategory) return;
       let foundTopic = null;
       let foundGroupTitle = null;
+      let foundSubId = null;
       (activeCategory.subCategories || []).forEach(sub => {
         const items = sub.topics || [];
         items.forEach(t => {
@@ -3995,14 +4044,19 @@ export const LearnPage = () => {
               if (subT.title === title) {
                 foundTopic = subT;
                 foundGroupTitle = t.title;
+                foundSubId = sub.id;
               }
             });
           } else {
-            if (t.title === title) foundTopic = t;
+            if (t.title === title) {
+              foundTopic = t;
+              foundSubId = sub.id;
+            }
           }
         });
       });
       if (foundTopic) {
+        if (foundSubId) setActiveSubCategoryId(foundSubId);
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setActiveTopic(foundTopic);
         if (foundGroupTitle) {
@@ -4071,36 +4125,9 @@ export const LearnPage = () => {
   };
 
   if (activeCategory) {
-    let activeSubCategory = activeCategory.subCategories[0];
-    if (activeTopic) {
-      for (const sub of activeCategory.subCategories) {
-        const items =
-          sub.items ||
-          (sub.groups
-            ? sub.groups.map((g) => ({ ...g, isGroup: true }))
-            : sub.topics
-              ? sub.topics.map((t) => ({ ...t, isGroup: false }))
-              : []);
-        let found = false;
-        for (const item of items) {
-          if (item.topics || item.isGroup) {
-            if (item.topics.some((t) => t.title === activeTopic.title)) {
-              found = true;
-              break;
-            }
-          } else {
-            if (item.title === activeTopic.title) {
-              found = true;
-              break;
-            }
-          }
-        }
-        if (found) {
-          activeSubCategory = sub;
-          break;
-        }
-      }
-    }
+    let activeSubCategory =
+      activeCategory.subCategories.find((s) => s.id === activeSubCategoryId) ||
+      activeCategory.subCategories[0];
 
     const sidebarStyle = isMobile
       ? {
@@ -4187,8 +4214,40 @@ export const LearnPage = () => {
               <ChevronLeft size={14} /> Back to Categories
             </button>
           </div>
-          <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>
-            {activeSubCategory?.title}
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            {activeCategory.subCategories?.map((sub) => {
+              const isSelected = activeSubCategory.id === sub.id;
+              return (
+                <button
+                  key={sub.id}
+                  onClick={() => {
+                    setActiveSubCategoryId(sub.id);
+                    const items = sub.topics || [];
+                    if (items.length > 0) {
+                      const firstT = items[0].topics ? items[0].topics[0] : items[0];
+                      if (firstT) setActiveTopic(firstT);
+                    }
+                  }}
+                  style={{
+                    padding: "0.35rem 0.75rem",
+                    borderRadius: "6px",
+                    border: isSelected
+                      ? "1px solid var(--accent-color)"
+                      : "1px solid rgba(255,255,255,0.08)",
+                    background: isSelected
+                      ? "rgba(0, 240, 255, 0.1)"
+                      : "transparent",
+                    color: isSelected ? "var(--accent-color)" : "var(--text-secondary)",
+                    fontSize: "0.8rem",
+                    fontWeight: isSelected ? 600 : 400,
+                    cursor: "pointer",
+                    transition: "all 0.2s",
+                  }}
+                >
+                  {sub.title.includes("Training") ? "🎓 Training Course" : sub.title.includes("inference") || sub.title.includes("Inference") ? "⚡ Inference Course" : `📚 ${sub.title}`}
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -4473,6 +4532,30 @@ export const LearnPage = () => {
                       {activeTopic.title}
                     </h1>
                   </div>
+                  <button
+                    onClick={handleToggleSpeech}
+                    title={isSpeaking ? "Stop Reading" : "Read Page Aloud"}
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "0.5rem",
+                      padding: "0.6rem 1.1rem",
+                      borderRadius: "30px",
+                      border: isSpeaking ? "1px solid rgba(239, 68, 68, 0.5)" : "1px solid rgba(0, 240, 255, 0.3)",
+                      background: isSpeaking ? "rgba(239, 68, 68, 0.15)" : "rgba(0, 240, 255, 0.1)",
+                      color: isSpeaking ? "#ef4444" : "var(--accent-color)",
+                      fontSize: "0.85rem",
+                      fontWeight: 600,
+                      cursor: "pointer",
+                      transition: "all 0.25s ease",
+                      boxShadow: isSpeaking ? "0 0 12px rgba(239, 68, 68, 0.3)" : "0 0 12px rgba(0, 240, 255, 0.15)",
+                      flexShrink: 0,
+                      marginTop: "0.5rem",
+                    }}
+                  >
+                    {isSpeaking ? <VolumeX size={18} /> : <Volume2 size={18} />}
+                    <span>{isSpeaking ? "Stop Reading" : "Listen to Page"}</span>
+                  </button>
                 </div>
 
                 <div
