@@ -30798,6 +30798,45 @@ class ScrollManager extends ScrollPane {
       domScrollIndicatorBar: document.getElementById("scroll-indicator__bar"),
       canOvershoot: !1,
     });
+    
+    let isDragging = false;
+    let startY = 0;
+    let startScroll = 0;
+    
+    this.domScrollIndicator.addEventListener("pointerdown", (e) => {
+      isDragging = true;
+      startY = e.clientY;
+      startScroll = this.scrollPixel;
+      this.domScrollIndicator.setPointerCapture(e.pointerId);
+      
+      if (e.target !== this.domScrollIndicatorBar) {
+        const rect = this.domScrollIndicator.getBoundingClientRect();
+        const clickRatio = (e.clientY - rect.top) / rect.height;
+        const targetPixel = clickRatio * this.contentSizePixel;
+        this.scrollToPixel(targetPixel);
+        startScroll = this.scrollPixel;
+      }
+      e.stopPropagation();
+    });
+    
+    this.domScrollIndicator.addEventListener("pointermove", (e) => {
+      if (!isDragging) return;
+      const deltaY = e.clientY - startY;
+      const scrollRatio = deltaY / this.domScrollIndicatorHeight;
+      const targetPixel = startScroll + scrollRatio * this.contentSizePixel;
+      this.scrollToPixel(targetPixel, true);
+      e.stopPropagation();
+    });
+    
+    const onRelease = (e) => {
+      if (isDragging) {
+        isDragging = false;
+        try { this.domScrollIndicator.releasePointerCapture(e.pointerId); } catch(err) {}
+      }
+    };
+    
+    this.domScrollIndicator.addEventListener("pointerup", onRelease);
+    this.domScrollIndicator.addEventListener("pointercancel", onRelease);
   }
   resize(e, t) {
     (super.resize(e, t),
