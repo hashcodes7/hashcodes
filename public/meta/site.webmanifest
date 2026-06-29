@@ -1,0 +1,19 @@
+{
+  "name": "EverSwap",
+  "short_name": "EverSwap",
+  "icons": [
+    {
+      "src": "/meta/favicon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/meta/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#203727",
+  "background_color": "#203727",
+  "display": "standalone"
+}

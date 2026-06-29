@@ -14,6 +14,7 @@ import {
   ConsultingPage,
 } from "./components/ExtraSections";
 import Footer from "./components/Footer";
+import EverSwapAbout from "./components/EverSwapAbout";
 import "./index.css";
 
 function App() {
@@ -75,24 +76,31 @@ function App() {
         return <ConsultingPage />;
       case "#/about":
       default:
-        return (
-          <>
-            <Hero />
-            <AIJourney />
-          </>
-        );
+        return null;
     }
   };
 
   const isInsideLearningChapter =
     currentPath.startsWith("#/learn/") && currentPath.split("/").length >= 3;
 
+  const isAboutPage = currentPath.split("?")[0] === "#/about";
+
   return (
     <>
-      {!isInsideLearningChapter && <ParticlesBackground />}
+      {!isInsideLearningChapter && !isAboutPage && <ParticlesBackground />}
       <Navbar />
-      <main style={{ minHeight: "82vh" }}>{renderActivePage()}</main>
-      <Footer />
+      
+      {/* Persistently mounted 3D iframe for the About page */}
+      <div style={{ display: isAboutPage ? "block" : "none" }}>
+        <EverSwapAbout />
+      </div>
+
+      {!isAboutPage && (
+        <>
+          <main style={{ minHeight: "82vh" }}>{renderActivePage()}</main>
+          <Footer />
+        </>
+      )}
     </>
   );
 }
