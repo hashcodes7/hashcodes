@@ -29713,21 +29713,31 @@ class HomePage extends Page {
   isCanvasVisible = !1;
   transitionRatio = 0;
   preInit() {
-    for (let e of this.sections) e.preInit(this.domContainer);
+    this.sections[0].preInit(this.domContainer);
     ((this.transitionCanvas = document.getElementById("transition-canvas")),
       (this.transitionCtx = this.transitionCanvas.getContext("2d")));
   }
   init() {
-    for (let e of this.sections) e.init();
+    for (let e of this.sections) {
+      if (!e.domContainer) {
+        e.preInit(this.domContainer);
+      }
+      e.init();
+    }
+    properties.loader.start(() => {});
   }
   resize(e, t) {
-    for (let i of this.sections) i.resize(e, t);
+    for (let i of this.sections) {
+      if (i.domContainer) i.resize(e, t);
+    }
     ((this.transitionCanvas.width = e * settings.DPR),
       (this.transitionCanvas.height = t * settings.DPR),
       (this.transitionRatio = -1));
   }
   update(e) {
-    for (let y of this.sections) y.update(e);
+    for (let y of this.sections) {
+      if (y.domContainer) y.update(e);
+    }
     let t =
       postprocessing$1.final.relayersHideRatio > 0 &&
       postprocessing$1.final.relayersHideRatio < 1,
