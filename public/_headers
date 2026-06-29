@@ -1,21 +1,8 @@
-# Aggressive caching for static 3D textures
-/textures/*
-  Cache-Control: public, max-age=31536000, immutable
-/everswap/textures/*
-  Cache-Control: public, max-age=31536000, immutable
-
-# Caching for 3D binary models
 /models/*
   Cache-Control: public, max-age=31536000, immutable
-/everswap/models/*
+/textures/*
   Cache-Control: public, max-age=31536000, immutable
-
-# Caching for compiled Astro bundles
-/_astro/*
-  Cache-Control: public, max-age=31536000, immutable
-
-# Caching for custom fonts
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
-/everswap/fonts/*
+/everswap/*
   Cache-Control: public, max-age=31536000, immutable
