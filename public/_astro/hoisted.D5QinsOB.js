@@ -26333,7 +26333,7 @@ class Scene2 {
   };
   preInit() {
     const e =
-      settings.TEXTURE_PATH + "scene2/" + (browser.isMobile ? "mobile/" : "");
+      settings.TEXTURE_PATH + "scene2/" + "";
     for (let t = 0; t < 6; t++) {
       let i = properties.loader.add(e + "SC_02_P" + (t + 1) + "_TEXTURE.webp", {
         type: "texture",
@@ -26693,7 +26693,7 @@ let Clouds$1 = class {
   };
   preInit() {
     const e =
-      settings.TEXTURE_PATH + "clouds/" + (browser.isMobile ? "mobile/" : "");
+      settings.TEXTURE_PATH + "clouds/" + "";
     ((this.texture0 = properties.loader.add(e + "1.webp", {
       type: "texture",
     }).content),
@@ -27202,7 +27202,7 @@ class Scene1Bird {
   container = new Object3D();
   preInit() {
     const e =
-      settings.TEXTURE_PATH + "scene1/" + (browser.isMobile ? "mobile/" : "");
+      settings.TEXTURE_PATH + "scene1/" + "";
     ((_texture = textureHelper.loadRGBATexture(
       e + "BIRD_TEXTURE_01.webp",
       e + "BIRD_ALPHA.webp",
@@ -27605,7 +27605,7 @@ class Scene1 {
   activeRatio = 0;
   preInit() {
     const e =
-      settings.TEXTURE_PATH + "scene1/" + (browser.isMobile ? "mobile/" : "");
+      settings.TEXTURE_PATH + "scene1/" + "";
     ((this.textureRidge = properties.loader.add(
       e + "SC_01_RIDGE_TEXTURE.webp",
       {
@@ -28880,7 +28880,7 @@ class Clouds {
   INSTANCES_COUNT = browser.isMobile ? 8 : 12;
   preInit() {
     const e =
-      settings.TEXTURE_PATH + "clouds/" + (browser.isMobile ? "mobile/" : "");
+      settings.TEXTURE_PATH + "clouds/" + "";
     ((this.texture0 = properties.loader.add(e + "1.webp", {
       type: "texture",
     }).content),
@@ -29035,7 +29035,7 @@ class Scene3 {
   };
   preInit() {
     const e =
-      settings.TEXTURE_PATH + "scene3/" + (browser.isMobile ? "mobile/" : "");
+      settings.TEXTURE_PATH + "scene3/" + "";
     ((this.texture = properties.loader.add(e + "SC_03_LAKE_TEXTURE.webp", {
       type: "texture",
     }).content),
@@ -30470,7 +30470,7 @@ class HeroMountain {
       onLoad: (t) => (this.geometry = t),
     });
     const e =
-      settings.TEXTURE_PATH + "scene1/" + (browser.isMobile ? "mobile/" : "");
+      settings.TEXTURE_PATH + "scene1/" + "";
     ((this.texture = properties.loader.add(e + "SC_01_MOUNTAIN_TEXTURE.webp", {
       type: "texture",
     }).content),
