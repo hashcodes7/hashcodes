@@ -54,7 +54,7 @@ export default function ProjectsPage() {
             <h3
               style={{
                 fontSize: "1.6rem",
-                color: "#fff",
+                color: "var(--text-primary)",
                 borderBottom: "1px solid rgba(255,255,255,0.06)",
                 paddingBottom: "0.5rem",
                 marginBottom: "1rem",
@@ -93,7 +93,7 @@ export default function ProjectsPage() {
             <h4
               style={{
                 fontSize: "1.25rem",
-                color: "#fff",
+                color: "var(--text-primary)",
                 marginBottom: "1rem",
               }}
             >
@@ -141,7 +141,7 @@ export default function ProjectsPage() {
             <h4
               style={{
                 fontSize: "1.25rem",
-                color: "#fff",
+                color: "var(--text-primary)",
                 marginBottom: "1rem",
               }}
             >
@@ -155,8 +155,8 @@ export default function ProjectsPage() {
                   style={{
                     fontSize: "0.8rem",
                     padding: "0.3rem 0.75rem",
-                    color: "#fff",
-                    borderColor: "rgba(255, 255, 255, 0.08)",
+                    color: "var(--text-primary)",
+                    borderColor: "var(--glass-border)",
                     background: "rgba(255,255,255,0.03)",
                   }}
                 >
@@ -172,7 +172,7 @@ export default function ProjectsPage() {
             <h4
               style={{
                 fontSize: "1.2rem",
-                color: "#fff",
+                color: "var(--text-primary)",
                 marginBottom: "0.75rem",
               }}
             >
@@ -220,7 +220,7 @@ export default function ProjectsPage() {
               <div key={i} style={{ marginBottom: "1.5rem" }}>
                 <h4
                   style={{
-                    color: "#fff",
+                    color: "var(--text-primary)",
                     fontSize: "1.15rem",
                     marginBottom: "0.5rem",
                   }}
@@ -372,7 +372,7 @@ export default function ProjectsPage() {
                 fontSize: "2.5rem",
                 fontWeight: 800,
                 marginBottom: "0.75rem",
-                color: "#fff",
+                color: "var(--text-primary)",
               }}
             >
               Technical Projects Showcase
@@ -443,7 +443,7 @@ export default function ProjectsPage() {
                         fontSize: "1.75rem",
                         fontWeight: 700,
                         margin: "0.25rem 0 0.5rem 0",
-                        color: "#fff",
+                        color: "var(--text-primary)",
                       }}
                     >
                       {project.title}
@@ -610,7 +610,7 @@ export default function ProjectsPage() {
                 fontSize: "2.5rem",
                 fontWeight: 800,
                 margin: "0.5rem 0 0.5rem 0",
-                color: "#fff",
+                color: "var(--text-primary)",
                 textAlign: "left",
               }}
             >

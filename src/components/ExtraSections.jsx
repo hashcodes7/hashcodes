@@ -831,7 +831,7 @@ const ArticleReader = ({ article, onBack, onNavigateToRelated }) => {
             style={{
               fontSize: "2.5rem",
               margin: "0.5rem 0 0.25rem 0",
-              color: "#fff",
+              color: "var(--text-primary)",
               textAlign: "left",
             }}
           >
@@ -875,7 +875,7 @@ const ArticleReader = ({ article, onBack, onNavigateToRelated }) => {
                 style={{
                   fontSize: "1.6rem",
                   marginBottom: "1rem",
-                  color: "#fff",
+                  color: "var(--text-primary)",
                   borderBottom: "1px solid rgba(255,255,255,0.08)",
                   paddingBottom: "0.5rem",
                   display: "flex",
@@ -916,7 +916,7 @@ const ArticleReader = ({ article, onBack, onNavigateToRelated }) => {
               style={{
                 fontSize: "1.6rem",
                 marginBottom: "1rem",
-                color: "#fff",
+                color: "var(--text-primary)",
                 borderBottom: "1px solid rgba(255,255,255,0.08)",
                 paddingBottom: "0.5rem",
                 display: "flex",
@@ -962,7 +962,7 @@ const ArticleReader = ({ article, onBack, onNavigateToRelated }) => {
               style={{
                 fontSize: "1.6rem",
                 marginBottom: "1rem",
-                color: "#fff",
+                color: "var(--text-primary)",
                 borderBottom: "1px solid rgba(255,255,255,0.08)",
                 paddingBottom: "0.5rem",
                 display: "flex",
@@ -1059,7 +1059,7 @@ const ArticleReader = ({ article, onBack, onNavigateToRelated }) => {
                         <span style={{ color: "var(--text-secondary)", fontSize: "0.85rem", fontWeight: "500", marginLeft: "1.5rem" }}>
                           Previous
                         </span>
-                        <span style={{ color: "#fff", fontSize: "1.1rem", fontWeight: "600", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                        <span style={{ color: "var(--text-primary)", fontSize: "1.1rem", fontWeight: "600", display: "flex", alignItems: "center", gap: "0.5rem" }}>
                           <ChevronLeft size={18} /> {prevArticle.title}
                         </span>
                       </button>
@@ -1088,7 +1088,7 @@ const ArticleReader = ({ article, onBack, onNavigateToRelated }) => {
                         <span style={{ color: "var(--text-secondary)", fontSize: "0.85rem", fontWeight: "500", marginRight: "1.5rem" }}>
                           Next
                         </span>
-                        <span style={{ color: "#fff", fontSize: "1.1rem", fontWeight: "600", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                        <span style={{ color: "var(--text-primary)", fontSize: "1.1rem", fontWeight: "600", display: "flex", alignItems: "center", gap: "0.5rem" }}>
                           {nextArticle.title} <ChevronRight size={18} />
                         </span>
                       </button>
@@ -1201,7 +1201,7 @@ const ArticleReader = ({ article, onBack, onNavigateToRelated }) => {
                         padding: "0.3rem 0 0.3rem 0.75rem",
                         fontSize: "0.88rem",
                         lineHeight: "1.4",
-                        color: isActive ? "#fff" : "var(--text-secondary)",
+                        color: isActive ? "var(--text-primary)" : "var(--text-secondary)",
                         fontWeight: isActive ? "700" : "400",
                         borderLeft: "2px solid",
                         borderColor: isActive ? "#06b6d4" : "transparent",
@@ -1210,7 +1210,7 @@ const ArticleReader = ({ article, onBack, onNavigateToRelated }) => {
                         textDecoration: "none",
                       }}
                       onMouseEnter={(e) => {
-                        if (!isActive) e.currentTarget.style.color = "#fff";
+                        if (!isActive) e.currentTarget.style.color = "var(--text-primary)";
                       }}
                       onMouseLeave={(e) => {
                         if (!isActive)
@@ -1315,11 +1315,10 @@ export const ArticlesPage = () => {
           {/* Header Card Block */}
           <div
             style={{
-              background:
-                "linear-gradient(135deg, rgba(20, 20, 35, 0.45) 0%, rgba(10, 10, 20, 0.6) 100%)",
+              background: "var(--glass-bg)",
               backdropFilter: "blur(20px)",
               WebkitBackdropFilter: "blur(20px)",
-              border: "1px solid rgba(255, 255, 255, 0.08)",
+              border: "1px solid var(--glass-border)",
               borderRadius: "24px",
               padding: "2.5rem 3rem",
               marginBottom: "4rem",
@@ -1346,7 +1345,7 @@ export const ArticlesPage = () => {
                 style={{
                   fontSize: "2.6rem",
                   fontWeight: "800",
-                  color: "#fff",
+                  color: "var(--text-primary)",
                   margin: 0,
                   lineHeight: 1.1,
                 }}
@@ -1483,7 +1482,7 @@ export const ArticlesPage = () => {
               style={{
                 fontSize: "1.65rem",
                 fontWeight: "800",
-                color: "#fff",
+                color: "var(--text-primary)",
                 margin: 0,
                 whiteSpace: "nowrap",
               }}
@@ -1527,7 +1526,7 @@ export const ArticlesPage = () => {
               style={{
                 background:
                   activeTag === null ? "#06b6d4" : "rgba(255,255,255,0.02)",
-                border: "1px solid rgba(255,255,255,0.08)",
+                border: "1px solid var(--glass-border)",
                 borderRadius: "8px",
                 padding: "0.4rem 0.8rem",
                 fontSize: "0.82rem",
@@ -1549,7 +1548,7 @@ export const ArticlesPage = () => {
                 style={{
                   background:
                     activeTag === tag ? "#06b6d4" : "rgba(255,255,255,0.02)",
-                  border: "1px solid rgba(255,255,255,0.08)",
+                  border: "1px solid var(--glass-border)",
                   borderRadius: "8px",
                   padding: "0.4rem 0.8rem",
                   fontSize: "0.82rem",
@@ -1670,7 +1669,7 @@ export const ArticlesPage = () => {
                   onClick={() => handleSelectArticle(article.id)}
                   style={{
                     fontSize: "1.45rem",
-                    color: "#fff",
+                    color: "var(--text-primary)",
                     fontWeight: "700",
                     marginBottom: "0.75rem",
                     lineHeight: "1.3",
@@ -1682,7 +1681,7 @@ export const ArticlesPage = () => {
                   onMouseEnter={(e) =>
                     (e.currentTarget.style.color = "#06b6d4")
                   }
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "#fff")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-primary)")}
                 >
                   {article.title}
                 </h3>
@@ -1816,7 +1815,7 @@ export const ArticlesPage = () => {
                     height: "36px",
                     borderRadius: "8px",
                     background: "rgba(255, 255, 255, 0.02)",
-                    border: "1px solid rgba(255, 255, 255, 0.08)",
+                    border: "1px solid var(--glass-border)",
                     color:
                       currentPage === 1
                         ? "rgba(255,255,255,0.2)"
@@ -1848,7 +1847,7 @@ export const ArticlesPage = () => {
                           currentPage === pageNum
                             ? "1px solid #3b82f6"
                             : "1px solid rgba(255, 255, 255, 0.08)",
-                        color: "#fff",
+                        color: "var(--text-primary)",
                         fontWeight: "600",
                         cursor: "pointer",
                         display: "flex",
@@ -1870,7 +1869,7 @@ export const ArticlesPage = () => {
                     height: "36px",
                     borderRadius: "8px",
                     background: "rgba(255, 255, 255, 0.02)",
-                    border: "1px solid rgba(255, 255, 255, 0.08)",
+                    border: "1px solid var(--glass-border)",
                     color:
                       currentPage === totalPages
                         ? "rgba(255,255,255,0.2)"
@@ -2486,7 +2485,7 @@ const PaperReader = ({ paper, onBack, onNavigateToPaper }) => {
             style={{
               fontSize: "2.5rem",
               margin: "0.5rem 0 0.25rem 0",
-              color: "#fff",
+              color: "var(--text-primary)",
               textAlign: "left",
             }}
           >
@@ -2530,7 +2529,7 @@ const PaperReader = ({ paper, onBack, onNavigateToPaper }) => {
                 style={{
                   fontSize: "1.6rem",
                   marginBottom: "1rem",
-                  color: "#fff",
+                  color: "var(--text-primary)",
                   borderBottom: "1px solid rgba(255,255,255,0.08)",
                   paddingBottom: "0.5rem",
                   display: "flex",
@@ -2571,7 +2570,7 @@ const PaperReader = ({ paper, onBack, onNavigateToPaper }) => {
               style={{
                 fontSize: "1.6rem",
                 marginBottom: "1rem",
-                color: "#fff",
+                color: "var(--text-primary)",
                 borderBottom: "1px solid rgba(255,255,255,0.08)",
                 paddingBottom: "0.5rem",
                 display: "flex",
@@ -2617,7 +2616,7 @@ const PaperReader = ({ paper, onBack, onNavigateToPaper }) => {
               style={{
                 fontSize: "1.6rem",
                 marginBottom: "1rem",
-                color: "#fff",
+                color: "var(--text-primary)",
                 borderBottom: "1px solid rgba(255,255,255,0.08)",
                 paddingBottom: "0.5rem",
                 display: "flex",
@@ -2714,7 +2713,7 @@ const PaperReader = ({ paper, onBack, onNavigateToPaper }) => {
                         <span style={{ color: "var(--text-secondary)", fontSize: "0.85rem", fontWeight: "500", marginLeft: "1.5rem" }}>
                           Previous
                         </span>
-                        <span style={{ color: "#fff", fontSize: "1.1rem", fontWeight: "600", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                        <span style={{ color: "var(--text-primary)", fontSize: "1.1rem", fontWeight: "600", display: "flex", alignItems: "center", gap: "0.5rem" }}>
                           <ChevronLeft size={18} /> {prevArticle.title}
                         </span>
                       </button>
@@ -2743,7 +2742,7 @@ const PaperReader = ({ paper, onBack, onNavigateToPaper }) => {
                         <span style={{ color: "var(--text-secondary)", fontSize: "0.85rem", fontWeight: "500", marginRight: "1.5rem" }}>
                           Next
                         </span>
-                        <span style={{ color: "#fff", fontSize: "1.1rem", fontWeight: "600", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                        <span style={{ color: "var(--text-primary)", fontSize: "1.1rem", fontWeight: "600", display: "flex", alignItems: "center", gap: "0.5rem" }}>
                           {nextArticle.title} <ChevronRight size={18} />
                         </span>
                       </button>
@@ -2856,7 +2855,7 @@ const PaperReader = ({ paper, onBack, onNavigateToPaper }) => {
                         padding: "0.3rem 0 0.3rem 0.75rem",
                         fontSize: "0.88rem",
                         lineHeight: "1.4",
-                        color: isActive ? "#fff" : "var(--text-secondary)",
+                        color: isActive ? "var(--text-primary)" : "var(--text-secondary)",
                         fontWeight: isActive ? "700" : "400",
                         borderLeft: "2px solid",
                         borderColor: isActive ? "#06b6d4" : "transparent",
@@ -2865,7 +2864,7 @@ const PaperReader = ({ paper, onBack, onNavigateToPaper }) => {
                         textDecoration: "none",
                       }}
                       onMouseEnter={(e) => {
-                        if (!isActive) e.currentTarget.style.color = "#fff";
+                        if (!isActive) e.currentTarget.style.color = "var(--text-primary)";
                       }}
                       onMouseLeave={(e) => {
                         if (!isActive)
@@ -2959,11 +2958,10 @@ export const PapersPage = () => {
           {/* Header Card Block */}
           <div
             style={{
-              background:
-                "linear-gradient(135deg, rgba(20, 20, 35, 0.45) 0%, rgba(10, 10, 20, 0.6) 100%)",
+              background: "var(--glass-bg)",
               backdropFilter: "blur(20px)",
               WebkitBackdropFilter: "blur(20px)",
-              border: "1px solid rgba(255, 255, 255, 0.08)",
+              border: "1px solid var(--glass-border)",
               borderRadius: "24px",
               padding: "2.5rem 3rem",
               marginBottom: "4rem",
@@ -2990,7 +2988,7 @@ export const PapersPage = () => {
                 style={{
                   fontSize: "2.6rem",
                   fontWeight: "800",
-                  color: "#fff",
+                  color: "var(--text-primary)",
                   margin: 0,
                   lineHeight: 1.1,
                 }}
@@ -3169,7 +3167,7 @@ export const PapersPage = () => {
               style={{
                 fontSize: "1.65rem",
                 fontWeight: "800",
-                color: "#fff",
+                color: "var(--text-primary)",
                 margin: 0,
                 whiteSpace: "nowrap",
               }}
@@ -3261,7 +3259,7 @@ export const PapersPage = () => {
                   onClick={() => handleSelectPaper(paper.id)}
                   style={{
                     fontSize: "1.35rem",
-                    color: "#fff",
+                    color: "var(--text-primary)",
                     fontWeight: "700",
                     marginBottom: "1rem",
                     lineHeight: "1.3",
@@ -3271,7 +3269,7 @@ export const PapersPage = () => {
                   onMouseEnter={(e) =>
                     (e.currentTarget.style.color = "#06b6d4")
                   }
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "#fff")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-primary)")}
                 >
                   {paper.title}
                 </h3>
@@ -3373,7 +3371,7 @@ export const PapersPage = () => {
                       gap: "0.35rem",
                       transition: "color 0.2s",
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text-primary)")}
                     onMouseLeave={(e) =>
                       (e.currentTarget.style.color = "var(--text-secondary)")
                     }
@@ -3419,7 +3417,7 @@ export const PapersPage = () => {
                     height: "36px",
                     borderRadius: "8px",
                     background: "rgba(255, 255, 255, 0.02)",
-                    border: "1px solid rgba(255, 255, 255, 0.08)",
+                    border: "1px solid var(--glass-border)",
                     color:
                       currentPage === 1
                         ? "rgba(255,255,255,0.2)"
@@ -3451,7 +3449,7 @@ export const PapersPage = () => {
                           currentPage === pageNum
                             ? "1px solid #3b82f6"
                             : "1px solid rgba(255, 255, 255, 0.08)",
-                        color: "#fff",
+                        color: "var(--text-primary)",
                         fontWeight: "600",
                         cursor: "pointer",
                         display: "flex",
@@ -3473,7 +3471,7 @@ export const PapersPage = () => {
                     height: "36px",
                     borderRadius: "8px",
                     background: "rgba(255, 255, 255, 0.02)",
-                    border: "1px solid rgba(255, 255, 255, 0.08)",
+                    border: "1px solid var(--glass-border)",
                     color:
                       currentPage === totalPages
                         ? "rgba(255,255,255,0.2)"
@@ -4206,7 +4204,7 @@ export const LearnPage = () => {
                 fontWeight: 600,
                 transition: "color 0.2s",
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text-primary)")}
               onMouseLeave={(e) =>
                 (e.currentTarget.style.color = "var(--text-secondary)")
               }
@@ -4384,8 +4382,7 @@ export const LearnPage = () => {
                                         }}
                                         onMouseEnter={(e) => {
                                           if (!isActive)
-                                            e.currentTarget.style.color =
-                                              "#fff";
+                                            e.currentTarget.style.color = "var(--text-primary)";
                                         }}
                                         onMouseLeave={(e) => {
                                           if (!isActive)
@@ -4449,7 +4446,7 @@ export const LearnPage = () => {
                             }}
                             onMouseEnter={(e) => {
                               if (!isActive)
-                                e.currentTarget.style.color = "#fff";
+                                e.currentTarget.style.color = "var(--text-primary)";
                             }}
                             onMouseLeave={(e) => {
                               if (!isActive)
@@ -4524,7 +4521,7 @@ export const LearnPage = () => {
                       style={{
                         fontSize: "2.5rem",
                         fontWeight: 800,
-                        color: "#fff",
+                        color: "var(--text-primary)",
                         margin: 0,
                         lineHeight: 1.2,
                       }}
@@ -4677,7 +4674,7 @@ export const LearnPage = () => {
                             padding: "0.3rem 0 0.3rem 0.75rem",
                             fontSize: "0.88rem",
                             lineHeight: "1.4",
-                            color: isActive ? "#fff" : "var(--text-secondary)",
+                            color: isActive ? "var(--text-primary)" : "var(--text-secondary)",
                             fontWeight: isActive ? "700" : "400",
                             borderLeft: "2px solid",
                             borderColor: isActive ? "#06b6d4" : "transparent",
@@ -4686,7 +4683,7 @@ export const LearnPage = () => {
                             textDecoration: "none",
                           }}
                           onMouseEnter={(e) => {
-                            if (!isActive) e.currentTarget.style.color = "#fff";
+                            if (!isActive) e.currentTarget.style.color = "var(--text-primary)";
                           }}
                           onMouseLeave={(e) => {
                             if (!isActive)
@@ -4750,7 +4747,7 @@ export const LearnPage = () => {
             fontSize: "2.5rem",
             fontWeight: 800,
             marginBottom: "0.75rem",
-            color: "#fff",
+            color: "var(--text-primary)",
           }}
         >
           Learn & Explore
@@ -4837,7 +4834,7 @@ export const LearnPage = () => {
                   fontSize: "1.5rem",
                   fontWeight: 800,
                   marginBottom: "0.75rem",
-                  color: "#fff",
+                  color: "var(--text-primary)",
                 }}
               >
                 {cat.title}
@@ -4892,7 +4889,7 @@ export const LearnPage = () => {
                     onMouseEnter={(e) => {
                       e.currentTarget.style.background =
                         "rgba(0, 240, 255, 0.08)";
-                      e.currentTarget.style.color = "#fff";
+                      e.currentTarget.style.color = "var(--text-primary)";
                       e.currentTarget.style.borderColor =
                         "rgba(0, 240, 255, 0.2)";
                     }}
@@ -5044,7 +5041,7 @@ export const TechStackPage = () => {
               >
                 {cat.icon}
               </div>
-              <h3 style={{ fontSize: "1.5rem", margin: 0, color: "#fff" }}>
+              <h3 style={{ fontSize: "1.5rem", margin: 0, color: "var(--text-primary)" }}>
                 {cat.title}
               </h3>
             </div>
@@ -5067,7 +5064,7 @@ export const TechStackPage = () => {
                   key={sIdx}
                   style={{
                     background: "rgba(255, 255, 255, 0.03)",
-                    border: "1px solid rgba(255, 255, 255, 0.08)",
+                    border: "1px solid var(--glass-border)",
                     borderRadius: "8px",
                     padding: "0.4rem 0.8rem",
                     fontSize: "0.85rem",
@@ -5090,8 +5087,7 @@ export const TechStackPage = () => {
                   onMouseLeave={(e) => {
                     e.currentTarget.style.background =
                       "rgba(255, 255, 255, 0.03)";
-                    e.currentTarget.style.borderColor =
-                      "rgba(255, 255, 255, 0.08)";
+                    e.currentTarget.style.borderColor = "var(--glass-border)";
                     e.currentTarget.style.color = "var(--text-primary)";
                     e.currentTarget.style.transform = "none";
                   }}
@@ -5157,7 +5153,7 @@ export const ConsultingPage = () => {
           }}
         >
           <h3
-            style={{ fontSize: "1.35rem", marginBottom: "1rem", color: "#fff" }}
+            style={{ fontSize: "1.35rem", marginBottom: "1rem", color: "var(--text-primary)" }}
           >
             Website Making
           </h3>
@@ -5196,7 +5192,7 @@ export const ConsultingPage = () => {
           }}
         >
           <h3
-            style={{ fontSize: "1.35rem", marginBottom: "1rem", color: "#fff" }}
+            style={{ fontSize: "1.35rem", marginBottom: "1rem", color: "var(--text-primary)" }}
           >
             Android App Making
           </h3>
@@ -5235,7 +5231,7 @@ export const ConsultingPage = () => {
           }}
         >
           <h3
-            style={{ fontSize: "1.35rem", marginBottom: "1rem", color: "#fff" }}
+            style={{ fontSize: "1.35rem", marginBottom: "1rem", color: "var(--text-primary)" }}
           >
             Local AI Deployment
           </h3>
@@ -5274,7 +5270,7 @@ export const ConsultingPage = () => {
           }}
         >
           <h3
-            style={{ fontSize: "1.35rem", marginBottom: "1rem", color: "#fff" }}
+            style={{ fontSize: "1.35rem", marginBottom: "1rem", color: "var(--text-primary)" }}
           >
             Backend Architecture
           </h3>
@@ -5325,7 +5321,7 @@ export const ConsultingPage = () => {
             Learning
           </span>
           <h3
-            style={{ fontSize: "1.35rem", marginBottom: "1rem", color: "#fff" }}
+            style={{ fontSize: "1.35rem", marginBottom: "1rem", color: "var(--text-primary)" }}
           >
             1-on-1 Mentorship
           </h3>
@@ -5394,7 +5390,7 @@ export const ConsultingPage = () => {
             style={{
               fontSize: "1.2rem",
               marginBottom: "0.75rem",
-              color: "#fff",
+              color: "var(--text-primary)",
             }}
           >
             Expertise
@@ -5418,7 +5414,7 @@ export const ConsultingPage = () => {
             style={{
               fontSize: "1.2rem",
               marginBottom: "0.75rem",
-              color: "#fff",
+              color: "var(--text-primary)",
             }}
           >
             Modern Stack
@@ -5442,7 +5438,7 @@ export const ConsultingPage = () => {
             style={{
               fontSize: "1.2rem",
               marginBottom: "0.75rem",
-              color: "#fff",
+              color: "var(--text-primary)",
             }}
           >
             Fast Delivery
@@ -5466,7 +5462,7 @@ export const ConsultingPage = () => {
             style={{
               fontSize: "1.2rem",
               marginBottom: "0.75rem",
-              color: "#fff",
+              color: "var(--text-primary)",
             }}
           >
             Scalability
