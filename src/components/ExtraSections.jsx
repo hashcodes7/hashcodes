@@ -22,6 +22,7 @@ import {
 import { AlgorithmDetailPane } from "./AlgorithmDetailPane";
 import { llmChaptersData } from "../data/LlmChaptersData";
 import { llmTrainingChaptersData } from "../data/LlmTrainingChaptersData";
+import { pretrainingChaptersData } from "../data/PretrainingChaptersData";
 import { ragChaptersData } from "../data/RagChaptersData";
 
 const ARTICLES_DATA = [
@@ -3519,6 +3520,11 @@ const LEARN_CATEGORIES = [
         id: "llm-training-from-scratch",
         title: "LLM From Scratch (Training - Next Word Generation)",
         topics: llmTrainingChaptersData,
+      },
+      {
+        id: "pretraining-unlabelled-data",
+        title: "Pretraining on Unlabelled Data & Loading Weights",
+        topics: pretrainingChaptersData,
       },
       {
         id: "rag",
