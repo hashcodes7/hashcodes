@@ -321,6 +321,43 @@ export const llmChaptersData = [
               </div>
               <div style={{ background: "rgba(255, 255, 255, 0.03)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "12px", padding: "1.25rem" }}>
                 <div style={{ marginBottom: "0.75rem", borderBottom: "1px solid rgba(255, 255, 255, 0.06)", paddingBottom: "0.5rem" }}>
+                  <TopicLink targetTopic="Chapter 9.1 - Calculating Text Generation Loss (Cross Entropy)" isChapterHeader={true}>Chapter 9: Training</TopicLink>
+                </div>
+                <ul style={{ paddingLeft: "1.25rem", margin: 0, lineHeight: "1.8", listStyleType: "circle", color: "var(--text-secondary)" }}>
+                  <li><TopicLink targetTopic="Chapter 9.1 - Calculating Text Generation Loss (Cross Entropy)">9.1 Cross Entropy Loss</TopicLink></li>
+                  <li><TopicLink targetTopic="Chapter 9.2 - Generating Text Batches">9.2 Generating Text Batches</TopicLink></li>
+                  <li><TopicLink targetTopic="Chapter 9.3 - Calculating the Batch Loss">9.3 Calculating the Batch Loss</TopicLink></li>
+                  <li><TopicLink targetTopic="Chapter 9.4 - Backpropogation (loss.backward())">9.4 Backpropagation</TopicLink></li>
+                  <li><TopicLink targetTopic="Chapter 9.5 - The Optimization Step">9.5 The Optimization Step</TopicLink></li>
+                  <li><TopicLink targetTopic="Chapter 9.6 - Tensor">9.6 Tensors</TopicLink></li>
+                  <li><TopicLink targetTopic="Chapter 9.7 - Weight Optimization">9.7 Weight Optimization (Optimizers)</TopicLink></li>
+                  <li><TopicLink targetTopic="Chapter 9.8 - Complete Training Pipeline">9.8 Complete Training Pipeline</TopicLink></li>
+                </ul>
+              </div>
+              <div style={{ background: "rgba(255, 255, 255, 0.03)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "12px", padding: "1.25rem" }}>
+                <div style={{ marginBottom: "0.75rem", borderBottom: "1px solid rgba(255, 255, 255, 0.06)", paddingBottom: "0.5rem" }}>
+                  <TopicLink targetTopic="Chapter 10.1 - Saving our model weights..." isChapterHeader={true}>Chapter 10: Pretrained Weights</TopicLink>
+                </div>
+                <ul style={{ paddingLeft: "1.25rem", margin: 0, lineHeight: "1.8", listStyleType: "circle", color: "var(--text-secondary)" }}>
+                  <li><TopicLink targetTopic="Chapter 10.1 - Saving our model weights...">10.1 Saving & Loading Weights</TopicLink></li>
+                  <li><TopicLink targetTopic="Chapter 10.2 - Downloading GPT Model Pretrained Weights">10.2 Downloading GPT-2 Weights</TopicLink></li>
+                  <li><TopicLink targetTopic="Chapter 10.3 - Tensorflow weights conversion to Pytorch (mapping)">10.3 Mapping TF to PyTorch</TopicLink></li>
+                  <li><TopicLink targetTopic="Chapter 10.4 - Complete Weight Loading Pipeline">10.4 Complete Weight Loading Pipeline</TopicLink></li>
+                </ul>
+              </div>
+              <div style={{ background: "rgba(255, 255, 255, 0.03)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "12px", padding: "1.25rem" }}>
+                <div style={{ marginBottom: "0.75rem", borderBottom: "1px solid rgba(255, 255, 255, 0.06)", paddingBottom: "0.5rem" }}>
+                  <TopicLink targetTopic="Chapter 11.1 - Introduction to Finetuning" isChapterHeader={true}>Chapter 11: Finetuning</TopicLink>
+                </div>
+                <ul style={{ paddingLeft: "1.25rem", margin: 0, lineHeight: "1.8", listStyleType: "circle", color: "var(--text-secondary)" }}>
+                  <li><TopicLink targetTopic="Chapter 11.1 - Introduction to Finetuning">11.1 Introduction to Finetuning</TopicLink></li>
+                  <li><TopicLink targetTopic="Chapter 11.2 - Instruction Dataset">11.2 Instruction Dataset</TopicLink></li>
+                  <li><TopicLink targetTopic="Chapter 11.3 - The Collate Function (Padding & Masking)">11.3 Collate Function (Padding & Masking)</TopicLink></li>
+                  <li><TopicLink targetTopic="Chapter 11.4 - The Finetuning Pipeline">11.4 The Finetuning Pipeline</TopicLink></li>
+                </ul>
+              </div>
+              <div style={{ background: "rgba(255, 255, 255, 0.03)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "12px", padding: "1.25rem" }}>
+                <div style={{ marginBottom: "0.75rem", borderBottom: "1px solid rgba(255, 255, 255, 0.06)", paddingBottom: "0.5rem" }}>
                   <TopicLink targetTopic="Chapter 12.1 - Activation Functions (ReLU vs. GELU vs. SwiGLU)" isChapterHeader={true}>Chapter 12: Optional Alternatives & Modern Variants</TopicLink>
                 </div>
                 <ul style={{ paddingLeft: "1.25rem", margin: 0, lineHeight: "1.8", listStyleType: "circle", color: "var(--text-secondary)" }}>
