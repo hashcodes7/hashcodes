@@ -21,8 +21,6 @@ import {
 } from "lucide-react";
 import { AlgorithmDetailPane } from "./AlgorithmDetailPane";
 import { llmChaptersData } from "../data/LlmChaptersData";
-import { llmTrainingChaptersData } from "../data/LlmTrainingChaptersData";
-import { pretrainingChaptersData } from "../data/PretrainingChaptersData";
 import { ragChaptersData } from "../data/RagChaptersData";
 
 const ARTICLES_DATA = [
@@ -3513,18 +3511,8 @@ const LEARN_CATEGORIES = [
     subCategories: [
       {
         id: "llm-from-scratch",
-        title: "LLM From Scratch (inference - next word generation)",
+        title: "GPT 2 Architecture End to End",
         topics: llmChaptersData,
-      },
-      {
-        id: "llm-training-from-scratch",
-        title: "LLM From Scratch (Training - Next Word Generation)",
-        topics: llmTrainingChaptersData,
-      },
-      {
-        id: "pretraining-unlabelled-data",
-        title: "Pretraining on Unlabelled Data & Loading Weights",
-        topics: pretrainingChaptersData,
       },
       {
         id: "rag",
