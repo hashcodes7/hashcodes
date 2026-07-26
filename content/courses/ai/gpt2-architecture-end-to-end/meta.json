@@ -2,11 +2,6 @@
   "pages": [
     "Chapter-0-Index",
     "Chapter-1-Pre-Requisite-Maths",
-    "Chapter-10-Next-Word-Generation",
-    "Chapter-11-Training",
-    "Chapter-12-Pretrained-Weights",
-    "Chapter-13-Finetuning",
-    "Chapter-14-Optional-Alternatives-Modern-Variants",
     "Chapter-2-Input-Processing-Tokenization",
     "Chapter-3-Input-Processing-and-Embeddings-(End-to-End-Walkthrough)",
     "Chapter-4-Scaled-Dot-Attention-Core-Mechanics",
@@ -14,6 +9,11 @@
     "Chapter-6-Multi-Head-Attention",
     "Chapter-7-Pre-FFN-Cleanup",
     "Chapter-8-Feed-Forward-Network-(FFN)",
-    "Chapter-9-Post-FFN-Cleanup"
+    "Chapter-9-Post-FFN-Cleanup",
+    "Chapter-10-Next-Word-Generation",
+    "Chapter-11-Training",
+    "Chapter-12-Pretrained-Weights",
+    "Chapter-13-Finetuning",
+    "Chapter-14-Optional-Alternatives-Modern-Variants"
   ]
 }

@@ -12,132 +12,132 @@
           "folder": "courses/ai/gpt2-architecture-end-to-end",
           "chapters": [
             {
-              "name": "Chapter 0 Index",
+              "name": "Chapter-0-Index",
               "children": [
-                "Chapter 0.1 - Course Index",
-                "Chapter 0.2 - Architecture Ingredients"
+                "Chapter-0.1---Course-Index",
+                "Chapter-0.2---Architecture-Ingredients"
               ]
             },
             {
-              "name": "Chapter 1 Pre Requisite Maths",
+              "name": "Chapter-1-Pre-Requisite-Maths",
               "children": [
-                "Chapter 1.1 - Dot Products",
-                "Chapter 1.2 - Matrix Multiplication"
+                "Chapter-1.1---Dot-Products",
+                "Chapter-1.2---Matrix-Multiplication"
               ]
             },
             {
-              "name": "Chapter 2 Input Processing Tokenization",
+              "name": "Chapter-2-Input-Processing-Tokenization",
               "children": [
-                "Chapter 2.1 - Tokenizing Text",
-                "Chapter 2.2 - Data Sampling",
-                "Chapter 2.3 - Creating Token Embeddings",
-                "Chapter 2.4 - Encoding Positional Embeddings"
+                "Chapter-2.1---Tokenizing-Text",
+                "Chapter-2.2---Data-Sampling",
+                "Chapter-2.3---Creating-Token-Embeddings",
+                "Chapter-2.4---Encoding-Positional-Embeddings"
               ]
             },
             {
-              "name": "Chapter 3 Input Processing & Embeddings (End-to-End Walkthrough)",
+              "name": "Chapter-3-Input-Processing-and-Embeddings-(End-to-End-Walkthrough)",
               "children": [
-                "Chapter 3.1 - Tokenization & Input Prompt",
-                "Chapter 3.2 - Token Embedding Lookup (We Matrix)",
-                "Chapter 3.3 - Positional Embeddings & Combined Input Matrix"
+                "Chapter-3.1---Tokenization-and-Input-Prompt",
+                "Chapter-3.2---Token-Embedding-Lookup-(We-Matrix)",
+                "Chapter-3.3---Positional-Embeddings-and-Combined-Input-Matrix"
               ]
             },
             {
-              "name": "Chapter 4 Scaled Dot Attention Core Mechanics",
+              "name": "Chapter-4-Scaled-Dot-Attention-Core-Mechanics",
               "children": [
-                "Chapter 4.1 - Dot Products",
-                "Chapter 4.2 - Matrix Multiplication",
-                "Chapter 4.3 - attention scores",
-                "Chapter 4.4 - normalization",
-                "Chapter 4.5 - context vector",
-                "Chapter 4.6 - full matrix conversion"
+                "Chapter-4.1---Dot-Products",
+                "Chapter-4.2---Matrix-Multiplication",
+                "Chapter-4.3---attention-scores",
+                "Chapter-4.4---normalization",
+                "Chapter-4.5---context-vector",
+                "Chapter-4.6---full-matrix-conversion"
               ]
             },
             {
-              "name": "Chapter 5 Single-Head Self-Attention",
+              "name": "Chapter-5-Single-Head-Self-Attention",
               "children": [
-                "Chapter 5.1 - Weight Matrices",
-                "Chapter 5.2 - Raw Attention Scores Scaling",
-                "Chapter 5.3 - Masking, Softmax Context Vector"
+                "Chapter-5.1---Weight-Matrices",
+                "Chapter-5.2---Raw-Attention-Scores-Scaling",
+                "Chapter-5.3---Masking,-Softmax-Context-Vector"
               ]
             },
             {
-              "name": "Chapter 6 Multi-Head Attention",
+              "name": "Chapter-6-Multi-Head-Attention",
               "children": [
-                "Chapter 6.1 - Multi-Head Self-Attention",
-                "Chapter 6.2 - Output Projection"
+                "Chapter-6.1---Multi-Head-Self-Attention",
+                "Chapter-6.2---Output-Projection"
               ]
             },
             {
-              "name": "Chapter 7 Pre FFN Cleanup",
+              "name": "Chapter-7-Pre-FFN-Cleanup",
               "children": [
-                "Chapter 7.1 - 1st Residual Connection",
-                "Chapter 7.2 - 1st Layer Normalization"
+                "Chapter-7.1---1st-Residual-Connection",
+                "Chapter-7.2---1st-Layer-Normalization"
               ]
             },
             {
-              "name": "Chapter 8 Feed-Forward Network (FFN)",
+              "name": "Chapter-8-Feed-Forward-Network-(FFN)",
               "children": [
-                "Chapter 8.1 - First Linear Layer",
-                "Chapter 8.2 - GELU Activation Function",
-                "Chapter 8.3 - Second Linear Layer"
+                "Chapter-8.1---First-Linear-Layer",
+                "Chapter-8.2---GELU-Activation-Function",
+                "Chapter-8.3---Second-Linear-Layer"
               ]
             },
             {
-              "name": "Chapter 9 Post FFN Cleanup",
+              "name": "Chapter-9-Post-FFN-Cleanup",
               "children": [
-                "Chapter 9.1 - 2nd Residual Connection",
-                "Chapter 9.2 - 2nd Layer Normalization"
+                "Chapter-9.1---2nd-Residual-Connection",
+                "Chapter-9.2---2nd-Layer-Normalization"
               ]
             },
             {
-              "name": "Chapter 10 Next Word Generation",
+              "name": "Chapter-10-Next-Word-Generation",
               "children": [
-                "Chapter 10.1 - LM Head Projection Logits",
-                "Chapter 10.2 - Sampling (Temperature, Top-K, Top-P)",
-                "Chapter 10.3 - Autoregressive Generation Loop",
-                "Chapter 10.4 - Complete Inference Walkthrough"
+                "Chapter-10.1---LM-Head-Projection-Logits",
+                "Chapter-10.2---Sampling-(Temperature,-Top-K,-Top-P)",
+                "Chapter-10.3---Autoregressive-Generation-Loop",
+                "Chapter-10.4---Complete-Inference-Walkthrough"
               ]
             },
             {
-              "name": "Chapter 11 Training",
+              "name": "Chapter-11-Training",
               "children": [
-                "Chapter 11.1 - Cross Entropy Loss",
-                "Chapter 11.2 - Generating Text Batches",
-                "Chapter 11.3 - Calculating the Batch Loss",
-                "Chapter 11.4 - Backpropagation",
-                "Chapter 11.5 - The Optimization Step",
-                "Chapter 11.6 - Tensors",
-                "Chapter 11.7 - Weight Optimization (Optimizers)",
-                "Chapter 11.8 - Complete Training Pipeline"
+                "Chapter-11.1---Cross-Entropy-Loss",
+                "Chapter-11.2---Generating-Text-Batches",
+                "Chapter-11.3---Calculating-the-Batch-Loss",
+                "Chapter-11.4---Backpropagation",
+                "Chapter-11.5---The-Optimization-Step",
+                "Chapter-11.6---Tensors",
+                "Chapter-11.7---Weight-Optimization-(Optimizers)",
+                "Chapter-11.8---Complete-Training-Pipeline"
               ]
             },
             {
-              "name": "Chapter 12 Pretrained Weights",
+              "name": "Chapter-12-Pretrained-Weights",
               "children": [
-                "Chapter 12.1 - Saving Loading Weights",
-                "Chapter 12.2 - Downloading GPT-2 Weights",
-                "Chapter 12.3 - Mapping TF to PyTorch",
-                "Chapter 12.4 - Complete Weight Loading Pipeline"
+                "Chapter-12.1---Saving-Loading-Weights",
+                "Chapter-12.2---Downloading-GPT-2-Weights",
+                "Chapter-12.3---Mapping-TF-to-PyTorch",
+                "Chapter-12.4---Complete-Weight-Loading-Pipeline"
               ]
             },
             {
-              "name": "Chapter 13 Finetuning",
+              "name": "Chapter-13-Finetuning",
               "children": [
-                "Chapter 13.1 - Introduction to Finetuning",
-                "Chapter 13.2 - Instruction Dataset",
-                "Chapter 13.3 - Collate Function (Padding Masking)",
-                "Chapter 13.4 - The Finetuning Pipeline"
+                "Chapter-13.1---Introduction-to-Finetuning",
+                "Chapter-13.2---Instruction-Dataset",
+                "Chapter-13.3---Collate-Function-(Padding-Masking)",
+                "Chapter-13.4---The-Finetuning-Pipeline"
               ]
             },
             {
-              "name": "Chapter 14 Optional Alternatives Modern Variants",
+              "name": "Chapter-14-Optional-Alternatives-Modern-Variants",
               "children": [
-                "Chapter 14.1 - Activation Functions (ReLU, GELU, SwiGLU)",
-                "Chapter 14.2 - Normalization (LayerNorm vs. RMSNorm)",
-                "Chapter 14.3 - Positional Encodings (RoPE ALiBi)",
-                "Chapter 14.4 - Attention Variants (GQA FlashAttention)",
-                "Chapter 14.5 - Scaling Speedups (MoE KV Caching)"
+                "Chapter-14.1---Activation-Functions-(ReLU,-GELU,-SwiGLU)",
+                "Chapter-14.2---Normalization-(LayerNorm-vs.-RMSNorm)",
+                "Chapter-14.3---Positional-Encodings-(RoPE-ALiBi)",
+                "Chapter-14.4---Attention-Variants-(GQA-FlashAttention)",
+                "Chapter-14.5---Scaling-Speedups-(MoE-KV-Caching)"
               ]
             }
           ]
@@ -148,61 +148,61 @@
           "folder": "courses/ai/rag-architecture",
           "chapters": [
             {
-              "name": "Chapter 0 Index",
+              "name": "Chapter-0-Index",
               "children": [
-                "Chapter 0.1 - Course Index",
-                "Chapter 0.2 - Architecture Ingredients",
-                "Chapter 0.3 - QnA"
+                "Chapter-0.1---Course-Index",
+                "Chapter-0.2---Architecture-Ingredients",
+                "Chapter-0.3---QnA"
               ]
             },
             {
-              "name": "Chapter 1 Pre-Requisites & Foundation",
+              "name": "Chapter-1-Pre-Requisites-and-Foundation",
               "children": [
-                "Chapter 1.1 - Core Concepts",
-                "Chapter 1.2 - QnA & Interview Questions"
+                "Chapter-1.1---Core-Concepts",
+                "Chapter-1.2---QnA-and-Interview-Questions"
               ]
             },
             {
-              "name": "Chapter 2 Ingestion",
+              "name": "Chapter-2-Ingestion",
               "children": [
-                "Chapter 2.1 - Multi-Format Parsing",
-                "Chapter 2.2 - Structured Extraction"
+                "Chapter-2.1---Multi-Format-Parsing",
+                "Chapter-2.2---Structured-Extraction"
               ]
             },
             {
-              "name": "Chapter 3 Chunking Strategies",
+              "name": "Chapter-3-Chunking-Strategies",
               "children": [
-                "Chapter 3.1 - Recursive Chunking",
-                "Chapter 3.2 - Semantic Chunking"
+                "Chapter-3.1---Recursive-Chunking",
+                "Chapter-3.2---Semantic-Chunking"
               ]
             },
             {
-              "name": "Chapter 4 Hybrid Indexing",
+              "name": "Chapter-4-Hybrid-Indexing",
               "children": [
-                "Chapter 4.1 - Vector Embeddings (FAISS)",
-                "Chapter 4.2 - Keyword Search (BM25)"
+                "Chapter-4.1---Vector-Embeddings-(FAISS)",
+                "Chapter-4.2---Keyword-Search-(BM25)"
               ]
             },
             {
-              "name": "Chapter 5 Retrieval Fusion & Reranking",
+              "name": "Chapter-5-Retrieval-Fusion-and-Reranking",
               "children": [
-                "Chapter 5.1 - Two-Stage Retrieval",
-                "Chapter 5.2 - Reciprocal Rank Fusion",
-                "Chapter 5.3 - Cross-Encoder Reranking"
+                "Chapter-5.1---Two-Stage-Retrieval",
+                "Chapter-5.2---Reciprocal-Rank-Fusion",
+                "Chapter-5.3---Cross-Encoder-Reranking"
               ]
             },
             {
-              "name": "Chapter 6 Generation & Guardrails",
+              "name": "Chapter-6-Generation-and-Guardrails",
               "children": [
-                "Chapter 6.1 - Small Talk Routing",
-                "Chapter 6.2 - Prompt Grounding"
+                "Chapter-6.1---Small-Talk-Routing",
+                "Chapter-6.2---Prompt-Grounding"
               ]
             },
             {
-              "name": "Chapter 7 Persistence",
+              "name": "Chapter-7-Persistence",
               "children": [
-                "Chapter 7.1 - SQLite Chat History",
-                "Chapter 7.2 - User Authentication"
+                "Chapter-7.1---SQLite-Chat-History",
+                "Chapter-7.2---User-Authentication"
               ]
             }
           ]
@@ -213,9 +213,9 @@
           "folder": "courses/ai/recommendation-systems",
           "chapters": [
             {
-              "name": "Chapter 1- Matrix Factorization",
+              "name": "Chapter-1--Matrix-Factorization",
               "children": [
-                "Collaborative Filtering"
+                "Collaborative-Filtering"
               ]
             }
           ]
@@ -234,7 +234,7 @@
           "folder": "courses/algo/algorithms",
           "chapters": [
             {
-              "name": "Deep Learning",
+              "name": "Deep-Learning",
               "children": [
                 "Attention",
                 "GPT",
@@ -242,26 +242,26 @@
               ]
             },
             {
-              "name": "Information Retrieval",
+              "name": "Information-Retrieval",
               "children": [
                 "BM25",
                 "HNSW",
-                "Hybrid Search",
-                "Vector Search"
+                "Hybrid-Search",
+                "Vector-Search"
               ]
             },
             {
-              "name": "Machine Learning",
+              "name": "Machine-Learning",
               "children": [
                 "K-Means",
-                "Linear Regression",
-                "Naive Bayes"
+                "Linear-Regression",
+                "Naive-Bayes"
               ]
             },
             {
               "name": "Optimization",
               "children": [
-                "Dynamic Programming"
+                "Dynamic-Programming"
               ]
             },
             {
@@ -272,23 +272,23 @@
               ]
             },
             {
-              "name": "Search & Traversal",
+              "name": "Search-and-Traversal",
               "children": [
                 "BFS",
-                "Binary Search",
+                "Binary-Search",
                 "DFS",
-                "Linear Search"
+                "Linear-Search"
               ]
             },
             {
               "name": "Sorting",
               "children": [
-                "Merge Sort",
-                "Quick Sort"
+                "Merge-Sort",
+                "Quick-Sort"
               ]
             },
             {
-              "name": "String & Pattern Matching",
+              "name": "String-and-Pattern-Matching",
               "children": [
                 "Boyer-Moore",
                 "KMP",
@@ -303,11 +303,11 @@
           "folder": "courses/algo/datastructures",
           "chapters": [
             {
-              "name": "Primitive Structures",
+              "name": "Primitive-Structures",
               "children": [
                 "Arrays",
                 "Graphs",
-                "Hash Maps",
+                "Hash-Maps",
                 "Strings",
                 "Trees"
               ]
@@ -328,9 +328,9 @@
           "folder": "courses/flutter/core-framework",
           "chapters": [
             {
-              "name": "Chapter 1- Architecture Trees",
+              "name": "Chapter-1--Architecture-Trees",
               "children": [
-                "The Three Trees Architecture"
+                "The-Three-Trees-Architecture"
               ]
             }
           ]
@@ -349,9 +349,9 @@
           "folder": "courses/sys/distributed-systems",
           "chapters": [
             {
-              "name": "Chapter 1- Scaling Databases",
+              "name": "Chapter-1--Scaling-Databases",
               "children": [
-                "Database Partitioning & Sharding"
+                "Database-Partitioning-and-Sharding"
               ]
             }
           ]
@@ -370,9 +370,9 @@
           "folder": "courses/vision/core-vision-concepts",
           "chapters": [
             {
-              "name": "Chapter 1- CNNs",
+              "name": "Chapter-1--CNNs",
               "children": [
-                "Convolutional Neural Networks (CNNs)"
+                "Convolutional-Neural-Networks-(CNNs)"
               ]
             }
           ]
