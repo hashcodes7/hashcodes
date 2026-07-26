@@ -1,0 +1,7 @@
+{
+  "title": "GPT 2 Architecture End to End",
+  "pages": [
+    "Chapter 1- Input Processing & Tokenization",
+    "Chapter 2- Scaled Dot Attention Core Mechanics"
+  ]
+}

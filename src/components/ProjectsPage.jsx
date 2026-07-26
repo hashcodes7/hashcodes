@@ -1,17 +1,19 @@
+"use client";
 import { useState } from 'react';
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import * as LucideIcons from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import ProjectDiagram from "./ProjectDiagram";
+import inficanvas from "../projects/inficanvas.json";
+import mintframe from "../projects/mintframe.json";
+import sourceiq from "../projects/sourceiq.json";
+
+const projects = [inficanvas, mintframe, sourceiq];
 
 export default function ProjectsPage() {
   const [selectedProjectId, setSelectedProjectId] = useState(null);
   const [activeMainTab, setActiveMainTab] = useState("");
   const [activeArchSubTab, setActiveArchSubTab] = useState("");
-
-  // Dynamically load all project JSON files from the projects folder
-  const projectFiles = import.meta.glob("../projects/*.json", { eager: true });
-  const projects = Object.values(projectFiles).map((mod) => mod.default || mod);
 
   const selectedProject = projects.find((p) => p.id === selectedProjectId);
 

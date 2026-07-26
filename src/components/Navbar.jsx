@@ -1,40 +1,40 @@
+"use client";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { FaSun, FaMoon, FaCog } from "react-icons/fa";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 const Navbar = () => {
   const [theme, setTheme] = useState("dark");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeHash, setActiveHash] = useState(
-    window.location.hash || "#/about",
-  );
+  const pathname = usePathname() || "/";
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);
-
-  useEffect(() => {
-    const handleHashChange = () => {
-      setActiveHash(window.location.hash || "#/about");
-    };
-    window.addEventListener("hashchange", handleHashChange);
-    return () => window.removeEventListener("hashchange", handleHashChange);
-  }, []);
 
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
 
   const navLinks = [
-    { name: "About", href: "#/about" },
-    { name: "Projects", href: "#/projects" },
-    { name: "Articles", href: "#/articles" },
-    { name: "Papers", href: "#/papers" },
-    { name: "Learn", href: "#/learn" },
-    { name: "Resume", href: "#/resume" },
-    { name: "TechStack", href: "#/techstack" },
-    { name: "Consulting", href: "#/consulting" },
+    { name: "About", href: "/" },
+    { name: "Projects", href: "/projects" },
+    { name: "Articles", href: "/articles" },
+    { name: "Papers", href: "/papers" },
+    { name: "Learn", href: "/learn" },
+    { name: "Resume", href: "/resume" },
+    { name: "TechStack", href: "/techstack" },
+    { name: "Consulting", href: "/consulting" },
   ];
+
+  const isLinkActive = (href) => {
+    if (href === "/") {
+      return pathname === "/";
+    }
+    return pathname.startsWith(href);
+  };
 
   return (
     <>
@@ -80,13 +80,13 @@ const Navbar = () => {
         {/* Desktop Links */}
         <div className="navbar-pill-links">
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.name}
               href={link.href}
-              className={`navbar-pill-link ${link.href === activeHash ? "active" : ""}`}
+              className={`navbar-pill-link ${isLinkActive(link.href) ? "active" : ""}`}
             >
               {link.name}
-            </a>
+            </Link>
           ))}
         </div>
 
@@ -126,21 +126,20 @@ const Navbar = () => {
             }}
           >
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.name}
                 href={link.href}
                 style={{
                   fontWeight: 600,
                   fontSize: "0.95rem",
-                  color:
-                    link.href === activeHash
-                      ? "var(--accent-color)"
-                      : "var(--text-primary)",
+                  color: isLinkActive(link.href)
+                    ? "var(--accent-color)"
+                    : "var(--text-primary)",
                 }}
                 onClick={() => setIsMenuOpen(false)}
               >
                 {link.name}
-              </a>
+              </Link>
             ))}
             <div
               style={{

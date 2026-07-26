@@ -1,0 +1,49 @@
+---
+title: "Dynamic Programming"
+description: "Dynamic Programming (DP) is a method for solving complex problems by breaking them down into simpler, overlapping subproblems. It solves subproblems once and stores their solutions using Memoization (Top-down) or Tabulation (Bottom-up), trading memory to optimize computational speed."
+---
+
+# Dynamic Programming
+
+> Dynamic Programming (DP) is a method for solving complex problems by breaking them down into simpler, overlapping subproblems. It solves subproblems once and stores their solutions using Memoization (Top-down) or Tabulation (Bottom-up), trading memory to optimize computational speed.
+
+## Complexity Profile
+
+| Case | Complexity |
+| :--- | :--- |
+| Best Case | `O(Decision States)` |
+| Average Case | `O(Decision States)` |
+| Worst Case | `O(Decision States)` |
+| Space Complexity | `O(States)` |
+
+## Code Implementation
+
+
+```python
+# DP: Fibonacci with Memoization (Top-Down)
+def fib_memo(n, memo=None):
+    if memo is None:
+        memo = {}
+    if n <= 1:
+        return n
+    if n in memo:
+        return memo[n]
+    memo[n] = fib_memo(n - 1, memo) + fib_memo(n - 2, memo)
+    return memo[n]
+
+# Tabulation approach (Bottom-Up)
+def fib_tab(n):
+    if n <= 1:
+        return n
+    table = [0] * (n + 1)
+    table[1] = 1
+    for i in range(2, n + 1):
+        table[i] = table[i - 1] + table[i - 2]
+    return table[n]
+```
+
+## Real-World Applications
+
+* Knapsack resource allocation optimizations.
+* String edit distance (Levenshtein distance) in spellchecking.
+* Pathfinding inside grids with variable terrains (Viterbi algorithm).

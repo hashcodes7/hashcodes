@@ -1,0 +1,12 @@
+{
+  "title": "RAG Architecture",
+  "pages": [
+    "Chapter 0- Index & Blueprint",
+    "Chapter 1- Ingestion",
+    "Chapter 2- Chunking Strategies",
+    "Chapter 3- Hybrid Indexing",
+    "Chapter 4- Retrieval Fusion & Reranking",
+    "Chapter 5- Budgeting & Guardrails",
+    "Chapter 6- Persistence"
+  ]
+}

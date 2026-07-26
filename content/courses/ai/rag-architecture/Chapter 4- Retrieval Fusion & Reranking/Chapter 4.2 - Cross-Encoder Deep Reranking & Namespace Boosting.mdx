@@ -1,0 +1,26 @@
+---
+title: "Chapter 4.2 - Cross-Encoder Deep Reranking & Namespace Boosting"
+description: "Evaluating full cross-attention over candidate passages and applying domain namespace boosts"
+---
+
+## 
+              🎯 Cross-Encoder Reranking & Namespace Boosting
+            
+
+            Bi-Encoders encode queries and chunks independently. SourceIQ feeds top candidate chunks through a **Cross-Encoder model** (`ms-marco-MiniLM-L-6-v2`) which processes query and document text together, performing full token-to-token attention:
+            
+```python
+cross_inp = [[question, item["text"]] for item in candidates]
+cross_scores = self.cross_encoder.predict(cross_inp)
+for i in range(len(candidates)):
+    candidates[i]["score"] = float(cross_scores[i])
+    # Namespace boost: nudge score if query mentions folder domain
+    ns = candidates[i].get("namespace", "").lower()
+    if ns and ns in question.lower():
+        candidates[i]["score"] += 0.25`} `
+```
+
+            
+> [!tip] Parent-Document Expansion
+> 
+              After reranking small child chunks (400 chars), SourceIQ expands the retrieved item back to its full parent chunk (1500 chars). This guarantees the LLM receives comprehensive context while retrieval precision remains surgical!

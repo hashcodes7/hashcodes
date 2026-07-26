@@ -1,0 +1,40 @@
+---
+title: "Naive Bayes"
+description: "Naive Bayes is a probabilistic classifier based on Bayes' Theorem. It makes the 'naive' assumption that features are conditionally independent of each other given the class label, which simplifies joint probability calculation and enables fast training speeds on large datasets."
+---
+
+# Naive Bayes
+
+> Naive Bayes is a probabilistic classifier based on Bayes' Theorem. It makes the 'naive' assumption that features are conditionally independent of each other given the class label, which simplifies joint probability calculation and enables fast training speeds on large datasets.
+
+## Complexity Profile
+
+| Case | Complexity |
+| :--- | :--- |
+| Best Case | `O(N * D)` |
+| Average Case | `O(N * D)` |
+| Worst Case | `O(N * D)` |
+| Space Complexity | `O(C * D)` |
+
+## Code Implementation
+
+
+```python
+# Conceptual Naive Bayes Classifier equation
+# P(y | X) = [ P(X | y) * P(y) ] / P(X)
+# Under independent feature assumption:
+# P(y | x1, ..., xn) proportional to P(y) * Prod( P(xi | y) )
+
+def calculate_naive_bayes_posterior(class_prior, feature_likelihoods, input_features):
+    score = math.log(class_prior)
+    for idx, feature_val in enumerate(input_features):
+        # Add logs of conditional likelihoods to prevent underflow
+        score += math.log(feature_likelihoods[idx].get(feature_val, 1e-6))
+    return score
+```
+
+## Real-World Applications
+
+* Email spam filtering (e.g. classifying text as spam or ham).
+* Sentiment analysis in social feeds.
+* Real-time multi-class classification tasks.

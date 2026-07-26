@@ -1,0 +1,35 @@
+---
+title: "GPT"
+description: "Generative Pre-trained Transformer (GPT) is a decoder-only Transformer model. It is pre-trained on text corpora to predict the next token given preceding context. It uses causal attention masks to ensure tokens only attend to previous positions during training, enabling rapid auto-regressive generation."
+---
+
+# GPT
+
+> Generative Pre-trained Transformer (GPT) is a decoder-only Transformer model. It is pre-trained on text corpora to predict the next token given preceding context. It uses causal attention masks to ensure tokens only attend to previous positions during training, enabling rapid auto-regressive generation.
+
+## Complexity Profile
+
+| Case | Complexity |
+| :--- | :--- |
+| Best Case | `O(N^2 * D)` |
+| Average Case | `O(N^2 * D)` |
+| Worst Case | `O(N^2 * D)` |
+| Space Complexity | `O(N^2)` |
+
+## Code Implementation
+
+
+```python
+# Conceptual block of Causal/Masked Self-Attention in GPT
+# The causal mask is a lower-triangular matrix of ones
+def causal_attention_mask(seq_len):
+    # Returns a mask matrix where upper-triangular index weights are -inf
+    mask = torch.triu(torch.full((seq_len, seq_len), float('-inf')), diagonal=1)
+    return mask
+```
+
+## Real-World Applications
+
+* Generative chat bots and code completion services (Copilot).
+* Synthetic dataset generation workflows.
+* Text summarization, translation, and general instruction following.

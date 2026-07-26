@@ -1,0 +1,36 @@
+---
+title: "BM25"
+description: "BM25 (Best Matching 25) is a ranking function used by search engines to estimate the relevance of documents to a search query. It enhances basic TF-IDF by incorporating document length normalization ($b$) and term frequency saturation ($k_1$), preventing document lengths from biasing similarity scores."
+---
+
+# BM25
+
+> BM25 (Best Matching 25) is a ranking function used by search engines to estimate the relevance of documents to a search query. It enhances basic TF-IDF by incorporating document length normalization ($b$) and term frequency saturation ($k_1$), preventing document lengths from biasing similarity scores.
+
+## Complexity Profile
+
+| Case | Complexity |
+| :--- | :--- |
+| Best Case | `O(Q)` |
+| Average Case | `O(Q)` |
+| Worst Case | `O(Q)` |
+| Space Complexity | `O(V)` |
+
+## Code Implementation
+
+
+```python
+import math
+
+def bm25_term_weight(tf, doc_len, avg_doc_len, idf, k1=1.5, b=0.75):
+    # Calculates BM25 score for a single term in a document
+    numerator = tf * (k1 + 1)
+    denominator = tf + k1 * (1.0 - b + b * (doc_len / avg_doc_len))
+    return idf * (numerator / denominator)
+```
+
+## Real-World Applications
+
+* Elasticsearch keyword matching engine default configuration.
+* Keyword-based index ranking in document management systems.
+* First-stage retrieval in multi-tier search engine architectures.

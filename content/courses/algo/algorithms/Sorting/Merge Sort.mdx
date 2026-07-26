@@ -1,0 +1,59 @@
+---
+title: "Merge Sort"
+description: "Merge Sort is a stable, divide-and-conquer sorting algorithm. It recursively splits the input array into two halves, sorts each half individually, and merges the sorted sub-arrays. It ensures consistent O(N log N) speeds, though it requires auxiliary memory to merge elements."
+---
+
+# Merge Sort
+
+> Merge Sort is a stable, divide-and-conquer sorting algorithm. It recursively splits the input array into two halves, sorts each half individually, and merges the sorted sub-arrays. It ensures consistent O(N log N) speeds, though it requires auxiliary memory to merge elements.
+
+## Complexity Profile
+
+| Case | Complexity |
+| :--- | :--- |
+| Best Case | `O(N log N)` |
+| Average Case | `O(N log N)` |
+| Worst Case | `O(N log N)` |
+| Space Complexity | `O(N)` |
+
+## Code Implementation
+
+
+```python
+def merge_sort(arr):
+    if len(arr) <= 1:
+        return arr
+        
+    mid = len(arr) // 2
+    left = merge_sort(arr[:mid])
+    right = merge_sort(arr[mid:])
+    
+    return merge(left, right)
+
+def merge(left, right):
+    result = []
+    i = j = 0
+    
+    while i < len(left) and j < len(right):
+        if left[i] < right[j]:
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+            
+    result.extend(left[i:])
+    result.extend(right[j:])
+    return result
+```
+
+## Real-World Applications
+
+* Sorting linked lists without access penalty.
+* External sorting where dataset exceeds system memory capabilities.
+* E-commerce sorting systems requiring stable matching order.
+
+## Architectural Analysis
+
+> [!tip] Deep Dive
+> Best sorting algorithm when stability (preserving order of duplicate values) is required and worst-case O(N log N) performance is a strict requirement. Unlike Quick Sort, which can degrade to O(N^2) for pre-sorted or adversarial inputs, Merge Sort guarantees consistent O(N log N) speed at the expense of O(N) temporary space.

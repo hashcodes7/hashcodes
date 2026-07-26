@@ -1,0 +1,49 @@
+---
+title: "Binary Search"
+description: "Binary search is an efficient search algorithm that works on pre-sorted arrays. It repeatedly splits the search interval in half. If the target value is less than the middle element, it narrows the interval to the lower half; otherwise, it limits it to the upper half, repeating the split until the value is found or the interval is empty."
+---
+
+# Binary Search
+
+> Binary search is an efficient search algorithm that works on pre-sorted arrays. It repeatedly splits the search interval in half. If the target value is less than the middle element, it narrows the interval to the lower half; otherwise, it limits it to the upper half, repeating the split until the value is found or the interval is empty.
+
+## Complexity Profile
+
+| Case | Complexity |
+| :--- | :--- |
+| Best Case | `O(1)` |
+| Average Case | `O(log N)` |
+| Worst Case | `O(log N)` |
+| Space Complexity | `O(1)` |
+
+## Code Implementation
+
+
+```python
+def binary_search(arr, target):
+    left = 0
+    right = len(arr) - 1
+
+    while left <= right:
+        mid = (left + right) // 2
+        
+        if arr[mid] == target:
+            return mid  # Element found
+        elif arr[mid] < target:
+            left = mid + 1  # Discard left half
+        else:
+            right = mid - 1  # Discard right half
+            
+    return -1  # Element not found
+```
+
+## Real-World Applications
+
+* Locating elements inside databases and index tables.
+* Locating compiler dictionary tokens during tokenization.
+* Finding numerical roots via numerical analysis approximation.
+
+## Architectural Analysis
+
+> [!tip] Deep Dive
+> Best search algorithm for static sorted arrays. By dividing the search interval in half with each iteration, Binary Search reduces the search space exponentially, yielding O(log N) average and worst-case time complexity. It outperforms linear scans dramatically for large datasets while maintaining O(1) auxiliary space.

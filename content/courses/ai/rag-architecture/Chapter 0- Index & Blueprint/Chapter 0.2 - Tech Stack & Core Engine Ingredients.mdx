@@ -1,0 +1,17 @@
+---
+title: "Chapter 0.2 - Tech Stack & Core Engine Ingredients"
+description: "Overview of libraries, embedding models, cross-encoders, and vector indices used in SourceIQ"
+---
+
+## 
+              🛠️ SourceIQ Tech Stack & Core Engine Ingredients
+            
+
+            The SourceIQ engine is built around a hybrid Python pipeline designed for low-latency, privacy-first corporate execution:
+            <ul style={{ paddingLeft: "1.5rem", lineHeight: "1.8", color: "var(--text-secondary)", marginTop: "1rem" }}>
+              <li>**Vector Database (FAISS HNSW):** Uses `faiss.IndexHNSWFlat` for ultra-fast Hierarchical Navigable Small World graph search with inner product cosine distance ($M=32, \text{efConstruction}=200, \text{efSearch}=64$).</li>
+              <li>**Bi-Encoder Embedding Model:** Powered by `sentence-transformers` (e.g., `all-MiniLM-L6-v2` or `bge-small-en-v1.5`) producing 384-dimensional dense semantic vectors normalized via L2 norm.</li>
+              <li>**Cross-Encoder Reranker:** Uses `cross-encoder/ms-marco-MiniLM-L-6-v2` to perform full attention scoring over query-chunk pairs, overcoming Bi-Encoder representation bottlenecks.</li>
+              <li>**Lexical Search (SimpleBM25):** Custom Python implementation calculating Inverse Document Frequency (IDF) and term saturation ($k_1=1.5, b=0.75$).</li>
+              <li>**Local LLM Inference Engine:** Supports HuggingFace Transformers (with 4-bit/8-bit BitsAndBytes quantization) and CPU-optimized `llama.cpp` GGUF models (Qwen, Llama 3.2, Phi-3.5). Also integrates Google Gemini API for cloud mode.</li>
+            </ul>

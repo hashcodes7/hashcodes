@@ -1,0 +1,9 @@
+{
+  "title": "Information Retrieval",
+  "pages": [
+    "BM25",
+    "Vector Search",
+    "HNSW",
+    "Hybrid Search"
+  ]
+}

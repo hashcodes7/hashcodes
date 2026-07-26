@@ -1,0 +1,55 @@
+---
+title: "Linear Regression"
+description: "Linear Regression is a supervised learning algorithm that models the relationship between a dependent variable ($Y$) and independent variables ($X$) by fitting a linear equation to observed data. It optimizes the slope coefficients by minimizing the Mean Squared Error (MSE) using Ordinary Least Squares (OLS) or Gradient Descent."
+---
+
+# Linear Regression
+
+> Linear Regression is a supervised learning algorithm that models the relationship between a dependent variable ($Y$) and independent variables ($X$) by fitting a linear equation to observed data. It optimizes the slope coefficients by minimizing the Mean Squared Error (MSE) using Ordinary Least Squares (OLS) or Gradient Descent.
+
+## Complexity Profile
+
+| Case | Complexity |
+| :--- | :--- |
+| Best Case | `O(P^2 * N)` |
+| Average Case | `O(P^2 * N)` |
+| Worst Case | `O(P^2 * N)` |
+| Space Complexity | `O(P)` |
+
+## Code Implementation
+
+
+```python
+import numpy as np
+
+class LinearRegressionGD:
+    def __init__(self, lr=0.01, epochs=1000):
+        self.lr = lr
+        self.epochs = epochs
+        self.weights = None
+        self.bias = None
+        
+    def fit(self, X, y):
+        n_samples, n_features = X.shape
+        self.weights = np.zeros(n_features)
+        self.bias = 0
+        
+        for _ in range(self.epochs):
+            y_pred = np.dot(X, self.weights) + self.bias
+            # Compute gradients
+            dw = (1 / n_samples) * np.dot(X.T, (y_pred - y))
+            db = (1 / n_samples) * np.sum(y_pred - y)
+            
+            # Update weights
+            self.weights -= self.lr * dw
+            self.bias -= self.lr * db
+            
+    def predict(self, X):
+        return np.dot(X, self.weights) + self.bias
+```
+
+## Real-World Applications
+
+* Economic forecasting (predicting house prices or retail sales volumes).
+* Trend lines analysis for scientific models.
+* Risk assessment tools in financial banking software.

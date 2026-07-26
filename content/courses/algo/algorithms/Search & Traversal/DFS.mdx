@@ -1,0 +1,42 @@
+---
+title: "DFS"
+description: "Depth-First Search (DFS) is a graph traversal algorithm that explores as deep as possible along each branch before backtracking. It relies on a LIFO Stack (or call stack recursion) to navigate vertices. DFS is essential for topological sorting, detecting cycles, and solving maze puzzles."
+---
+
+# DFS
+
+> Depth-First Search (DFS) is a graph traversal algorithm that explores as deep as possible along each branch before backtracking. It relies on a LIFO Stack (or call stack recursion) to navigate vertices. DFS is essential for topological sorting, detecting cycles, and solving maze puzzles.
+
+## Complexity Profile
+
+| Case | Complexity |
+| :--- | :--- |
+| Best Case | `O(V + E)` |
+| Average Case | `O(V + E)` |
+| Worst Case | `O(V + E)` |
+| Space Complexity | `O(V)` |
+
+## Code Implementation
+
+
+```python
+def depth_first_search(graph, node, visited=None):
+    if visited is None:
+        visited = set()
+        
+    if node in visited:
+        return
+        
+    visited.add(node)
+    print("Visited node:", node)
+    
+    for neighbor in graph.get(node, []):
+        if neighbor not in visited:
+            depth_first_search(graph, neighbor, visited)
+```
+
+## Real-World Applications
+
+* Topological sorting in compiler dependencies.
+* Detecting cycles in directed/undirected graphs.
+* Solving mazes, puzzles, and back-tracking constraint problems.

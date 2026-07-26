@@ -1,0 +1,39 @@
+---
+title: "HNSW"
+description: "Hierarchical Navigable Small World (HNSW) is a graph-based data structure for Approximate Nearest Neighbor (ANN) search. It builds a multi-layered hierarchy of proximity graphs. The top layer has long-range links for fast global routing, while the bottom layer has short-range links for local accuracy."
+---
+
+# HNSW
+
+> Hierarchical Navigable Small World (HNSW) is a graph-based data structure for Approximate Nearest Neighbor (ANN) search. It builds a multi-layered hierarchy of proximity graphs. The top layer has long-range links for fast global routing, while the bottom layer has short-range links for local accuracy.
+
+## Complexity Profile
+
+| Case | Complexity |
+| :--- | :--- |
+| Best Case | `O(log N)` |
+| Average Case | `O(log N)` |
+| Worst Case | `O(N)` |
+| Space Complexity | `O(N * D + M * N)` |
+
+## Code Implementation
+
+
+```python
+# Conceptual traversal of HNSW layers
+def search_hnsw(query, index, k):
+    enter_point = index.enter_node
+    # Traverse from top layer down to bottom layer
+    for layer in reversed(range(index.num_layers)):
+        enter_point = search_layer(query, enter_point, ef=1, layer=layer)
+        
+    # Get top-k nearest neighbors on bottom layer
+    nearest_neighbors = search_layer(query, enter_point, ef=index.ef_search, layer=0)
+    return nearest_neighbors[:k]
+```
+
+## Real-World Applications
+
+* High-performance vector databases (Milvus, Pinecone, Qdrant).
+* Million-scale semantic search systems requiring sub-50ms latencies.
+* Large-scale recommendation system index engines.

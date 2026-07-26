@@ -7,18 +7,24 @@
     "node": ">=24.0.0"
   },
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "dev": "next dev",
+    "build": "fumadocs-mdx && next build",
+    "start": "next start",
+    "lint": "next lint",
+    "postinstall": "fumadocs-mdx"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.6.1",
+    "@types/mdx": "^2.0.14",
     "framer-motion": "^12.40.0",
+    "fumadocs-core": "^16.12.1",
+    "fumadocs-mdx": "^15.2.0",
+    "fumadocs-ui": "^16.12.1",
     "katex": "^0.17.0",
     "lucide-react": "^1.16.0",
     "mermaid": "^11.16.0",
+    "next": "^16.2.11",
     "puppeteer": "^25.2.1",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",

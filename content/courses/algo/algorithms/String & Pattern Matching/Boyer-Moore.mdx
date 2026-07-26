@@ -1,0 +1,60 @@
+---
+title: "Boyer-Moore"
+description: "Boyer-Moore is a highly efficient string matching algorithm that serves as the standard for practical text searches. It skips comparisons by processing the pattern from right to left, utilizing the Bad Character Heuristic and Good Suffix Heuristic to shift the pattern across the text by large intervals upon character mismatches."
+---
+
+# Boyer-Moore
+
+> Boyer-Moore is a highly efficient string matching algorithm that serves as the standard for practical text searches. It skips comparisons by processing the pattern from right to left, utilizing the Bad Character Heuristic and Good Suffix Heuristic to shift the pattern across the text by large intervals upon character mismatches.
+
+## Complexity Profile
+
+| Case | Complexity |
+| :--- | :--- |
+| Best Case | `O(N / M)` |
+| Average Case | `O(N / M)` |
+| Worst Case | `O(N * M)` |
+| Space Complexity | `O(Σ)` |
+
+## Code Implementation
+
+
+```python
+def boyer_moore_search(text, pattern):
+    m = len(pattern)
+    n = len(text)
+    if m == 0: return 0
+    
+    # Preprocess Bad Character Table
+    bad_char = {}
+    for i in range(m):
+        bad_char[pattern[i]] = i
+        
+    s = 0  # s is shift of the pattern with respect to text
+    while s <= n - m:
+        j = m - 1
+        
+        # Keep reducing j while characters match
+        while j >= 0 and pattern[j] == text[s + j]:
+            j -= 1
+            
+        if j < 0:
+            return s  # Match found at shift s
+        else:
+            # Shift pattern using Bad Character Heuristic
+            bad_char_val = bad_char.get(text[s + j], -1)
+            s += max(1, j - bad_char_val)
+            
+    return -1
+```
+
+## Real-World Applications
+
+* GNU grep utility implementation (searches text files at raw hardware speed).
+* Integrated search engine queries inside text editors (VS Code / Sublime).
+* Network intrusion detection systems searching signature packets.
+
+## Architectural Analysis
+
+> [!tip] Deep Dive
+> Best exact string matching algorithm. By scanning the search pattern from right-to-left, Boyer-Moore shifts past entire text segments when a mismatch occurs. This enables a sublinear average complexity of O(N/M) in practice, far outperforming naive search and KMP for larger alphabets.

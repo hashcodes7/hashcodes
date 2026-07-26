@@ -1,0 +1,44 @@
+---
+title: "BFS"
+description: "Breadth-First Search (BFS) is a graph traversal algorithm that explores nodes level-by-level, visiting all neighbor nodes at the current depth before moving deeper. It employs a FIFO Queue to orchestrate vertex traversal. BFS is guaranteed to discover the shortest path in unweighted graphs."
+---
+
+# BFS
+
+> Breadth-First Search (BFS) is a graph traversal algorithm that explores nodes level-by-level, visiting all neighbor nodes at the current depth before moving deeper. It employs a FIFO Queue to orchestrate vertex traversal. BFS is guaranteed to discover the shortest path in unweighted graphs.
+
+## Complexity Profile
+
+| Case | Complexity |
+| :--- | :--- |
+| Best Case | `O(V + E)` |
+| Average Case | `O(V + E)` |
+| Worst Case | `O(V + E)` |
+| Space Complexity | `O(V)` |
+
+## Code Implementation
+
+
+```python
+from collections import deque
+
+def breadth_first_search(graph, start_node):
+    visited = set()
+    queue = deque([start_node])
+    visited.add(start_node)
+    
+    while queue:
+        current = queue.popleft()  # Dequeue
+        print("Visited node:", current)
+        
+        for neighbor in graph.get(current, []):
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append(neighbor)  # Enqueue
+```
+
+## Real-World Applications
+
+* Finding shortest path in unweighted networks.
+* Social network analysis (finding friends within degrees of connection).
+* Web crawlers indexing local links level by level.

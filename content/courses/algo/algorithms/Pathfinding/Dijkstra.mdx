@@ -1,0 +1,50 @@
+---
+title: "Dijkstra"
+description: "Dijkstra's algorithm finds the shortest paths from a single source node to all other nodes in a weighted graph with non-negative edge weights. It acts as a greedy algorithm, maintaining a priority queue of candidate vertices and relaxing paths continuously."
+---
+
+# Dijkstra
+
+> Dijkstra's algorithm finds the shortest paths from a single source node to all other nodes in a weighted graph with non-negative edge weights. It acts as a greedy algorithm, maintaining a priority queue of candidate vertices and relaxing paths continuously.
+
+## Complexity Profile
+
+| Case | Complexity |
+| :--- | :--- |
+| Best Case | `O((V + E) log V)` |
+| Average Case | `O((V + E) log V)` |
+| Worst Case | `O(V^2)` |
+| Space Complexity | `O(V)` |
+
+## Code Implementation
+
+
+```python
+import heapq
+
+def dijkstra(graph, start):
+    # graph is {node: {neighbor: weight}}
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    pq = [(0, start)]  # (distance, node)
+    
+    while pq:
+        current_distance, current_node = heapq.heappop(pq)
+        
+        if current_distance > distances[current_node]:
+            continue
+            
+        for neighbor, weight in graph[current_node].items():
+            distance = current_distance + weight
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+                heapq.heappush(pq, (distance, neighbor))
+                
+    return distances
+```
+
+## Real-World Applications
+
+* GPS network routing interfaces (maps directions).
+* Network packet routing protocols (OSPF).
+* Sewerage or power grid path flow optimization.

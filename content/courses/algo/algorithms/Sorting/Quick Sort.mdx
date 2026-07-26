@@ -1,0 +1,37 @@
+---
+title: "Quick Sort"
+description: "Quick Sort is a divide-and-conquer sorting algorithm. It selects a 'pivot' element and partitions the array such that elements smaller than the pivot go to the left, and larger ones go to the right, before recursively sorting the sub-arrays. Highly efficient in-place sorting utility."
+---
+
+# Quick Sort
+
+> Quick Sort is a divide-and-conquer sorting algorithm. It selects a 'pivot' element and partitions the array such that elements smaller than the pivot go to the left, and larger ones go to the right, before recursively sorting the sub-arrays. Highly efficient in-place sorting utility.
+
+## Complexity Profile
+
+| Case | Complexity |
+| :--- | :--- |
+| Best Case | `O(N log N)` |
+| Average Case | `O(N log N)` |
+| Worst Case | `O(N^2)` |
+| Space Complexity | `O(log N)` |
+
+## Code Implementation
+
+
+```python
+def quick_sort(arr):
+    if len(arr) <= 1:
+        return arr
+    pivot = arr[len(arr) // 2]
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+    return quick_sort(left) + middle + quick_sort(right)
+```
+
+## Real-World Applications
+
+* In-place sorting library functions (e.g. C standard library qsort).
+* Embedded microchips with highly restrictive RAM specifications.
+* Real-time rendering systems where sorting speed is critical.

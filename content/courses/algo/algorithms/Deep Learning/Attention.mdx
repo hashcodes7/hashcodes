@@ -1,0 +1,44 @@
+---
+title: "Attention"
+description: "Scaled Dot-Product Attention calculates relevance scores between sequence elements. It takes Query (Q), Key (K), and Value (V) matrices, computes dot products of Q and K, scales them by the square root of query dimension, applies Softmax to yield attention weights, and multiplies the weights with V."
+---
+
+# Attention
+
+> Scaled Dot-Product Attention calculates relevance scores between sequence elements. It takes Query (Q), Key (K), and Value (V) matrices, computes dot products of Q and K, scales them by the square root of query dimension, applies Softmax to yield attention weights, and multiplies the weights with V.
+
+## Complexity Profile
+
+| Case | Complexity |
+| :--- | :--- |
+| Best Case | `O(N^2 * D)` |
+| Average Case | `O(N^2 * D)` |
+| Worst Case | `O(N^2 * D)` |
+| Space Complexity | `O(N^2)` |
+
+## Code Implementation
+
+
+```python
+import torch
+import torch.nn as nn
+import math
+
+def attention(Q, K, V, mask=None):
+    # Q, K, V shape: [batch, heads, seq_len, dim]
+    d_k = Q.size(-1)
+    scores = torch.matmul(Q, K.transpose(-2, -1)) / math.sqrt(d_k)
+    
+    if mask is not None:
+        scores = scores.masked_fill(mask == 0, -1e9)
+        
+    attn_weights = torch.softmax(scores, dim=-1)
+    output = torch.matmul(attn_weights, V)
+    return output, attn_weights
+```
+
+## Real-World Applications
+
+* Transformer-based language translation pipelines.
+* Cross-attention in text-to-image diffusion models.
+* Vision Transformers encoding dependencies across image patches.

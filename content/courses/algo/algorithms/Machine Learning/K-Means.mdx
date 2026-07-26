@@ -1,0 +1,48 @@
+---
+title: "K-Means"
+description: "K-Means is a centroid-based clustering algorithm. It partitions $N$ observations into $K$ distinct clusters where each data point belongs to the cluster with the nearest mean (centroid). It repeats two steps: assigning points to the closest centroid, and recalculating centroids based on the average of all cluster members."
+---
+
+# K-Means
+
+> K-Means is a centroid-based clustering algorithm. It partitions $N$ observations into $K$ distinct clusters where each data point belongs to the cluster with the nearest mean (centroid). It repeats two steps: assigning points to the closest centroid, and recalculating centroids based on the average of all cluster members.
+
+## Complexity Profile
+
+| Case | Complexity |
+| :--- | :--- |
+| Best Case | `O(I * K * N * D)` |
+| Average Case | `O(I * K * N * D)` |
+| Worst Case | `O(I * K * N * D)` |
+| Space Complexity | `O(K * D + N)` |
+
+## Code Implementation
+
+
+```python
+import numpy as np
+
+def kmeans(X, k, max_iters=100):
+    # Initialize random centroids
+    centroids = X[np.random.choice(X.shape[0], k, replace=False)]
+    
+    for _ in range(max_iters):
+        # 1. Assign clusters based on Euclidean Distance
+        distances = np.linalg.norm(X[:, np.newaxis] - centroids, axis=2)
+        cluster_labels = np.argmin(distances, axis=1)
+        
+        # 2. Recalculate centroids
+        new_centroids = np.array([X[cluster_labels == i].mean(axis=0) for i in range(k)])
+        
+        if np.allclose(centroids, new_centroids):
+            break # Convergence reached
+        centroids = new_centroids
+        
+    return centroids, cluster_labels
+```
+
+## Real-World Applications
+
+* Customer profiling and market segmentation clusters.
+* Image quantization and color compression pipelines.
+* Anomaly detection by identifying points far from cluster centroids.

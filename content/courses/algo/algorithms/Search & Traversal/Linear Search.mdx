@@ -1,0 +1,34 @@
+---
+title: "Linear Search"
+description: "Linear search is the simplest search algorithm. It scans elements of a sequence sequentially, one by one, checking whether the target element matches the current element. This is useful for unsorted arrays or when data is simple and unsorted, though highly inefficient for larger arrays."
+---
+
+# Linear Search
+
+> Linear search is the simplest search algorithm. It scans elements of a sequence sequentially, one by one, checking whether the target element matches the current element. This is useful for unsorted arrays or when data is simple and unsorted, though highly inefficient for larger arrays.
+
+## Complexity Profile
+
+| Case | Complexity |
+| :--- | :--- |
+| Best Case | `O(1)` |
+| Average Case | `O(N)` |
+| Worst Case | `O(N)` |
+| Space Complexity | `O(1)` |
+
+## Code Implementation
+
+
+```python
+def linear_search(arr, target):
+    for i in range(len(arr)):
+        if arr[i] == target:
+            return i  # Target index found
+    return -1  # Target not found
+```
+
+## Real-World Applications
+
+* Searching in unsorted collections.
+* Small datasets where overhead of sorting exceeds search time.
+* Input validation and checking presence in basic arrays.

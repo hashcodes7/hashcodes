@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 
 export default function MatrixMultiplicationVisualizer({ matrixA, matrixB, nameA = "A", nameB = "B", nameRes = "AB" }) {

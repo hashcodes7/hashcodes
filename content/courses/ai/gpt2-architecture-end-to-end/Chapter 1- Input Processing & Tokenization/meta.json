@@ -1,0 +1,9 @@
+{
+  "title": "Chapter 1: Input Processing & Tokenization",
+  "pages": [
+    "Chapter 1 Tokenizing Text",
+    "Chapter 2 Data Sampling",
+    "Chapter 3 Creating Token Embeddings",
+    "Chapter 4 Encoding Positional Embeddings"
+  ]
+}

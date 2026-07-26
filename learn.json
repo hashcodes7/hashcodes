@@ -1,0 +1,272 @@
+{
+  "learn": [
+    {
+      "id": "ai",
+      "title": "Artificial Intelligence",
+      "badge": "AI",
+      "description": "Neural networks, computer vision, and generative models.",
+      "courses": [
+        {
+          "id": "gpt2-architecture-end-to-end",
+          "title": "GPT 2 Architecture End to End",
+          "folder": "courses/ai/gpt2-architecture-end-to-end",
+          "chapters": [
+            {
+              "name": "Chapter 1: Input Processing & Tokenization",
+              "children": [
+                "Chapter 1 Tokenizing Text",
+                "Chapter 2 Data Sampling",
+                "Chapter 3 Creating Token Embeddings",
+                "Chapter 4 Encoding Positional Embeddings"
+              ]
+            },
+            {
+              "name": "Chapter 2: Scaled Dot Attention Core Mechanics",
+              "children": [
+                "Chapter 5.1 - Dot Products",
+                "Chapter 5.2 - Matrix Multiplication",
+                "Chapter 5.3 - attention scores",
+                "Chapter 5.4 - normalization",
+                "Chapter 5.5 - context vector",
+                "Chapter 5.6 - full matrix conversion"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "rag-architecture",
+          "title": "RAG Architecture",
+          "folder": "courses/ai/rag-architecture",
+          "chapters": [
+            {
+              "name": "Chapter 0: Index & Blueprint",
+              "children": [
+                "Chapter 0 Index & Architecture Blueprint",
+                "Chapter 0.1 - Course Index & RAG Pipeline Blueprint",
+                "Chapter 0.2 - Tech Stack & Core Engine Ingredients"
+              ]
+            },
+            {
+              "name": "Chapter 1: Ingestion",
+              "children": [
+                "Chapter 1 Multi-Format Document Ingestion & Extraction",
+                "Chapter 1.1 - Multi-Format Parsing (.pdf, .docx, .html, .txt)",
+                "Chapter 1.2 - Structured Excel Spreadsheet Extraction"
+              ]
+            },
+            {
+              "name": "Chapter 2: Chunking Strategies",
+              "children": [
+                "Chapter 2 Chunking Strategies & Boundary Optimization",
+                "Chapter 2.1 - Recursive Overlapping Text Chunking",
+                "Chapter 2.2 - Semantic Sentence Boundary Chunking"
+              ]
+            },
+            {
+              "name": "Chapter 3: Hybrid Indexing",
+              "children": [
+                "Chapter 3 Dual-Stage Hybrid Indexing (FAISS + BM25)",
+                "Chapter 3.1 - Dense Vector Indexing (FAISS HNSW Flat)",
+                "Chapter 3.2 - Sparse Lexical Search with BM25"
+              ]
+            },
+            {
+              "name": "Chapter 4: Retrieval Fusion & Reranking",
+              "children": [
+                "Chapter 4 Advanced Retrieval Fusion & Reranking",
+                "Chapter 4.1 - Reciprocal Rank Fusion (RRF) & HyDE Query Expansion",
+                "Chapter 4.2 - Cross-Encoder Deep Reranking & Namespace Boosting"
+              ]
+            },
+            {
+              "name": "Chapter 5: Budgeting & Guardrails",
+              "children": [
+                "Chapter 5 Context Budgeting & Guardrails",
+                "Chapter 5.1 - Context Budgeting & Token Window Management",
+                "Chapter 5.2 - Corporate Prompt Guardrails & Hallucination Prevention"
+              ]
+            },
+            {
+              "name": "Chapter 6: Persistence",
+              "children": [
+                "Chapter 6 Persistence & Multi-User Architecture",
+                "Chapter 6.1 - Persistent Vector Cache & Hot Reloading",
+                "Chapter 6.2 - SQLite Persistent DB & PBKDF2 Password Auth"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "recommendation-systems",
+          "title": "Recommendation Systems",
+          "folder": "courses/ai/recommendation-systems",
+          "chapters": [
+            {
+              "name": "Chapter 1: Matrix Factorization",
+              "children": [
+                "Collaborative Filtering"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vision",
+      "title": "Computer Vision",
+      "badge": "VISION",
+      "description": "Image processing, spatial pattern recognition, and CNN architectures.",
+      "courses": [
+        {
+          "id": "core-vision-concepts",
+          "title": "Core Vision Concepts",
+          "folder": "courses/vision/core-vision-concepts",
+          "chapters": [
+            {
+              "name": "Chapter 1: CNNs",
+              "children": [
+                "Convolutional Neural Networks (CNNs)"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "flutter",
+      "title": "Flutter Mobile Development",
+      "badge": "FLUTTER",
+      "description": "Widget trees, state management paradigms, and cross-platform compilation.",
+      "courses": [
+        {
+          "id": "core-framework",
+          "title": "Core Framework",
+          "folder": "courses/flutter/core-framework",
+          "chapters": [
+            {
+              "name": "Chapter 1: Architecture Trees",
+              "children": [
+                "The Three Trees Architecture"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sys",
+      "title": "Systems & Architecture",
+      "badge": "SYS",
+      "description": "Microservices design, load balancing, databases, and distributed caching.",
+      "courses": [
+        {
+          "id": "distributed-systems",
+          "title": "Distributed Systems",
+          "folder": "courses/sys/distributed-systems",
+          "chapters": [
+            {
+              "name": "Chapter 1: Scaling Databases",
+              "children": [
+                "Database Partitioning & Sharding"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "algo",
+      "title": "Algorithms & Data Structures",
+      "badge": "ALGO",
+      "description": "Core algorithms, sorting techniques, and dynamic programming.",
+      "courses": [
+        {
+          "id": "algorithms",
+          "title": "Algorithms",
+          "folder": "courses/algo/algorithms",
+          "chapters": [
+            {
+              "name": "Search & Traversal",
+              "children": [
+                "Linear Search",
+                "Binary Search",
+                "BFS",
+                "DFS"
+              ]
+            },
+            {
+              "name": "Sorting",
+              "children": [
+                "Merge Sort",
+                "Quick Sort"
+              ]
+            },
+            {
+              "name": "Pathfinding",
+              "children": [
+                "Dijkstra",
+                "A_"
+              ]
+            },
+            {
+              "name": "String & Pattern Matching",
+              "children": [
+                "KMP",
+                "Trie",
+                "Boyer-Moore"
+              ]
+            },
+            {
+              "name": "Optimization",
+              "children": [
+                "Dynamic Programming"
+              ]
+            },
+            {
+              "name": "Machine Learning",
+              "children": [
+                "Linear Regression",
+                "K-Means",
+                "Naive Bayes"
+              ]
+            },
+            {
+              "name": "Information Retrieval",
+              "children": [
+                "BM25",
+                "Vector Search",
+                "HNSW",
+                "Hybrid Search"
+              ]
+            },
+            {
+              "name": "Deep Learning",
+              "children": [
+                "Attention",
+                "Transformers",
+                "GPT"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "datastructures",
+          "title": "Data Structures",
+          "folder": "courses/algo/datastructures",
+          "chapters": [
+            {
+              "name": "Primitive Structures",
+              "children": [
+                "Arrays",
+                "Strings",
+                "Hash Maps",
+                "Trees",
+                "Graphs"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

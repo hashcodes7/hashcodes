@@ -1,0 +1,27 @@
+---
+title: "Chapter 6.1 - Persistent Vector Cache & Hot Reloading"
+description: "Tracking document file modification timestamps for instantaneous incremental indexing"
+---
+
+## 
+              💾 Persistent Cache & Incremental Hot-Reloading (`file_registry.json`)
+            
+
+            Re-indexing large document repositories on startup is slow. SourceIQ maintains a `file_registry.json` tracking file modification timestamps (`mtime`).
+            
+```python
+# Compare disk mtimes against cached registry
+for relpath, mtime in current_files.items():
+    if relpath not in registry or mtime > registry.get(relpath, 0):
+        new_or_modified.append(relpath)
+
+# Only process and embed newly added or modified documents!
+if new_chunks_added:
+    new_embeds = self.embedder.encode(new_texts)
+    embeddings_np = np.concatenate([remaining_embeddings, new_embeds], axis=0)
+```
+
+            
+> [!success] Sub-Second System Startup
+> 
+              If no files have changed on disk, SourceIQ loads `faiss_index.bin` and `vector_cache.pt` instantly, bypassing document extraction and embedding generation!

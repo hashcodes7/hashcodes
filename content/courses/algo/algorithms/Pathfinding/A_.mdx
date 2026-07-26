@@ -1,0 +1,56 @@
+---
+title: "A*"
+description: "A* (A-Star) is a heuristic-guided pathfinding algorithm. It extends Dijkstra's by calculating f(n) = g(n) + h(n), where g(n) is the exact cost to reach node n, and h(n) is a heuristic estimating the distance from n to the goal. Best-first search that minimizes explored graph nodes."
+---
+
+# A*
+
+> A* (A-Star) is a heuristic-guided pathfinding algorithm. It extends Dijkstra's by calculating f(n) = g(n) + h(n), where g(n) is the exact cost to reach node n, and h(n) is a heuristic estimating the distance from n to the goal. Best-first search that minimizes explored graph nodes.
+
+## Complexity Profile
+
+| Case | Complexity |
+| :--- | :--- |
+| Best Case | `O(E)` |
+| Average Case | `O(b^d)` |
+| Worst Case | `O(V)` |
+| Space Complexity | `O(V)` |
+
+## Code Implementation
+
+
+```python
+import heapq
+
+def a_star_search(graph, start, goal, heuristic):
+    # heuristic is dict: {node: estimated_cost_to_goal}
+    pq = [(0, start)]  # (f_score, node)
+    g_score = {node: float('inf') for node in graph}
+    g_score[start] = 0
+    
+    while pq:
+        _, current = heapq.heappop(pq)
+        
+        if current == goal:
+            return g_score[goal]
+            
+        for neighbor, weight in graph[current].items():
+            tentative_g = g_score[current] + weight
+            if tentative_g < g_score[neighbor]:
+                g_score[neighbor] = tentative_g
+                f_score = tentative_g + heuristic.get(neighbor, 0)
+                heapq.heappush(pq, (f_score, neighbor))
+                
+    return None
+```
+
+## Real-World Applications
+
+* Game development AI movement patterns (pathfinding around obstacles).
+* Robotics navigational map solvers.
+* Route planning in real-world spatial geometries.
+
+## Architectural Analysis
+
+> [!tip] Deep Dive
+> Best single-source point-to-point pathfinding algorithm. By combining Dijkstra's exact edge-weight cost with a heuristic estimate of the remaining distance to the goal (f = g + h), it avoids exploring paths in incorrect directions. This slashes the search grid area, making it faster than Dijkstra in game AI and map navigation.

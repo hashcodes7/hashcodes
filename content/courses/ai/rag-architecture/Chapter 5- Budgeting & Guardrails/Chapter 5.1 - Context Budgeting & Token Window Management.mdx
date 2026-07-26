@@ -1,0 +1,21 @@
+---
+title: "Chapter 5.1 - Context Budgeting & Token Window Management"
+description: "Dynamically calculating token headroom to prevent context window overflow during streaming generation"
+---
+
+## 
+              📐 Context Window Budgeting Mechanics
+            
+
+            Passing excessive retrieved text into local LLMs risks context truncation or crash. SourceIQ calculates exact token headroom dynamically before calling generation:
+            
+```python
+# Dynamically measure system prompt + chat history token overhead
+skeleton_tokens = count_tokens(str(skeleton_messages))
+safety_headroom = max_tokens + 128
+max_context_tokens = max(512, limit_n_ctx - skeleton_tokens - safety_headroom)
+
+if context_tokens > max_context_tokens:
+    # Safely truncate context at line boundaries to fit exact budget
+    truncated_context = truncate_context_lines(context, max_context_tokens)
+```
