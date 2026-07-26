@@ -171,20 +171,8 @@ export default async function LearnPage(props) {
   );
 }
 
-import catalog from "../../../../learn.json";
-
 export async function generateStaticParams() {
-  const params = source.generateParams();
-  
-  // Also include the folder paths from the catalog so Next.js statically generates the redirect pages for course roots!
-  catalog.learn.forEach(category => {
-    category.courses.forEach(course => {
-      const folderSlug = course.folder.split('/').filter(Boolean);
-      params.push({ slug: folderSlug });
-    });
-  });
-  
-  return params;
+  return source.generateParams();
 }
 
 export async function generateMetadata(props) {

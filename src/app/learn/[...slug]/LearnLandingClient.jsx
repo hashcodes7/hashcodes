@@ -2,7 +2,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Brain, Monitor, Smartphone, Server, Code, ChevronRight } from "lucide-react";
-import catalog from "../../../../learn.json";
 
 const ICON_MAP = {
   ai: <Brain size={32} />,
@@ -12,7 +11,7 @@ const ICON_MAP = {
   algo: <Code size={32} />,
 };
 
-export default function LearnLandingClient() {
+export default function LearnLandingClient({ catalog }) {
   const [flippedIdx, setFlippedIdx] = useState(null);
   const [hoveredIdx, setHoveredIdx] = useState(null);
 
@@ -209,7 +208,8 @@ export default function LearnLandingClient() {
                   >
                     {cat.courses && cat.courses.length > 0 ? (
                       cat.courses.map((course) => {
-                        const coursePath = `/learn/${course.folder}`;
+                        // Use the exact resolved URL computed by the Server component, fallback to folder if not found
+                        const coursePath = course.resolvedUrl ? course.resolvedUrl : `/learn/${course.folder}`;
 
                         return (
                           <Link
