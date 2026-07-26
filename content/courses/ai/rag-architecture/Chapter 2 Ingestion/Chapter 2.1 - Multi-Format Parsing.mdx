@@ -1,0 +1,38 @@
+---
+title: "Chapter 2.1 - Multi-Format Parsing"
+description: "Extracting text from PDF, DOCX, and HTML."
+---
+
+# Chapter 2.1 - Multi-Format Parsing
+
+> [!info] 
+> Extracting text from PDF, DOCX, and HTML.
+
+To build a robust Knowledge Base, your RAG system must handle heterogeneous documents. We use a routing function that checks the file extension and applies the optimal library:
+
+```python
+
+def extract_text_from_file(filepath):
+    ext = os.path.splitext(filepath)[1].lower()
+    if ext == ".txt":
+        with open(filepath, "r", encoding="utf-8") as f:
+            return f.read()
+    elif ext == ".pdf":
+        text = ""
+        doc = fitz.open(filepath) # PyMuPDF
+        for page in doc:
+            text += page.get_text() + "\n"
+        return text
+    elif ext == ".docx":
+        doc = docx.Document(filepath) # python-docx
+        return "\n".join([para.text for para in doc.paragraphs])
+    elif ext == ".html":
+        from bs4 import BeautifulSoup
+        with open(filepath, "r", encoding="utf-8") as f:
+            soup = BeautifulSoup(f.read(), "html.parser")
+            return soup.get_text(separator="\n", strip=True)
+
+```
+
+> [!tip] Why PyMuPDF (fitz) Outperforms standard PDF Parsers
+> PyMuPDF operates directly on native PDF C-bindings, extracting multi-column text blocks up to 10x faster than pure-Python parsers while maintaining accurate reading orders.

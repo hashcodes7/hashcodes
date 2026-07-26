@@ -1,0 +1,34 @@
+---
+title: "Chapter 6.1 - Multi-Head Self-Attention"
+description: "Why have one brain when you can have many?"
+---
+
+# Chapter 6.1 - Multi-Head Self-Attention
+
+<Callout type="info" title="Overview">
+Looking at a painting with just one eye is okay, but looking with both eyes gives you depth! Multi-Head Attention is like giving our AI lots of eyes, so it can look at a sentence from many different perspectives at the exact same time.
+</Callout>
+
+---
+
+## 🎯 Why we do it
+<Callout type="info" title="Rationale">
+Sometimes a word can mean different things. In "The bank of the river," *bank* means land. In "The bank was robbed," *bank* means money. If the AI only has one "Attention Head", it might get confused. By having multiple heads, one head can look for places, another can look for money, and another can look for action!
+</Callout>
+
+## 🛠️ How we do it
+<Callout type="info" title="Methodology">
+Instead of doing the attention math once, we split our vectors into smaller pieces and give each piece to a different "Head". They all do their own little homework assignments independently. Once they are all done, we glue their answers back together!
+</Callout>
+
+```python
+# Imagine we have 8 dimensions
+word = [1, 2, 3, 4, 5, 6, 7, 8]
+
+# We split it for two heads!
+head_1 = [1, 2, 3, 4] # Head 1 looks at the first half
+head_2 = [5, 6, 7, 8] # Head 2 looks at the second half
+
+# They do their math, and then we glue it back!
+glued_together = head_1 + head_2
+```

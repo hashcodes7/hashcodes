@@ -1,8 +1,7 @@
 {
-  "title": "Machine Learning",
   "pages": [
-    "Linear Regression",
     "K-Means",
+    "Linear Regression",
     "Naive Bayes"
   ]
 }

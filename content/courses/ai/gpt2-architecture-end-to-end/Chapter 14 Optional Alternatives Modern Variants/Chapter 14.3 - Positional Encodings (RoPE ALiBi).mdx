@@ -1,0 +1,29 @@
+---
+title: "Chapter 14.3 - Positional Encodings"
+description: "Knowing where words belong (RoPE, ALiBi)"
+---
+
+# Chapter 14.3 - Positional Encodings (RoPE ALiBi)
+
+<Callout type="info" title="Overview">
+If I say "Dog bites man" or "Man bites dog", the words are the same, but the order changes everything! GPT-2 adds a number to each word to tell it its position. But modern models use a super cool spinning trick called **RoPE**!
+</Callout>
+
+---
+
+## 🎯 Why we do it
+<Callout type="info" title="Rationale">
+Old models could only read short paragraphs because they ran out of position numbers. **RoPE** (Rotary Position Embedding) physically "spins" the vectors in a circle based on their position. This lets modern models read entire books (like 100,000 words) without forgetting the order!
+</Callout>
+
+## 🛠️ How we do it
+<Callout type="info" title="Methodology">
+Imagine your vector is the hour hand on a clock. If a word is at position 1, we rotate the hand 10 degrees. If it's at position 2, we rotate it 20 degrees. The AI can just look at the angle of the hand to know exactly where the word is!
+</Callout>
+
+```python
+print("Word 1: Rotating 10 degrees...")
+print("Word 2: Rotating 20 degrees...")
+print("Word 3: Rotating 30 degrees...")
+print("The AI now knows the exact order without doing extra math!")
+```

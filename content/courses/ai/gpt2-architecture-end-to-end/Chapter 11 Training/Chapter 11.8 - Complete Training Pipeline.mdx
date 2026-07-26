@@ -1,0 +1,269 @@
+---
+title: "Chapter 11.8 - Complete Training Pipeline"
+description: "The content will be uploaded soon"
+---
+
+# Chapter 11.8 - Complete Training Pipeline
+
+<Callout type="info" title="Under Construction">
+  The content will be uploaded soon. Stay tuned!
+</Callout>
+
+
+---
+
+
+<Callout type="info" title="Overview">
+Here we will talk about training a LLM based on its Loss function
+</Callout>
+
+---
+
+## 🛠️What we need
+
+$$
+\begin{array}{ccc}
+\color{blue}{\Large\textbf{Inputs}}
+&
+&
+\color{green}{\Large\textbf{Targets (shifted by 1 place)}}
+\\[0.6em]
+
+\begin{bmatrix}
+I & had & always & Thought \\
+Jack & Gisburn & rather & a
+\end{bmatrix}
+
+&
+\color{orange}{\Longrightarrow}
+
+&
+\begin{bmatrix}
+had & always & Thought & Jack \\
+Gisburn & rather & a & Cheap
+\end{bmatrix}
+
+\end{array}
+$$
+
+## 🛠️What we have currently
+
+$$
+\begin{array}{cc}
+
+\color{RoyalBlue}{\Large\textbf{Inputs}}
+&
+\color{ForestGreen}{\Large\textbf{Output Logits}}
+\\[0.8em]
+
+\begin{bmatrix}
+I & had & always & Thought\\
+Jack & Gisburn & rather & a
+\end{bmatrix}
+
+&
+\color{orange}{\Longrightarrow}
+&
+\left[
+\begin{array}{c}
+
+\left[
+\begin{array}{c}
+I       \rightarrow [v_1,v_2,\ldots,v_{50257}]\\
+had     \rightarrow [v_1,v_2,\ldots,v_{50257}]\\
+always  \rightarrow [v_1,v_2,\ldots,v_{50257}]\\
+Thought \rightarrow [v_1,v_2,\ldots,v_{50257}]
+\end{array}
+\right]
+
+\\[1.5em]
+
+\left[
+\begin{array}{c}
+Jack    \rightarrow [v_1,v_2,\ldots,v_{50257}]\\
+Gisburn \rightarrow [v_1,v_2,\ldots,v_{50257}]\\
+rather  \rightarrow [v_1,v_2,\ldots,v_{50257}]\\
+a       \rightarrow [v_1,v_2,\ldots,v_{50257}]
+\end{array}
+\right]
+
+\end{array}
+\right]
+
+\end{array}
+$$
+## ⚙️ Understanding the size
+- **1 Input Batch**
+    - contains **2 samples/sequences**
+    - each sequence contains **4 tokens**
+Similarly:
+- **1 Output Batch**
+    - contains **2 output samples**/sequences
+    - each output sequence contains **4 logit vectors**
+    - each logit vector has **50,257 values**
+## ⚙️ Flattening the Logits Output
+$$
+\begin{array}{ccc}
+
+\color{RoyalBlue}{\Large\textbf{Output Tensor}}
+&
+\color{DarkOrange}{\Large\Longrightarrow}
+&
+\color{ForestGreen}{\Large\textbf{Flattened Output Tensor}}
+\\[1em]
+
+\left[
+\begin{array}{c}
+
+\left[
+\begin{array}{l}
+I       \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]\\
+had     \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]\\
+always  \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]\\
+Thought \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]
+\end{array}
+\right]
+
+\\[1.3em]
+
+\left[
+\begin{array}{l}
+Jack    \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]\\
+Gisburn \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]\\
+rather  \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]\\
+a       \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]
+\end{array}
+\right]
+
+\end{array}
+\right]
+
+&
+&
+\left[
+\begin{array}{l}
+I       \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]\\
+had     \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]\\
+always  \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]\\
+Thought \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]\\
+Jack    \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]\\
+Gisburn \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]\\
+rather  \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]\\
+a       \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]
+\end{array}
+\right]
+
+\\[1em]
+
+\color{gray}{\text{Shape }(2,4,50257)}
+&
+&
+\color{gray}{\text{Shape }(8,50257)}
+
+\end{array}
+$$
+## ⚙️ Softmaxing the logits tensor
+$$
+\begin{array}{ccc}
+
+\color{RoyalBlue}{\Large\textbf{Flattened Output Tensor}}
+&
+\color{DarkOrange}{\Large\Longrightarrow}
+&
+\color{ForestGreen}{\Large\textbf{Softmaxed Output Tensor}}
+\\[1em]
+
+\left[
+\begin{array}{l}
+I       \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]\\
+had     \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]\\
+always  \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]\\
+Thought \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]\\
+Jack    \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]\\
+Gisburn \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]\\
+rather  \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]\\
+a       \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]
+\end{array}
+\right]
+
+&
+&
+\left[
+\begin{array}{l}
+I       \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]\\
+had     \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]\\
+always  \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]\\
+Thought \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]\\
+Jack    \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]\\
+Gisburn \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]\\
+rather  \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]\\
+a       \rightarrow [v_1,v_2,v_3,\ldots,v_{50257}]
+\end{array}
+\right]
+
+\\[1em]
+
+\color{gray}{\text{Shape }(8,50257)}
+&
+&
+\color{gray}{\text{Shape }(8,50257)}
+
+\end{array}
+$$
+
+---
+
+Explanation till now
+- basically firstly now its softmaxed and sum =1 so we can say these are probability of next word
+
+- we call it like if we look at 2nd Row, had : then we have access to its previous words also. so it would be that if "I had" is the input ,  [v1,v2,v3....v50257] is the probability of each word 
+
+- since next word is "always". so lets say according to vocabulary that word comes at 591th place.
+- v<sub>591</sub> =probability of "always" =should be maximum
+
+- If its not the maximum, we atleast want it to be the maximum because its the actual real next word
+# Training
+lets say we have this sentance
+```
+Although the weather forecast predicted heavy rain throughout the afternoon
+```
+
+how many inputs we will take in 1 training set is called <span style={{color:"#4FC3F7"}}><b>context length</b></span>.
+
+so if context length is =4 we will take 
+
+| **Input**                     | **Target**                     |
+| ----------------------------- | ------------------------------ |
+| Although the weather forecast | the weather forecast predicted |
+similarly we make it for each sentance.
+and we get total of <span style={{color:"#4FC3F7"}}><b>6 training sets</b></span>.
+
+| **Training Set** | **Input**                        | **Target**                       |
+| ---------------- | -------------------------------- | -------------------------------- |
+| 1                | Although the weather forecast    | the weather forecast predicted   |
+| 2                | the weather forecast predicted   | weather forecast predicted heavy |
+| 3                | weather forecast predicted heavy | forecast predicted heavy rain    |
+| 4                | forecast predicted heavy rain    | predicted heavy rain throughout  |
+| 5                | predicted heavy rain throughout  | heavy rain throughout the        |
+| 6                | heavy rain throughout the        | rain throughout the afternoon    |
+
+taking each example through 1 generation cycle is waste of resources so we group them in batches. lets say we took 1 batch = 2 training sets so 6/2= 3 batches will be made
+the 3 batches are :
+- ### batch 1 :
+| **Training Set** | **Input**                      | **Target**                       |
+| ---------------- | ------------------------------ | -------------------------------- |
+| 1                | Although the weather forecast  | the weather forecast predicted   |
+| 2                | the weather forecast predicted | weather forecast predicted heavy |
+- ### batch 2 :
+| **Training Set** | **Input**                        | **Target**                      |
+| ---------------- | -------------------------------- | ------------------------------- |
+| 3                | weather forecast predicted heavy | forecast predicted heavy rain   |
+| 4                | forecast predicted heavy rain    | predicted heavy rain throughout |
+
+- ### batch 3 :
+| **Training Set** | **Input**                              | **Target**                              |
+| ---------------- | -------------------------------------- | --------------------------------------- |
+| 5                | predicted heavy rain throughout        | heavy rain throughout the               |
+| 6                | heavy rain throughout the              | rain throughout the afternoon           |
+so the training sets overlap, this is called <span style={{color:"#4FC3F7"}}><b>stride</b></span>. so since we shifted input 2 from input 1 by 1 token, stride =1 in our case. (most overlapping, this is best way).
+- A **stride of 1** gives the **maximum overlap**, which is the most common and generally the best approach for training LLMs.

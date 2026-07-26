@@ -1,9 +1,8 @@
 {
-  "title": "Search & Traversal",
   "pages": [
-    "Linear Search",
-    "Binary Search",
     "BFS",
-    "DFS"
+    "Binary Search",
+    "DFS",
+    "Linear Search"
   ]
 }

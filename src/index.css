@@ -16,13 +16,16 @@
 
 [data-theme="light"] {
   /* Soothing sand-paper themed light mode - low glare, easy on the eyes */
-  --bg-color: #e8e6e1; /* Pleasant off-white sand color */
+  --bg-color: #e8e6e1;
+  /* Pleasant off-white sand color */
   --text-primary: #1c1c1c;
   --text-secondary: #4b5563;
-  --glass-bg: rgba(255, 255, 255, 0.68); /* Softer white cards on top of sand background */
+  --glass-bg: rgba(255, 255, 255, 0.68);
+  /* Softer white cards on top of sand background */
   --glass-border: rgba(0, 0, 0, 0.06);
   --glass-shadow: rgba(0, 0, 0, 0.04);
-  --accent-color: #0891b2; /* Muted darker cyan for ideal contrast */
+  --accent-color: #0891b2;
+  /* Muted darker cyan for ideal contrast */
   --accent-hover: #0e7490;
 }
 
@@ -53,16 +56,14 @@ body {
   overflow-x: hidden;
   /* Custom arrow tip cursor - Dark Mode (Cyan stroke, subtle cyan fill) */
   cursor:
-    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M20.5056 10.7754C21.1225 10.5355 21.431 10.4155 21.5176 10.2459C21.5926 10.099 21.5903 9.92446 21.5115 9.77954C21.4205 9.61226 21.109 9.50044 20.486 9.2768L4.59629 3.5728C4.0866 3.38983 3.83175 3.29835 3.66514 3.35605C3.52029 3.40621 3.40645 3.52004 3.35629 3.6649C3.29859 3.8315 3.39008 4.08635 3.57304 4.59605L9.277 20.4858C9.50064 21.1088 9.61246 21.4203 9.77973 21.5113C9.92465 21.5901 10.0991 21.5924 10.2461 21.5174C10.4157 21.4308 10.5356 21.1223 10.7756 20.5054L13.3724 13.8278C13.4194 13.707 13.4429 13.6466 13.4792 13.5957C13.5114 13.5506 13.5508 13.5112 13.5959 13.479C13.6468 13.4427 13.7072 13.4192 13.828 13.3722L20.5056 10.7754Z" fill="rgba(0, 240, 255, 0.1)" stroke="%2300f0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>')
-      4 4,
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M20.5056 10.7754C21.1225 10.5355 21.431 10.4155 21.5176 10.2459C21.5926 10.099 21.5903 9.92446 21.5115 9.77954C21.4205 9.61226 21.109 9.50044 20.486 9.2768L4.59629 3.5728C4.0866 3.38983 3.83175 3.29835 3.66514 3.35605C3.52029 3.40621 3.40645 3.52004 3.35629 3.6649C3.29859 3.8315 3.39008 4.08635 3.57304 4.59605L9.277 20.4858C9.50064 21.1088 9.61246 21.4203 9.77973 21.5113C9.92465 21.5901 10.0991 21.5924 10.2461 21.5174C10.4157 21.4308 10.5356 21.1223 10.7756 20.5054L13.3724 13.8278C13.4194 13.707 13.4429 13.6466 13.4792 13.5957C13.5114 13.5506 13.5508 13.5112 13.5959 13.479C13.6468 13.4427 13.7072 13.4192 13.828 13.3722L20.5056 10.7754Z" fill="rgba(0, 240, 255, 0.1)" stroke="%2300f0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>') 4 4,
     auto;
 }
 
 [data-theme="light"] body {
   /* Custom arrow tip cursor - Light Mode (Darker cyan stroke, subtle light-cyan fill) */
   cursor:
-    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M20.5056 10.7754C21.1225 10.5355 21.431 10.4155 21.5176 10.2459C21.5926 10.099 21.5903 9.92446 21.5115 9.77954C21.4205 9.61226 21.109 9.50044 20.486 9.2768L4.59629 3.5728C4.0866 3.38983 3.83175 3.29835 3.66514 3.35605C3.52029 3.40621 3.40645 3.52004 3.35629 3.6649C3.29859 3.8315 3.39008 4.08635 3.57304 4.59605L9.277 20.4858C9.50064 21.1088 9.61246 21.4203 9.77973 21.5113C9.92465 21.5901 10.0991 21.5924 10.2461 21.5174C10.4157 21.4308 10.5356 21.1223 10.7756 20.5054L13.3724 13.8278C13.4194 13.707 13.4429 13.6466 13.4792 13.5957C13.5114 13.5506 13.5508 13.5112 13.5959 13.479C13.6468 13.4427 13.7072 13.4192 13.828 13.3722L20.5056 10.7754Z" fill="rgba(0, 188, 212, 0.08)" stroke="%2300bcd4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>')
-      4 4,
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M20.5056 10.7754C21.1225 10.5355 21.431 10.4155 21.5176 10.2459C21.5926 10.099 21.5903 9.92446 21.5115 9.77954C21.4205 9.61226 21.109 9.50044 20.486 9.2768L4.59629 3.5728C4.0866 3.38983 3.83175 3.29835 3.66514 3.35605C3.52029 3.40621 3.40645 3.52004 3.35629 3.6649C3.29859 3.8315 3.39008 4.08635 3.57304 4.59605L9.277 20.4858C9.50064 21.1088 9.61246 21.4203 9.77973 21.5113C9.92465 21.5901 10.0991 21.5924 10.2461 21.5174C10.4157 21.4308 10.5356 21.1223 10.7756 20.5054L13.3724 13.8278C13.4194 13.707 13.4429 13.6466 13.4792 13.5957C13.5114 13.5506 13.5508 13.5112 13.5959 13.479C13.6468 13.4427 13.7072 13.4192 13.828 13.3722L20.5056 10.7754Z" fill="rgba(0, 188, 212, 0.08)" stroke="%2300bcd4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>') 4 4,
     auto;
 }
 
@@ -76,8 +77,7 @@ select,
 textarea,
 [onclick] {
   cursor:
-    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M20.5056 10.7754C21.1225 10.5355 21.431 10.4155 21.5176 10.2459C21.5926 10.099 21.5903 9.92446 21.5115 9.77954C21.4205 9.61226 21.109 9.50044 20.486 9.2768L4.59629 3.5728C4.0866 3.38983 3.83175 3.29835 3.66514 3.35605C3.52029 3.40621 3.40645 3.52004 3.35629 3.6649C3.29859 3.8315 3.39008 4.08635 3.57304 4.59605L9.277 20.4858C9.50064 21.1088 9.61246 21.4203 9.77973 21.5113C9.92465 21.5901 10.0991 21.5924 10.2461 21.5174C10.4157 21.4308 10.5356 21.1223 10.7756 20.5054L13.3724 13.8278C13.4194 13.707 13.4429 13.6466 13.4792 13.5957C13.5114 13.5506 13.5508 13.5112 13.5959 13.479C13.6468 13.4427 13.7072 13.4192 13.828 13.3722L20.5056 10.7754Z" fill="rgba(0, 240, 255, 0.25)" stroke="%2300f0ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>')
-      4 4,
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M20.5056 10.7754C21.1225 10.5355 21.431 10.4155 21.5176 10.2459C21.5926 10.099 21.5903 9.92446 21.5115 9.77954C21.4205 9.61226 21.109 9.50044 20.486 9.2768L4.59629 3.5728C4.0866 3.38983 3.83175 3.29835 3.66514 3.35605C3.52029 3.40621 3.40645 3.52004 3.35629 3.6649C3.29859 3.8315 3.39008 4.08635 3.57304 4.59605L9.277 20.4858C9.50064 21.1088 9.61246 21.4203 9.77973 21.5113C9.92465 21.5901 10.0991 21.5924 10.2461 21.5174C10.4157 21.4308 10.5356 21.1223 10.7756 20.5054L13.3724 13.8278C13.4194 13.707 13.4429 13.6466 13.4792 13.5957C13.5114 13.5506 13.5508 13.5112 13.5959 13.479C13.6468 13.4427 13.7072 13.4192 13.828 13.3722L20.5056 10.7754Z" fill="rgba(0, 240, 255, 0.25)" stroke="%2300f0ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>') 4 4,
     pointer !important;
 }
 
@@ -90,8 +90,7 @@ textarea,
 [data-theme="light"] textarea,
 [data-theme="light"] [onclick] {
   cursor:
-    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M20.5056 10.7754C21.1225 10.5355 21.431 10.4155 21.5176 10.2459C21.5926 10.099 21.5903 9.92446 21.5115 9.77954C21.4205 9.61226 21.109 9.50044 20.486 9.2768L4.59629 3.5728C4.0866 3.38983 3.83175 3.29835 3.66514 3.35605C3.52029 3.40621 3.40645 3.52004 3.35629 3.6649C3.29859 3.8315 3.39008 4.08635 3.57304 4.59605L9.277 20.4858C9.50064 21.1088 9.61246 21.4203 9.77973 21.5113C9.92465 21.5901 10.0991 21.5924 10.2461 21.5174C10.4157 21.4308 10.5356 21.1223 10.7756 20.5054L13.3724 13.8278C13.4194 13.707 13.4429 13.6466 13.4792 13.5957C13.5114 13.5506 13.5508 13.5112 13.5959 13.479C13.6468 13.4427 13.7072 13.4192 13.828 13.3722L20.5056 10.7754Z" fill="rgba(0, 188, 212, 0.2)" stroke="%2300bcd4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>')
-      4 4,
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M20.5056 10.7754C21.1225 10.5355 21.431 10.4155 21.5176 10.2459C21.5926 10.099 21.5903 9.92446 21.5115 9.77954C21.4205 9.61226 21.109 9.50044 20.486 9.2768L4.59629 3.5728C4.0866 3.38983 3.83175 3.29835 3.66514 3.35605C3.52029 3.40621 3.40645 3.52004 3.35629 3.6649C3.29859 3.8315 3.39008 4.08635 3.57304 4.59605L9.277 20.4858C9.50064 21.1088 9.61246 21.4203 9.77973 21.5113C9.92465 21.5901 10.0991 21.5924 10.2461 21.5174C10.4157 21.4308 10.5356 21.1223 10.7756 20.5054L13.3724 13.8278C13.4194 13.707 13.4429 13.6466 13.4792 13.5957C13.5114 13.5506 13.5508 13.5112 13.5959 13.479C13.6468 13.4427 13.7072 13.4192 13.828 13.3722L20.5056 10.7754Z" fill="rgba(0, 188, 212, 0.2)" stroke="%2300bcd4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>') 4 4,
     pointer !important;
 }
 
@@ -257,11 +256,13 @@ a:hover {
 .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
+
 @media (min-width: 768px) {
   .md\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
 @media (min-width: 1024px) {
   .lg\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -307,11 +308,11 @@ a:hover {
   border-radius: 50%;
 }
 
-input:checked + .slider {
+input:checked+.slider {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   transform: translateX(24px);
 }
 
@@ -514,20 +515,622 @@ input:checked + .slider:before {
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent; 
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2); 
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.4); 
+  background: rgba(255, 255, 255, 0.4);
 }
 
 /* For Firefox */
 * {
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+/* ==========================================================================
+   Sidebar Collapse Button Styling
+   ========================================================================== */
+#nd-sidebar .justify-between button {
+  margin-right: 0.5rem !important;
+  margin-top: 0.2rem !important;
+}
+
+/* ==========================================================================
+   Code Block & Copy Button Styling
+   ========================================================================== */
+
+/* Add a beautiful container style to the entire code block */
+figure.shiki {
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--glass-border) !important;
+  background: #161b22 !important;
+  margin: 1.5rem 0 !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Style the header row containing language title and copy button */
+figure.shiki > div:first-child:not([role="region"]) {
+  padding: 0.5rem 1rem !important;
+  background: rgba(0, 0, 0, 0.4) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  font-family: inherit !important;
+}
+
+/* Add generous padding to the actual code block area so text doesn't hit the edges */
+figure.shiki > div[role="region"] {
+  padding: 1.5rem !important;
+}
+
+/* Ensure the pre tag text is sized well and transparent */
+figure.shiki pre {
+  font-size: 0.95rem !important;
+  line-height: 1.7 !important;
+  background: transparent !important;
+}
+/* ==========================================================================
+   Pagination Footer Customization
+   ========================================================================== */
+
+/* Target the grid container holding the next/previous links at the bottom of the page */
+#nd-page > div.grid {
+  gap: 0 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding-top: 2rem !important;
+  margin-top: 4rem !important;
+  position: relative;
+}
+
+/* Add the middle vertical separator for 2 columns */
+#nd-page > div.grid-cols-2::before {
+  content: "";
+  position: absolute;
+  top: 3rem;
+  bottom: 1rem;
+  left: 50%;
+  width: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateX(-50%);
+}
+
+/* Style the link boxes (remove borders, backgrounds, swap text order) */
+#nd-page > div.grid > a {
+  border: none !important;
+  background: transparent !important;
+  padding: 1rem 1rem !important;
+  border-radius: 0.5rem !important;
+  flex-direction: column-reverse !important; /* Swaps Description and Title */
+  gap: 0.5rem !important;
+  transition: all 0.2s ease !important;
+}
+
+#nd-page > div.grid > a:hover {
+  background: rgba(255, 255, 255, 0.03) !important;
+}
+
+/* Description text ("Previous Page" / "Next Page") on top */
+#nd-page > div.grid > a > p {
+  font-size: 0.85rem !important;
+  color: #71717a !important; /* muted text */
+  margin-bottom: 0 !important;
+}
+
+/* Title container (Chapter Name + Icon) */
+#nd-page > div.grid > a > div {
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  color: var(--text-primary, #e4e4e7) !important;
+}
+
+#nd-page > div.grid > a:hover > div {
+  color: #38bdf8 !important; /* Brand cyan color on hover */
+}
+
+/* Dark theme overrides for Sidebar container */
+#nd-sidebar,
+.fd-sidebar,
+aside[class*="sidebar"],
+[data-theme="dark"] #nd-sidebar {
+  background-color: #0b0f17 !important;
+  /* Premium dark navy/black background */
+  border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Sidebar Navigation Course Title Header */
+.fd-sidebar-header a,
+.fd-sidebar-title,
+[class*="Sidebar"] [class*="Title"],
+[class*="sidebar"] [class*="title"] {
+  font-size: 1.35rem !important;
+  font-weight: 800 !important;
+  color: #38bdf8 !important;
+  /* Bold bright cyan-blue */
+  line-height: 1.3 !important;
+  letter-spacing: -0.02em !important;
+  margin-bottom: 1.5rem !important;
+}
+
+/* Remove vertical lines/borders to the left of sub-chapters */
+[class*="Folder"]>[class*="Content"],
+div[class*="content"] {
+  border-left: none !important;
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* Add visual vertical spacing between distinct chapter folder blocks */
+[class*="Folder"],
+div[class*="folder"],
+.fd-folder,
+li[class*="folder"] {
+  margin-top: 2.75rem !important;
+  /* Ensure clear visual separation */
+  margin-bottom: 1rem !important;
+}
+
+/* Hide the default fumadocs blue active-indicators */
+#nd-sidebar a[data-active="true"]::before {
+  display: none !important;
+  content: none !important;
+}
+
+/* Hide the default fumadocs blue active-indicators */
+#nd-sidebar a[data-active="true"]::before {
+  display: none !important;
+  content: none !important;
+}
+
+/* Completely hide the ThumbTrack in TOC (blue line and dot) using scorched-earth selectors */
+#nd-toc a::before,
+#nd-toc a::after {
+  display: none !important;
+  content: none !important;
+}
+
+#nd-toc div.absolute,
+#nd-toc div[class*="absolute"],
+#nd-toc div[style*="--track"],
+#nd-toc div[style*="offset"],
+#nd-toc .size-1,
+#nd-toc .rounded-full,
+#nd-toc .bg-fd-primary,
+#nd-toc .fill-fd-primary {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* ── Fumadocs sidebar: real spacing overrides ──────────────────────────────
+   Fumadocs renders Tailwind utility classes directly on elements, so we
+   must target the actual HTML structure inside #nd-sidebar.
+   All sidebar items (links + folder triggers) share rounded-lg + p-2.
+   We bump that padding and add vertical gap between them.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Sidebar leaf-page links – more vertical padding */
+#nd-sidebar a[class*="rounded-lg"],
+#nd-sidebar-mobile a[class*="rounded-lg"] {
+  padding-top: 0.6rem !important;
+  padding-bottom: 0.6rem !important;
+}
+
+/* Folder trigger buttons – more vertical padding */
+#nd-sidebar button[class*="rounded-lg"],
+#nd-sidebar-mobile button[class*="rounded-lg"] {
+  padding-top: 0.6rem !important;
+  padding-bottom: 0.6rem !important;
+}
+
+/* The scroll viewport wrapper uses gap-0.5 on its children.
+   We override spacing by targeting folder root elements (Radix Collapsible uses data-state) */
+#nd-sidebar [data-state],
+#nd-sidebar-mobile [data-state] {
+  margin-bottom: 0.35rem !important;
+}
+
+/* Gap between items inside an open folder content */
+#nd-sidebar [data-state]>div[class*="flex"],
+#nd-sidebar-mobile [data-state]>div[class*="flex"] {
+  gap: 0.3rem !important;
+  padding-top: 0.3rem !important;
+}
+
+/* The SidebarViewport root flex container that has gap-0.5 on children */
+#nd-sidebar [data-radix-scroll-area-viewport]>div>*,
+#nd-sidebar-mobile [data-radix-scroll-area-viewport]>div>* {
+  margin-bottom: 0.25rem;
+}
+
+/* Override the gap-0.5 (8px gap) between top-level sidebar items in the viewport.
+   SidebarViewport renders: ScrollViewport > div (flex-col gap-0.5) > [items]
+   We target that intermediate div and increase the gap. */
+#nd-sidebar [data-radix-scroll-area-viewport]>div {
+  gap: 0.35rem !important;
+}
+
+#nd-sidebar-mobile [data-radix-scroll-area-viewport]>div {
+  gap: 0.35rem !important;
+}
+
+/* Sidebar Category Headers & Folders (Accordion Folders / Summary triggers) */
+[class*="Folder"] button,
+[class*="folder"] button,
+button[data-collapsible],
+button[class*="folder"],
+[class*="Folder"]>button,
+[class*="Folder"] summary,
+[class*="folder"] summary,
+summary[class*="folder"],
+summary,
+.fd-folder-trigger,
+button.fd-folder-trigger {
+  font-size: 0.95rem !important;
+  font-weight: 800 !important;
+  /* Extra bold white folder names */
+  color: #ffffff !important;
+  padding-left: 0.75rem !important;
+  /* Padding around text */
+  padding-right: 2.75rem !important;
+  /* Make room for chevron */
+  padding-top: 1.1rem !important;
+  padding-bottom: 1.1rem !important;
+  margin-top: 2.5rem !important;
+  /* Large spacing before a chapter heading starts */
+  margin-bottom: 0.5rem !important;
+  /* Keep subchapters close when expanded */
+  width: 100% !important;
+  display: flex !important;
+  /* Split trigger into distinct columns */
+  align-items: center !important;
+  justify-content: space-between !important;
+  position: relative !important;
+}
+
+/* Column 1: Title text span (shrinks and truncates with ellipsis) */
+[class*="Folder"] button span,
+[class*="folder"] button span,
+button[data-collapsible] span,
+button[class*="folder"] span,
+[class*="Folder"] button div,
+[class*="folder"] button div,
+[class*="Folder"] summary span,
+[class*="folder"] summary span,
+summary span,
+summary div {
+  flex: 1 1 0% !important;
+  /* Take remaining space and allow shrinking */
+  min-width: 0 !important;
+  /* Allow layout to shrink below text content size */
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  text-align: left !important;
+  padding-right: 0.5rem !important;
+  /* Space buffer to prevent overlapping chevron */
+  display: inline-block !important;
+}
+
+/* Column 2: Expansion marker svg (fixed size, auto-aligned on the far-right edge) */
+[class*="Folder"] button svg,
+button[data-collapsible] svg,
+button[class*="folder"] svg,
+[class*="Folder"] svg,
+svg[class*="chevron"],
+svg.lucide-chevron-down,
+svg.lucide-chevron-right,
+summary svg,
+.fd-folder-trigger svg {
+  position: static !important;
+  /* Reset absolute positioning */
+  flex: 0 0 auto !important;
+  /* Fixed width column */
+  margin-left: auto !important;
+  /* Push to far right edge */
+  color: #94a3b8 !important;
+  transition: transform 0.2s ease !important;
+}
+
+/* Non-active Leaf Node Pages */
+.fd-sidebar-item,
+[class*="SidebarItem"] a,
+[class*="sidebar"] a[class*="item"] {
+  color: #94a3b8 !important;
+  /* Muted grey-blue */
+  font-weight: 500 !important;
+  font-size: 0.9rem !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  position: relative !important;
+  padding-left: 1.25rem !important;
+  /* Indent sub-chapters */
+  padding-right: 1.5rem !important;
+  /* Prevent text clipping under scrollbars */
+  padding-top: 0.75rem !important;
+  padding-bottom: 0.75rem !important;
+  margin-top: 0.35rem !important;
+  /* Subchapter margins */
+  margin-bottom: 0.35rem !important;
+  border-radius: 8px !important;
+  display: block !important;
+  /* Block format required for text-truncation */
+  text-align: left !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Hover state for page links */
+.fd-sidebar-item:hover,
+[class*="SidebarItem"] a:hover,
+[class*="sidebar"] a[class*="item"]:hover {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+/* Active Leaf Node Page state */
+.fd-sidebar-item[data-active="true"],
+[class*="SidebarItem"][data-active="true"] a,
+[class*="sidebar"] a[data-active="true"] {
+  color: #38bdf8 !important;
+  /* Bright cyan text */
+  background-color: rgba(8, 51, 68, 0.6) !important;
+  /* Dark teal bubble container */
+  border-radius: 8px !important;
+  padding-left: 2rem !important;
+  /* Make room for the dot inside the bubble */
+  font-weight: 600 !important;
+}
+
+/* Cyan Dot Prefix for active page - perfectly centered inside active container */
+.fd-sidebar-item[data-active="true"]::before,
+[class*="SidebarItem"][data-active="true"]::before,
+[class*="sidebar"] a[data-active="true"]::before {
+  content: "•" !important;
+  position: absolute !important;
+  left: 0.85rem !important;
+  color: #38bdf8 !important;
+  /* Cyan active dot */
+  font-size: 1.25rem !important;
+  line-height: 1 !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  /* Center alignment */
+}
+
+/* ==========================================================================
+   TOC Popover: "ON THIS PAGE 37%" custom style
+   Targets fumadocs notebook layout TOC popover via data attributes.
+   ========================================================================== */
+
+/* ── Container ────────────────────────────────────────────────────────────── */
+[data-toc-popover] {
+  background: rgba(11, 15, 23, 0.95) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(16px) !important;
+}
+
+/* ── Trigger row: "ON THIS PAGE  37%  ⌃" ─────────────────────────────────── */
+[data-toc-popover-trigger] {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.6rem !important;
+  padding: 0.7rem 1rem !important;
+  height: auto !important;
+  color: var(--text-primary) !important;
+  position: relative !important;
+}
+
+/* Hide the circular SVG progress indicator — we'll show % text instead */
+[data-toc-popover-trigger] svg[role="progressbar"] {
+  display: none !important;
+}
+
+/* "On this page" text → uppercase bold */
+[data-toc-popover-trigger] span>span:first-child {
+  font-size: 0.78rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: var(--text-primary) !important;
+}
+
+/* Thin cyan progress bar injected via pseudo-element below the trigger row */
+[data-toc-popover-trigger]::after {
+  content: "" !important;
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  height: 2px !important;
+  /* Width driven by a CSS custom property we'll set via a small style trick.
+     Since we can't read JS scroll% in CSS, we show a solid cyan underline
+     that animates based on the data-state. For the actual % we rely on the
+     existing fumadocs active-item counting which updates aria-valuenow. */
+  width: 100% !important;
+  background: rgba(56, 189, 248, 0.2) !important;
+  border-radius: 2px !important;
+}
+
+/* ── Percentage label — shown next to the title ───────────────────────────── */
+/* Fumadocs renders the active-item title in the second span inside the grid.
+   We repurpose the grid to show ON THIS PAGE + % side by side. */
+[data-toc-popover-trigger] .grid {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+
+/* ── Chevron ──────────────────────────────────────────────────────────────── */
+[data-toc-popover-trigger] svg:not([role="progressbar"]) {
+  color: var(--text-secondary) !important;
+  flex-shrink: 0 !important;
+}
+
+/* ── Content panel ────────────────────────────────────────────────────────── */
+[data-toc-popover-content]>div {
+  padding: 0.5rem 1rem 0.75rem !important;
+  gap: 0.1rem !important;
+  max-height: 55vh !important;
+}
+
+/* ── TOC items inside the popover ─────────────────────────────────────────── */
+[data-toc-popover-content] a {
+  font-size: 0.875rem !important;
+  color: var(--text-secondary) !important;
+  padding: 0.45rem 0.5rem 0.45rem 0.75rem !important;
+  border-left: 2px solid transparent !important;
+  border-radius: 0 6px 6px 0 !important;
+  transition: all 0.15s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  text-decoration: none !important;
+  line-height: 1.4 !important;
+}
+
+[data-toc-popover-content] a:hover {
+  color: var(--text-primary) !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+/* Active TOC item */
+[data-toc-popover-content] a[data-active="true"] {
+  color: #38bdf8 !important;
+  border-left-color: #38bdf8 !important;
+  background: rgba(56, 189, 248, 0.06) !important;
+  font-weight: 600 !important;
+}
+
+/* Hide the SVG line decorations that clutter each TOC item */
+[data-toc-popover-content] a svg {
+  display: none !important;
+}
+
+/* ── Desktop sidebar TOC (#nd-toc) ────────────────────────────────────────── */
+
+/* Lower the entire TOC stack slightly */
+#nd-toc {
+  margin-top: 10px !important;
+}
+
+/* Kill the fade-mask gradient at top & bottom of scroll area */
+#nd-toc [class*="mask-"],
+#nd-toc div[class*="overflow-auto"] {
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+}
+
+/* Title row — flex so % badge can sit on the far right */
+#nd-toc #toc-title {
+  order: 1 !important;
+  /* always first visually */
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  width: 100% !important;
+  font-size: 0.75rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.09em !important;
+  text-transform: uppercase !important;
+  color: var(--text-primary) !important;
+  gap: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* Inject the scroll percentage on the right of "ON THIS PAGE" */
+#nd-toc #toc-title::after {
+  content: var(--scroll-pct, "0%") !important;
+  color: #38bdf8 !important;
+  font-size: 0.75rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.04em !important;
+  margin-left: auto !important;
+  text-transform: none !important;
+}
+
+/* TocProgressBar div (rendered as fumadocs header — first DOM child of #nd-toc)
+   Move it BELOW the title using CSS flex order */
+#nd-toc>div:first-child {
+  order: 2 !important;
+  /* after the h3 title (order:1) */
+}
+
+/* TOCScrollArea — must be order:3 so it renders after title + bar.
+   Without this it defaults to order:0 and floats to the top. */
+#nd-toc>div:not(:first-child) {
+  order: 3 !important;
+}
+
+/* Hide the duplicate fumadocs top navigation (header) completely.
+   The main portfolio navbar is shown instead, and the search bar
+   has been moved into the TOC column. */
+#nd-subnav {
+  display: none !important;
+}
+
+/* Cyan icon in title */
+#nd-toc #toc-title svg {
+  color: #38bdf8 !important;
+  width: 13px !important;
+  height: 13px !important;
+  flex-shrink: 0 !important;
+}
+
+/* TOC scroll area — extra top padding so first item breathes */
+#nd-toc div[class*="overflow-auto"] {
+  padding-top: 0.25rem !important;
+  padding-bottom: 0.5rem !important;
+}
+
+/* All TOC items — uniform style, NO active highlight based on visibility */
+#nd-toc a {
+  font-size: 0.875rem !important;
+  color: var(--text-secondary) !important;
+  padding: 0.55rem 0.5rem 0.55rem 0.85rem !important;
+  margin-bottom: 0.25rem !important;
+  border-left: 2px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 0 6px 6px 0 !important;
+  transition: color 0.15s ease, background 0.15s ease !important;
+  line-height: 1.45 !important;
+  display: block !important;
+}
+
+/* Hover */
+#nd-toc a:hover {
+  color: var(--text-primary) !important;
+  background: rgba(255, 255, 255, 0.035) !important;
+  border-left-color: rgba(56, 189, 248, 0.4) !important;
+}
+
+/* Highlight ONLY the first active item — any subsequent active siblings are reset.
+   fumadocs marks all on-screen headings as data-active; we use the CSS sibling
+   combinator (~) to cancel the style on every active item that follows another. */
+#nd-toc a[data-active="true"] {
+  color: #38bdf8 !important;
+  border-left-color: #38bdf8 !important;
+  background: rgba(56, 189, 248, 0.06) !important;
+  font-weight: 600 !important;
+}
+
+/* Any active item that comes AFTER another active item → reset to normal */
+#nd-toc a[data-active="true"]~a[data-active="true"] {
+  color: var(--text-secondary) !important;
+  border-left-color: rgba(255, 255, 255, 0.1) !important;
+  background: transparent !important;
+  font-weight: inherit !important;
+}
+
+/* Hide SVG connector lines / step decorations inside each item */
+#nd-toc a svg,
+#nd-toc a>svg {
+  display: none !important;
+}
+
+/* The ThumbTrack absolute SVG overlay — hide it */
+#nd-toc div[class*="relative"]>div[class*="absolute"] {
+  display: none !important;
 }

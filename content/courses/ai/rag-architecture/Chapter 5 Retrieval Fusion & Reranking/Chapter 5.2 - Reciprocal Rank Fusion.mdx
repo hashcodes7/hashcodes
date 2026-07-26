@@ -1,0 +1,35 @@
+---
+title: "Chapter 5.2 - Reciprocal Rank Fusion"
+description: "Combining scores from sparse and dense retrievers."
+---
+
+# Chapter 5.2 - Reciprocal Rank Fusion
+
+> [!info] 
+> Combining scores from sparse and dense retrievers.
+
+When you run a Hybrid Search, FAISS gives you a list of results based on meaning, and BM25 gives you a list based on keywords. How do you combine them? You cannot just add their scores together because they are on completely different mathematical scales!
+We use **Reciprocal Rank Fusion (RRF)**. It completely ignores the raw scores and instead looks only at the **Rank** (position in the list).
+
+## The RRF Formula
+
+```python
+
+def reciprocal_rank_fusion(faiss_results, bm25_results, k=60):
+    fused_scores = {}
+    
+    # Process FAISS Ranks
+    for rank, doc_id in enumerate(faiss_results):
+        fused_scores[doc_id] = fused_scores.get(doc_id, 0) + 1 / (k + rank + 1)
+        
+    # Process BM25 Ranks
+    for rank, doc_id in enumerate(bm25_results):
+        fused_scores[doc_id] = fused_scores.get(doc_id, 0) + 1 / (k + rank + 1)
+        
+    # Sort by highest fused score
+    return sorted(fused_scores.items(), key=lambda x: x[1], reverse=True)
+
+```
+
+> [!tip] The K Constant
+> The constant `k=60` is a mathematically proven optimal value that prevents the #1 result of one list from completely dominating the final fused list.

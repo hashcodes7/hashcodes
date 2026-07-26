@@ -1,0 +1,40 @@
+---
+title: "Chapter 8.2 - GELU Activation Function"
+description: "Adding some curves to our math"
+---
+
+# Chapter 8.2 - GELU Activation Function
+
+<Callout type="info" title="Overview">
+Imagine a bouncer at a club. If you are a positive number, you get to go in! If you are a negative number, you get kicked out! But the GELU bouncer is very gentle; instead of just kicking negative numbers out instantly, he slowly bends them down to zero.
+</Callout>
+
+---
+
+## 🎯 Why we do it
+<Callout type="info" title="Rationale">
+Linear layers only draw straight lines. But the real world is curvy and complex! Activation functions like GELU (Gaussian Error Linear Unit) add the "curves" so our AI can learn complex patterns. It keeps the good (positive) numbers and gently squishes the bad (negative) numbers to zero.
+</Callout>
+
+## 🛠️ How we do it
+<Callout type="info" title="Methodology">
+We just pass our numbers through the GELU math function. Big positive numbers stay the same. Numbers close to zero get a little curvy, and big negative numbers turn into almost exactly zero.
+</Callout>
+
+```python
+import torch
+import torch.nn.functional as F
+
+# Some numbers
+numbers = torch.tensor([-3.0, -1.0, 0.0, 1.0, 3.0])
+
+# The gentle bouncer
+curvy_numbers = F.gelu(numbers)
+
+print(curvy_numbers)
+# Notice how -3.0 becomes almost 0!
+```
+
+import GeluVisualizer from "@/components/GeluVisualizer";
+
+<GeluVisualizer />

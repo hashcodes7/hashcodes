@@ -1,0 +1,35 @@
+---
+title: "Chapter 14.5 - Scaling Speedups"
+description: "Super speed! (MoE, KV Caching)"
+---
+
+# Chapter 14.5 - Scaling Speedups (MoE KV Caching)
+
+<Callout type="info" title="Overview">
+We've reached the final boss of AI architecture! To make models like GPT-4 insanely smart and fast, we use two ultimate tricks: **MoE** (Mixture of Experts) and **KV Caching**.
+</Callout>
+
+---
+
+## 🎯 Why we do it
+<Callout type="info" title="Rationale">
+- **KV Caching**: When an AI generates a sentence, it shouldn't have to re-read the whole sentence for every new word. KV Caching saves the old words so it only has to think about the new one!
+- **MoE**: Instead of one giant AI brain doing all the work, MoE splits the brain into tiny "Experts". One expert is great at Math, one is great at French.
+</Callout>
+
+## 🛠️ How we do it
+<Callout type="info" title="Methodology">
+For MoE, a "Router" looks at the word and decides which expert to send it to. The AI has 8 experts, but only uses 2 at a time! This means the AI is 8 times smarter, but runs just as fast as a small AI.
+</Callout>
+
+```python
+# A simple Router for Mixture of Experts!
+word = "Bonjour"
+
+if word == "Bonjour":
+    print("Routing to the French Expert!")
+elif word == "2+2":
+    print("Routing to the Math Expert!")
+else:
+    print("Routing to the General Expert!")
+```

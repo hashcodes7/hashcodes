@@ -1,0 +1,37 @@
+---
+title: "Chapter 10.1 - Logits to Probabilities"
+description: "Turning raw guesses into percentages"
+---
+
+# Chapter 10.1 - Logits to Probabilities
+
+<Callout type="info" title="Overview">
+At the very end of our model, the AI spits out raw scores for every single word in the dictionary. These raw scores are called "Logits". But logits can be any random number like 42.5 or -10. We need to turn them into nice, neat percentages!
+</Callout>
+
+---
+
+## 🎯 Why we do it
+<Callout type="info" title="Rationale">
+It's really hard to understand a score of 42.5. But if we turn it into "95% chance", it makes total sense! We need percentages so the AI can easily pick the most likely next word.
+</Callout>
+
+## 🛠️ How we do it
+<Callout type="info" title="Methodology">
+We bring back our good old friend, **Softmax**! Softmax takes all those crazy Logit numbers and squishes them so that they are all between 0% and 100%, and they all add up to exactly 100%.
+</Callout>
+
+```python
+import torch
+
+# Raw scores for 3 words: [Apple, Banana, Car]
+logits = torch.tensor([2.0, 5.0, -1.0])
+
+# Turn them into percentages!
+probabilities = torch.softmax(logits, dim=-1)
+
+print("Apple:", probabilities[0].item())
+print("Banana:", probabilities[1].item())
+print("Car:", probabilities[2].item())
+# Banana is the clear winner!
+```

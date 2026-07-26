@@ -1,0 +1,41 @@
+---
+title: "Chapter 11.5 - The Optimization Step"
+description: "Fixing the AI's brain!"
+---
+
+# Chapter 11.5 - The Optimization Step
+
+<Callout type="info" title="Overview">
+Now that we know the AI made a mistake (the Loss), it's time to actually fix its brain! The Optimization Step is where the AI literally rewires itself to be a tiny bit smarter for the next time.
+</Callout>
+
+---
+
+## 🎯 Why we do it
+<Callout type="info" title="Rationale">
+Just telling the AI it's wrong doesn't help unless we show it *how* to improve. We use a tool called an **Optimizer** (like AdamW) to go inside the AI's brain and turn millions of tiny dials and knobs so it doesn't make the same mistake twice.
+</Callout>
+
+## 🛠️ How we do it
+<Callout type="info" title="Methodology">
+After calculating the loss, we calculate the "gradients" (which direction to turn the knobs). Then, the optimizer says `optimizer.step()`, which actually turns the knobs! Finally, we reset the gradients to zero for the next round.
+</Callout>
+
+```python
+import torch
+import torch.nn as nn
+
+# Fake AI brain with one knob
+ai_brain = nn.Linear(1, 1)
+optimizer = torch.optim.Adam(ai_brain.parameters(), lr=0.01)
+
+# Step 1: Figure out how to turn the knobs (backward pass)
+# loss.backward() # (Assuming we calculated loss earlier!)
+
+# Step 2: Turn the knobs! Get smarter!
+optimizer.step()
+
+# Step 3: Reset for the next test
+optimizer.zero_grad()
+print("The AI's brain has been updated!")
+```

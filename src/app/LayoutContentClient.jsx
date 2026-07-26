@@ -20,7 +20,7 @@ export default function LayoutContentClient({ children }) {
   return (
     <>
       {!isAboutPage && !isInsideLearningChapter && <ParticlesBackground />}
-      {!isInsideLearningChapter && <Navbar />}
+      <Navbar />
       {children}
       {!isAboutPage && !isInsideLearningChapter && <Footer />}
     </>

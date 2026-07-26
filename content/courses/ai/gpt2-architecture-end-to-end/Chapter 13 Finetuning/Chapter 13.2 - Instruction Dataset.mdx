@@ -1,0 +1,37 @@
+---
+title: "Chapter 13.2 - Instruction Dataset"
+description: "Teaching the AI to follow rules!"
+---
+
+# Chapter 13.2 - Instruction Dataset
+
+<Callout type="info" title="Overview">
+GPT-2 is great at continuing stories, but it's really bad at answering questions. If you ask "What is 2+2?", it might reply with "And what is 3+3?". To fix this, we have to teach it how to follow instructions!
+</Callout>
+
+---
+
+## 🎯 Why we do it
+<Callout type="info" title="Rationale">
+We want the AI to act like a helpful assistant (like ChatGPT!). To do this, we need a special "Instruction Dataset". This dataset has thousands of examples formatted like: "Instruction: [Question], Response: [Answer]".
+</Callout>
+
+## 🛠️ How we do it
+<Callout type="info" title="Methodology">
+We download a dataset (often from HuggingFace) that contains thousands of Q&A pairs. We then squish them into a specific format so the AI learns that every time it sees the word "Response:", it needs to give an answer.
+</Callout>
+
+```python
+# A tiny example of an Instruction Dataset
+dataset = [
+    {"instruction": "What color is the sky?", "response": "The sky is blue."},
+    {"instruction": "Say hello.", "response": "Hello there!"}
+]
+
+# Formatting it for the AI
+for item in dataset:
+    formatted = f"Instruction: {item['instruction']} 
+Response: {item['response']}"
+    print(formatted)
+    print("-" * 20)
+```

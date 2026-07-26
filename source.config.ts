@@ -2,139 +2,180 @@ import { defineDocs, defineConfig } from "fumadocs-mdx/config";
 import fs from "fs";
 import path from "path";
 
-// Helper to recursively find the relative path of a document inside a course directory
-function resolveRelativePath(courseDir: string, childName: string): string | null {
-  function search(dir: string): string | null {
-    if (!fs.existsSync(dir)) return null;
-    const items = fs.readdirSync(dir);
-    for (const item of items) {
-      const fullPath = path.join(dir, item);
-      const stat = fs.statSync(fullPath);
-      if (stat.isDirectory()) {
-        const found = search(fullPath);
-        if (found) return found;
-      } else if (item.endsWith(".md") || item.endsWith(".mdx")) {
-        const baseName = item.replace(/\.(md|mdx)$/, "");
-        if (baseName === childName) {
-          return path.relative(courseDir, fullPath)
-            .replace(/\.(md|mdx)$/, "")
-            .replace(/\\/g, "/");
-        }
-      }
-    }
-    return null;
+// Static metadata mapping for Category Badges and Descriptions
+const CATEGORY_META: Record<string, { title: string, badge: string, description: string }> = {
+  ai: {
+    title: "Artificial Intelligence",
+    badge: "AI",
+    description: "Neural networks, computer vision, and generative models."
+  },
+  vision: {
+    title: "Computer Vision",
+    badge: "VISION",
+    description: "Image processing, spatial pattern recognition, and CNN architectures."
+  },
+  flutter: {
+    title: "Flutter Mobile Development",
+    badge: "FLUTTER",
+    description: "Widget trees, state management paradigms, and cross-platform compilation."
+  },
+  sys: {
+    title: "Systems & Architecture",
+    badge: "SYS",
+    description: "Microservices design, load balancing, databases, and distributed caching."
+  },
+  algo: {
+    title: "Algorithms & Data Structures",
+    badge: "ALGO",
+    description: "Core algorithms, sorting techniques, and dynamic programming."
   }
-  return search(courseDir);
+};
+
+// Natural sorting helper to order chapter names and lesson numbers correctly (e.g. Chapter 2 before Chapter 10)
+function naturalSort(a: string, b: string): number {
+  return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
 }
 
-// Dynamically generate meta.json files based on learn.json to maintain a single source of truth
+// Dynamically generate all meta.json configurations and build learn.json from disk structure
 try {
-  const learnJsonPath = path.resolve("learn.json");
-  if (fs.existsSync(learnJsonPath)) {
-    const catalog = JSON.parse(fs.readFileSync(learnJsonPath, "utf8"));
-    const contentDir = path.resolve("content");
-
+  const contentDir = path.resolve("content");
+  const coursesDir = path.join(contentDir, "courses");
+  
+  if (fs.existsSync(coursesDir)) {
     // 1. Generate content/meta.json
     const rootMeta = {
       pages: ["courses"]
     };
     fs.writeFileSync(path.join(contentDir, "meta.json"), JSON.stringify(rootMeta, null, 2));
 
-    // 2. Generate content/courses/meta.json
+    // 2. Scan and sort category folders
+    const categories = fs.readdirSync(coursesDir).filter(item => {
+      return fs.statSync(path.join(coursesDir, item)).isDirectory();
+    });
+    categories.sort(naturalSort);
+
     const coursesMeta = {
-      pages: catalog.learn.map((cat: any) => cat.id)
+      pages: categories
     };
-    const coursesDir = path.join(contentDir, "courses");
-    if (!fs.existsSync(coursesDir)) fs.mkdirSync(coursesDir, { recursive: true });
     fs.writeFileSync(path.join(coursesDir, "meta.json"), JSON.stringify(coursesMeta, null, 2));
 
+    const learnCatalog: any[] = [];
+
     // 3. Loop categories
-    catalog.learn.forEach((cat: any) => {
-      const catDir = path.join(contentDir, "courses", cat.id);
-      if (!fs.existsSync(catDir)) {
-        fs.mkdirSync(catDir, { recursive: true });
-      }
+    categories.forEach(cat => {
+      const catDir = path.join(coursesDir, cat);
+      const courses = fs.readdirSync(catDir).filter(item => {
+        return fs.statSync(path.join(catDir, item)).isDirectory();
+      });
+      courses.sort(naturalSort);
 
       const catMeta = {
-        title: cat.title,
-        pages: cat.courses ? cat.courses.map((c: any) => c.id) : []
+        pages: courses
       };
       fs.writeFileSync(path.join(catDir, "meta.json"), JSON.stringify(catMeta, null, 2));
 
+      const catMetaInfo = CATEGORY_META[cat.toLowerCase()] || {
+        title: cat.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase()),
+        badge: cat.toUpperCase(),
+        description: `Explore notebooks on ${cat}.`
+      };
+
+      const courseCatalogList: any[] = [];
+
       // 4. Loop courses
-      if (cat.courses) {
-        cat.courses.forEach((course: any) => {
-          const courseDir = path.join(contentDir, course.folder);
-          if (!fs.existsSync(courseDir)) {
-            fs.mkdirSync(courseDir, { recursive: true });
+      courses.forEach(course => {
+        const courseDir = path.join(catDir, course);
+        const childItems = fs.readdirSync(courseDir).filter(item => {
+          return item !== "meta.json";
+        });
+
+        let courseTitle = course.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+        // Capitalize common acronyms nicely
+        courseTitle = courseTitle.replace(/Gpt2/g, "GPT 2").replace(/Rag/g, "RAG");
+
+        const chapters: string[] = [];
+        const flatFiles: string[] = [];
+
+        childItems.forEach(item => {
+          const fullPath = path.join(courseDir, item);
+          const stat = fs.statSync(fullPath);
+          if (stat.isDirectory()) {
+            chapters.push(item);
+          } else if (item.endsWith(".md") || item.endsWith(".mdx")) {
+            flatFiles.push(item.replace(/\.(md|mdx)$/, ""));
           }
+        });
 
-          // We will build the pages list for the course meta.json (the chapter folder names)
-          const coursePages: string[] = [];
+        chapters.sort(naturalSort);
+        flatFiles.sort(naturalSort);
 
-          course.chapters.forEach((chapter: any) => {
-            if (!chapter.children || chapter.children.length === 0) return;
+        const chaptersList: any[] = [];
 
-            // Find the folder name on disk for this chapter by checking its first child
-            const firstChild = chapter.children[0];
-            const resolvedPath = resolveRelativePath(courseDir, firstChild);
-            if (!resolvedPath) return;
-
-            const pathParts = resolvedPath.split("/");
-            if (pathParts.length > 1) {
-              const chapterFolderName = pathParts[0]; // e.g. "Chapter 1- Input Processing & Tokenization"
-              if (!coursePages.includes(chapterFolderName)) {
-                coursePages.push(chapterFolderName);
-              }
-
-              // Now generate the meta.json inside the chapter folder listing its children filenames
-              const chapterDir = path.join(courseDir, chapterFolderName);
-              const chapterPages = chapter.children.map((child: string) => {
-                const childPath = resolveRelativePath(courseDir, child);
-                if (childPath) {
-                  // Pages inside chapter meta.json are relative to the chapter folder, so just the filename
-                  return childPath.split("/").pop() || child;
-                }
-                return child;
-              });
-
-              const chapterMeta = {
-                title: chapter.name,
-                pages: chapterPages
-              };
-              fs.writeFileSync(path.join(chapterDir, "meta.json"), JSON.stringify(chapterMeta, null, 2));
-            } else {
-              // If there is no subdirectory (files are flat), add the file directly to coursePages
-              const childFilename = pathParts[0];
-              coursePages.push(childFilename);
-            }
+        // Generate chapter-level meta.json
+        chapters.forEach(chapter => {
+          const chapterDir = path.join(courseDir, chapter);
+          const files = fs.readdirSync(chapterDir).filter(item => {
+            return (item.endsWith(".md") || item.endsWith(".mdx")) && item !== "meta.json";
           });
 
-          // Write course-level meta.json
-          const courseMeta = {
-            title: course.title,
-            pages: coursePages
+          const pages = files.map(f => f.replace(/\.(md|mdx)$/, ""));
+          pages.sort(naturalSort);
+
+          const chapterMeta = {
+            pages: pages
           };
-          fs.writeFileSync(path.join(courseDir, "meta.json"), JSON.stringify(courseMeta, null, 2));
+          fs.writeFileSync(path.join(chapterDir, "meta.json"), JSON.stringify(chapterMeta, null, 2));
+
+          chaptersList.push({
+            name: chapter,
+            children: pages
+          });
         });
-      }
+
+        // Write course-level meta.json
+        const courseMeta = {
+          pages: [...chapters, ...flatFiles]
+        };
+        fs.writeFileSync(path.join(courseDir, "meta.json"), JSON.stringify(courseMeta, null, 2));
+
+        courseCatalogList.push({
+          id: course,
+          title: courseTitle,
+          folder: `courses/${cat}/${course}`,
+          chapters: chaptersList
+        });
+      });
+
+      learnCatalog.push({
+        id: cat,
+        title: catMetaInfo.title,
+        badge: catMetaInfo.badge,
+        description: catMetaInfo.description,
+        courses: courseCatalogList
+      });
     });
-    console.log("[Fumadocs Compiler] Successfully generated meta.json configurations from learn.json!");
+
+    // Write dynamically compiled catalog back to learn.json in the project root
+    fs.writeFileSync(
+      path.resolve("learn.json"),
+      JSON.stringify({ learn: learnCatalog }, null, 2)
+    );
+    console.log("[Fumadocs Compiler] Successfully generated meta.json and learn.json from folder structure!");
   }
 } catch (error) {
-  console.error("Error generating meta.json from learn.json:", error);
+  console.error("Error generating meta.json and learn.json from folder structure:", error);
 }
-
-import remarkMath from "remark-math";
-import rehypeKatex from "rehype-katex";
 
 export const { docs, meta } = defineDocs({
   dir: "content",
 });
 
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+
 export default defineConfig({
   mdxOptions: {
-    remarkPlugins: [remarkMath],
+    remarkPlugins: (v) => [remarkMath, ...v],
     rehypePlugins: (v) => [rehypeKatex, ...v],
   }
 });

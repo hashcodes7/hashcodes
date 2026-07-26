@@ -1,0 +1,46 @@
+---
+title: "Chapter 5.3 - Masking, Softmax Context Vector"
+description: "Hiding the future words from our AI"
+---
+
+# Chapter 5.3 - Masking, Softmax Context Vector
+
+<Callout type="info" title="Overview">
+Imagine trying to guess the end of a movie while someone is holding the script right in front of you. It's too easy! We want our AI to *learn* how to predict the next word without cheating. So, we have to hide the future words. This is called "Masking".
+</Callout>
+
+---
+
+## 🎯 Why we do it
+<Callout type="info" title="Rationale">
+Our AI's job is to predict the *next* word. If we let it see the whole sentence at once, it would just cheat and read the answers! We use a "Mask" to cover up the words that come later in the sentence so the AI can only look at the past and the present.
+</Callout>
+
+## 🛠️ How we do it
+<Callout type="info" title="Methodology">
+We create a special "staircase" mask. For any word we aren't allowed to see yet, we change its attention score to negative infinity (`-inf`). 
+Then, we use a math trick called **Softmax** which turns these scores into percentages. Because `-inf` is so small, Softmax turns it into a flat `0%`! That means the AI gives exactly 0 attention to future words.
+</Callout>
+
+```python
+import torch
+
+# Our scores
+scores = torch.tensor([[1.0, 2.0], 
+                       [0.5, 1.5]])
+
+# The Staircase Mask (we hide the top right corner!)
+mask = torch.tensor([[0.0, float('-inf')], 
+                     [0.0, 0.0]])
+
+# Apply the mask (no peeking!)
+masked_scores = scores + mask
+
+# Softmax turns them into percentages!
+percentages = torch.softmax(masked_scores, dim=-1)
+print(percentages)
+```
+
+import CausalMaskVisualizer from "@/components/CausalMaskVisualizer";
+
+<CausalMaskVisualizer />

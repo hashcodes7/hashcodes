@@ -1,0 +1,9 @@
+{
+  "pages": [
+    "Chapter 14.1 - Activation Functions (ReLU, GELU, SwiGLU)",
+    "Chapter 14.2 - Normalization (LayerNorm vs. RMSNorm)",
+    "Chapter 14.3 - Positional Encodings (RoPE ALiBi)",
+    "Chapter 14.4 - Attention Variants (GQA FlashAttention)",
+    "Chapter 14.5 - Scaling Speedups (MoE KV Caching)"
+  ]
+}

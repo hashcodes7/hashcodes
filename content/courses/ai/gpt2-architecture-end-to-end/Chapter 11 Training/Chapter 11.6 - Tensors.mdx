@@ -1,0 +1,350 @@
+---
+title: "Chapter 11.6 - Tensors"
+description: "The content will be uploaded soon"
+---
+
+# Chapter 11.6 - Tensors
+
+
+In the previous chapter, we learned that:
+
+```python
+loss.backward()
+```
+
+computes the **gradient for every trainable weight** in the model.
+
+---
+
+# What is a Tensor?
+
+A tensor is the fundamental data structure in PyTorch.
+
+Everything in a neural network is stored as tensors:
+
+- Inputs
+- Outputs
+- Embeddings
+- Weight matrices
+- Bias vectors
+- Activations
+- Gradients
+- Loss
+
+A tensor is much more than just a matrix of numbers.
+It also stores metadata that allows PyTorch's automatic differentiation (Autograd) system to work.
+
+---
+
+# A Tensor's Internal Structure
+
+Conceptually, a tensor looks like this:
+
+```text
+Tensor
+├── Values
+├── Shape
+├── Data Type (dtype)
+├── Device (CPU/GPU)
+├── requires_grad
+├── grad
+├── grad_fn
+└── Other memory/layout information
+```
+
+Let's understand each field.
+
+---
+
+## Tensor Structure
+
+A PyTorch tensor is more than just a matrix of numbers. It also stores metadata used by the Autograd engine.
+
+| Field | Purpose | Example |
+|-------|---------|---------|
+| **Values** | The actual numerical data stored in the tensor. | `[[0.52, -0.18], [1.31, 0.74]]` |
+| **Shape** | Dimensions of the tensor. | `torch.Size([2, 2])` |
+| **dtype** | Type of values stored. | `torch.float32` |
+| **device** | Where the tensor is stored and computed. | `cpu`, `cuda:0` |
+| **requires_grad** | Whether PyTorch should compute gradients for this tensor. | `True` |
+| **grad** | Stores the computed gradients after `loss.backward()`. | `[[+0.12, -0.08], [+0.43, +0.01]]` |
+| **grad_fn** | Stores the operation that created this tensor. Used to traverse the computation graph during backpropagation. | `CrossEntropyLossBackward0`, `MatMulBackward0`, `AddBackward0` |
+
+> For understanding neural network training, the two most important fields are **`.grad`** and **`.grad_fn`**.
+>
+> - **`.grad`** stores the gradients that the optimizer uses to update the weights.
+> - **`.grad_fn`** stores how the tensor was created, allowing `loss.backward()` to trace the computation graph backward using the chain rule.
+---
+
+# Gradient Matrix (torch.grad)
+
+Every trainable tensor has a gradient tensor of exactly the same shape.
+
+Example
+
+torch.Weight Matrix =
+
+```text
+[
+ [0.52, -0.18],
+ [1.31,  0.74]
+]
+```
+
+torch.grad Gradient Matrix=
+
+```text
+[
+ [+0.12, -0.08],
+ [+0.43, +0.01]
+]
+```
+
+Every value has a corresponding 1-1 gradient.
+
+```text
+Weight                  Gradient
+
+0.52        ←→          +0.12
+
+-0.18       ←→          -0.08
+
+1.31        ←→          +0.43
+
+0.74        ←→          +0.01
+```
+
+---
+
+# 7. grad_fn
+
+Every tensor created through an operation remembers **how it was created**.
+
+Example
+
+```python
+x = torch.tensor([2.0], requires_grad=True)
+
+y = x * 3
+```
+
+Now
+
+```python
+x.grad_fn
+```
+
+returns
+
+```text
+None
+```
+
+because `x` was created directly.
+
+But
+
+```python
+y.grad_fn
+```
+
+returns something like
+
+```text
+<MulBackward0>
+```
+
+This tells PyTorch that `y` was produced by a multiplication operation.
+
+Every operation performed during the forward pass creates another node in the computation graph.
+
+---
+
+# The Computation Graph
+
+Suppose we execute
+
+```python
+logits = model(inputs)
+
+loss = criterion(logits, targets)
+```
+
+The graph conceptually looks like
+
+```text
+Model Weights
+      │
+      ▼
+Forward Operations
+      │
+      ▼
+Logits
+      │
+      ▼
+Cross Entropy
+      │
+      ▼
+Loss
+```
+
+Each tensor remembers the operation that created it.
+
+These connections form the computation graph.
+
+---
+
+# Chain Rule
+
+Backpropagation is based on the **Chain Rule** from calculus.
+
+Instead of computing
+
+```text
+∂Loss / ∂Weight
+```
+
+directly,
+
+PyTorch computes gradients one operation at a time while moving backward through the computation graph.
+
+Conceptually,
+
+```text
+Loss
+ ↑
+CrossEntropyBackward
+ ↑
+LinearBackward
+ ↑
+MatMulBackward
+ ↑
+EmbeddingBackward
+ ↑
+Weights
+```
+
+Each operation:
+
+1. receives the gradient from the layer above,
+2. computes gradients for its own inputs,
+3. passes those gradients to the previous operation.
+
+By repeatedly applying the chain rule, PyTorch eventually computes
+
+```text
+∂Loss / ∂Weight
+```
+
+for every trainable parameter.
+
+---
+
+# Gradient Accumulation
+
+One important property of PyTorch is that gradients **accumulate**.
+
+Suppose after one backward pass
+
+```text
+weight.grad
+
+[
+ [0.20, 0.15]
+]
+```
+
+Calling
+
+```python
+loss.backward()
+```
+
+again **without clearing gradients** results in
+
+```text
+weight.grad
+
+[
+ [0.40, 0.30]
+]
+```
+
+The new gradients are **added** to the existing ones.
+
+PyTorch does **not** automatically replace old gradients.
+
+This behavior is useful when gradients from multiple mini-batches need to be accumulated before updating the weights.
+
+---
+
+# Clearing Gradients
+
+Before computing gradients for a new training iteration, the previous gradients must be removed.
+
+This is done using
+
+```python
+optimizer.zero_grad()
+```
+
+Conceptually
+
+Before
+
+```text
+weight.grad
+
+[
+ [0.20, 0.15]
+]
+```
+
+After
+
+```python
+optimizer.zero_grad()
+```
+
+```text
+weight.grad
+
+[
+ [0.00, 0.00]
+]
+```
+
+Now the next call to
+
+```python
+loss.backward()
+```
+
+stores only the gradients for the current forward pass.
+
+A typical training iteration therefore follows this sequence:
+
+```python
+optimizer.zero_grad()
+
+loss = model(...)
+
+loss.backward()
+
+optimizer.step()
+```
+
+---
+
+# Summary
+
+- A tensor stores much more than just numerical values.
+- Every trainable tensor can store a gradient tensor in its `.grad` field.
+- The gradient tensor always has the same shape as the original tensor.
+- Every gradient corresponds one-to-one with a weight.
+- Each gradient tells how changing that specific weight would affect the loss.
+- Tensors created by operations remember how they were created through `grad_fn`.
+- These connections form the computation graph.
+- During backpropagation, PyTorch applies the chain rule to compute gradients for every trainable parameter.
+- Gradients accumulate by default.
+- `optimizer.zero_grad()` clears old gradients before the next backward pass.

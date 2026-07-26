@@ -1,7 +1,19 @@
 {
-  "title": "GPT 2 Architecture End to End",
   "pages": [
-    "Chapter 1- Input Processing & Tokenization",
-    "Chapter 2- Scaled Dot Attention Core Mechanics"
+    "Chapter 0 Index",
+    "Chapter 1 Pre Requisite Maths",
+    "Chapter 2 Input Processing Tokenization",
+    "Chapter 3 Input Processing & Embeddings (End-to-End Walkthrough)",
+    "Chapter 4 Scaled Dot Attention Core Mechanics",
+    "Chapter 5 Single-Head Self-Attention",
+    "Chapter 6 Multi-Head Attention",
+    "Chapter 7 Pre FFN Cleanup",
+    "Chapter 8 Feed-Forward Network (FFN)",
+    "Chapter 9 Post FFN Cleanup",
+    "Chapter 10 Next Word Generation",
+    "Chapter 11 Training",
+    "Chapter 12 Pretrained Weights",
+    "Chapter 13 Finetuning",
+    "Chapter 14 Optional Alternatives Modern Variants"
   ]
 }

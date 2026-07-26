@@ -1,0 +1,32 @@
+---
+title: "Chapter 12.3 - Mapping TF to PyTorch"
+description: "Translating brain waves!"
+---
+
+# Chapter 12.3 - Mapping TF to PyTorch
+
+<Callout type="info" title="Overview">
+Sometimes, an incredibly smart AI was trained by Google in a language called TensorFlow. But we are building our model in PyTorch! We need to translate the AI's brain (its weights) from TensorFlow language to PyTorch language.
+</Callout>
+
+---
+
+## 🎯 Why we do it
+<Callout type="info" title="Rationale">
+OpenAI spent millions of dollars training GPT-2 in TensorFlow. We don't want to spend millions of dollars training our own from scratch! So, we just download their smart brain and carefully map their TensorFlow names to our PyTorch names.
+</Callout>
+
+## 🛠️ How we do it
+<Callout type="info" title="Methodology">
+We create a dictionary (like a translation book). We say, "Hey, whenever you see a weight named `h0/attn/c_attn/w` in TensorFlow, put it inside our PyTorch layer named `transformer.h.0.attn.c_attn.weight`."
+</Callout>
+
+```python
+# A simple translation dictionary!
+name_map = {
+    "h0/attn/c_attn/w": "transformer.h.0.attn.c_attn.weight",
+    "h0/ln_1/b": "transformer.h.0.ln_1.bias"
+}
+
+print("We know exactly where to plug in the smart weights!")
+```

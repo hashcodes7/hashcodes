@@ -1,0 +1,38 @@
+---
+title: "Chapter 13.4 - The Finetuning Pipeline"
+description: "Going to AI college!"
+---
+
+# Chapter 13.4 - The Finetuning Pipeline
+
+<Callout type="info" title="Overview">
+We have our smart pretrained model, and we have our perfectly packed instruction dataset. It's time to put it all together and send the AI to college! This is the Finetuning Pipeline.
+</Callout>
+
+---
+
+## 🎯 Why we do it
+<Callout type="info" title="Rationale">
+The AI already knows English. Finetuning is just a quick college course to teach it a specific job (like being a helpful assistant). Because it's already smart, we don't have to train it for months; we can just finetune it for a few hours!
+</Callout>
+
+## 🛠️ How we do it
+<Callout type="info" title="Methodology">
+We create a loop that grabs a batch of instruction data, asks the AI to predict the answers, calculates the loss (penalty), and uses the optimizer to tweak the brain. We do this over and over until the AI is a perfect assistant!
+</Callout>
+
+```python
+# The Ultimate Finetuning Loop
+epochs = 3
+
+print("Starting AI College...")
+for epoch in range(epochs):
+    print(f"--- Year {epoch+1} ---")
+    # 1. Grab data
+    # 2. AI makes guesses
+    # 3. Calculate Loss
+    # 4. Optimizer steps (gets smarter!)
+    print("Studying hard, getting smarter...")
+    
+print("Graduation day! The AI is now an Assistant!")
+```

@@ -1,0 +1,64 @@
+---
+title: "Chapter 7.2 - 1st Layer Normalization"
+description: "The content will be uploaded soon"
+---
+
+# Chapter 7.2 - 1st Layer Normalization
+
+---
+
+# Residual Output  
+=
+[  
+[1.133, -0.299, 0.503],  
+[-0.176, 0.911, 0.143],  
+[0.766, 0.781,-0.518],  
+[1.601, -0.669,0.368],  
+[0.663, 0.779,0.648]  
+]
+
+# we calculate mean row by row (showing first row eg.)
+mean = (1.133 - 0.299 + 0.503) / 3  ≈ 0.446
+
+# Calculate standard daviation
+1.133 - 0.446,  = 0.687,
+-0.299 - 0.446,  = -0.745,
+0.503 - 0.446  = 0.057
+
+# so final top row 
+[  0.687,  -0.745,   0.057  ]
+
+# calculate squares
+variance = average((x - mean)²)
+[  0.687²,  (-0.745)²,  0.057²  ]
+= [  0.472,  0.555,  0.003  ]
+
+# Calculate average
+variance = (0.472 + 0.555 + 0.003)/3  
+variance = 0.343
+# Add epsilon
+variance + ε ≈ 0.343
+# Calculate standard daviation
+standard daviation = √(variance + ε ) = √0.343 ≈ 0.586
+# Divide by standard deviation
+[  0.687 / 0.586,  -0.745 / 0.586,  0.057 / 0.586  ]
+=[  1.17,  -1.27,  0.10  ]
+# Apply gamma and beta (optional)
+LayerNorm = γ × normalized + β
+values example : 
+γ = [1,1,1]  
+β = [0,0,0]
+
+# final result top row : 
+LayerNorm Output  
+=  [  1.17,  -1.27,  0.10  ]
+
+# after doing with every row we get :
+LayerNorm Output  =
+[  
+[ 1.40,-1.52, 0.12],  
+[-1.15, 1.29,-0.14],  
+[ 0.71, 0.70,-1.41],  
+[ 1.31,-1.14,-0.17],  
+[-0.16, 0.91,-0.75]  
+]

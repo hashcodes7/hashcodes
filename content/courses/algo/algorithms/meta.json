@@ -1,13 +1,12 @@
 {
-  "title": "Algorithms",
   "pages": [
+    "Deep Learning",
+    "Information Retrieval",
+    "Machine Learning",
+    "Optimization",
+    "Pathfinding",
     "Search & Traversal",
     "Sorting",
-    "Pathfinding",
-    "String & Pattern Matching",
-    "Optimization",
-    "Machine Learning",
-    "Information Retrieval",
-    "Deep Learning"
+    "String & Pattern Matching"
   ]
 }

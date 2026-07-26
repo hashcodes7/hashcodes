@@ -1,0 +1,39 @@
+---
+title: "Chapter 7.1 - 1st Residual Connection"
+description: "Adding a safe backup path"
+---
+
+# Chapter 7.1 - 1st Residual Connection
+
+<Callout type="info" title="Overview">
+Have you ever played a video game and saved your progress right before a boss fight? That way, if you mess up, you don't lose everything! A Residual Connection is exactly like a save point for our AI.
+</Callout>
+
+---
+
+## 🎯 Why we do it
+<Callout type="info" title="Rationale">
+As our AI model gets deeper and deeper, sometimes the math gets messy, and the AI forgets the original words we gave it. To make sure it never forgets the original input, we simply take the original input and ADD it to the new output!
+</Callout>
+
+## 🛠️ How we do it
+<Callout type="info" title="Methodology">
+It's literally just addition! 
+`New Answer = Old Input + Attention Output`
+This simple plus sign makes training huge AI models incredibly stable because the original data always has a fast lane to skip the hard math.
+</Callout>
+
+```python
+# Our original word embeddings
+original_input = [10, 20, 30]
+
+# What the complex attention math gave us
+attention_output = [2, -1, 5]
+
+# The Save Point (Residual Connection)
+safe_output = []
+for i in range(3):
+    safe_output.append(original_input[i] + attention_output[i])
+
+print("Safe and sound:", safe_output)
+```

@@ -1,0 +1,37 @@
+---
+title: "Chapter 8.3 - Second Linear Layer"
+description: "Squeezing the data back down"
+---
+
+# Chapter 8.3 - Second Linear Layer
+
+<Callout type="info" title="Overview">
+After the GELU function, our data is all puffed up like a balloon because the first linear layer made it really wide. Now, we need to let the air out and squeeze it back down to its normal size so it can move on to the next step!
+</Callout>
+
+---
+
+## 🎯 Why we do it
+<Callout type="info" title="Rationale">
+The AI temporarily expanded the data so it could find hidden patterns (using GELU). But the rest of the model expects the data to be a very specific size. The second linear layer acts like a funnel, compressing the expanded data back into its original shape.
+</Callout>
+
+## 🛠️ How we do it
+<Callout type="info" title="Methodology">
+It's just another matrix multiplication! If our puffed-up data has a size of 400, and our normal size is 100, we multiply it by a matrix that transforms it from 400 back to 100.
+</Callout>
+
+```python
+import torch.nn as nn
+import torch
+
+# Puffed up data (size 400)
+puffed_data = torch.randn(1, 400)
+
+# The Funnel (Second Linear Layer)
+# Compresses 400 back to 100
+funnel = nn.Linear(400, 100)
+
+normal_data = funnel(puffed_data)
+print("Back to normal size:", normal_data.shape)
+```

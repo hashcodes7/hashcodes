@@ -1,0 +1,29 @@
+---
+title: "Chapter 3.1 - Recursive Chunking"
+description: "Token-based overlap splitting."
+---
+
+# Chapter 3.1 - Recursive Chunking
+
+> [!info] 
+> Token-based overlap splitting.
+
+If you feed an entire 100-page PDF into an LLM, it will crash due to context limits. We must split it into chunks.
+However, if we split blindly, we might cut a sentence in half! We use recursive chunking with an **overlap** to preserve context boundaries.
+
+```python
+
+def recursive_chunk_text(text, chunk_size=500, overlap=50):
+    words = text.split()
+    chunks = []
+    i = 0
+    while i < len(words):
+        chunk = " ".join(words[i:i + chunk_size])
+        chunks.append(chunk)
+        i += chunk_size - overlap
+    return chunks
+
+```
+
+> [!warning] The Overlap Ratio
+> Always ensure your overlap is at least 10% of your chunk size. If a critical keyword is at the very end of chunk A, the overlap ensures it also appears at the beginning of chunk B, so it is never "lost" between boundaries.

@@ -1,0 +1,37 @@
+---
+title: "Chapter 11.3 - Calculating the Batch Loss"
+description: "How the AI learns from its mistakes!"
+---
+
+# Chapter 11.3 - Calculating the Batch Loss
+
+<Callout type="info" title="Overview">
+When you take a test in school, your teacher gives you a grade based on how many mistakes you made. For an AI, this grade is called the "Loss". The lower the loss, the smarter the AI!
+</Callout>
+
+---
+
+## 🎯 Why we do it
+<Callout type="info" title="Rationale">
+The AI starts off completely clueless. It just guesses random words. To make it smarter, we have to measure exactly *how wrong* it is. If the AI was supposed to say "Apple" but said "Car", we give it a big penalty (high loss). If it said "Orange", we give it a smaller penalty.
+</Callout>
+
+## 🛠️ How we do it
+<Callout type="info" title="Methodology">
+We use a math formula called **Cross-Entropy Loss**. It compares the percentages the AI guessed with the actual 100% correct answer. It calculates the difference for the whole "batch" (group) of words it just tried to guess.
+</Callout>
+
+```python
+import torch
+import torch.nn.functional as F
+
+# The AI's guesses (percentages)
+ai_guesses = torch.tensor([[0.1, 0.8, 0.1]]) # It guessed 80% for word #1
+
+# The actual correct answer (Word #1 is correct!)
+correct_answers = torch.tensor([1]) 
+
+# Calculate the penalty!
+loss = F.cross_entropy(ai_guesses, correct_answers)
+print("The AI's penalty score is:", loss.item())
+```

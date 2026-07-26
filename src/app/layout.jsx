@@ -16,7 +16,6 @@ export default function RootLayout({ children }) {
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"
-          integrity="sha384-GMRi4CxS79RJ3sOJDsZ/WzgOPWUr3mQh9ObtUT14YOFrT71HBdycC5nlO15c8sGD"
           crossOrigin="anonymous"
         />
       </head>

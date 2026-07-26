@@ -1,0 +1,128 @@
+---
+title: "Chapter 11.7 - Weight Optimization (Optimizers)"
+description: "The content will be uploaded soon"
+---
+
+# Chapter 11.7 - Weight Optimization (Optimizers)
+
+Now that every tensor is attached with a grad matrix which tells each of values about in which direction they should change, its time to change it. 
+
+we use **optimizers** for this 
+these optimizers change the weight in direction indicated by grad to achieve lesser loss
+there isnt a defined weights for best case scenario. there can be many combinations for least loss.
+
+| **Configuration A** | **Configuration B** |
+|---------------------|---------------------|
+| $$\begin{aligned} w_1 &= 3 \\ w_2 &= 7 \\ \text{Loss} &= 0.001 \end{aligned}$$ | $$\begin{aligned} w_1 &= 6 \\ w_2 &= 2 \\ \text{Loss} &= 0.001 \end{aligned}$$ |
+least loss cant also be judged by just one weight but many weights combine together for least loss . eg:
+
+| **Original Configuration** | **Only \(w_1\) Changed** | **All Weights Adjusted** |
+|----------------------------|--------------------------|--------------------------|
+| $$\begin{aligned} w_1 &= 2 \\ w_2 &= 5 \\ w_3 &= -1 \\ \text{Loss} &= 0.05 \end{aligned}$$ | $$\begin{aligned} w_1 &= 4 \\ w_2 &= 5 \\ w_3 &= -1 \\ \text{Loss} &= 2.10 \end{aligned}$$ | $$\begin{aligned} w_1 &= 4 \\ w_2 &= 8 \\ w_3 &= -3 \\ \text{Loss} &= 0.03 \end{aligned}$$ |
+
+so we changed w1 to better value increased the loss while combination of other weights decreased it. 
+This is what optimizers are good at. 
+
+## Common Optimizers
+
+| **Optimizer** | **Main Idea** | **Used for Modern LLMs?** |
+|---------------|---------------|---------------------------|
+| **SGD (Stochastic Gradient Descent)** | Updates each weight using only the current gradient. | ❌ Rare |
+| **SGD + Momentum** | Uses the current gradient and remembers previous update directions to reduce zig-zagging and speed up convergence. | ⚠️ Sometimes |
+| **Adam** | Combines momentum with an adaptive learning rate for each weight. | ✅ Yes |
+| **AdamW** | Adam with improved weight decay (regularization), leading to better generalization. Standard optimizer for modern Transformers and LLMs. | ⭐ Yes (Standard) |
+### 1. SGD (Stochastic Gradient Descent)
+
+#### SGD Formula
+
+For every trainable weight,
+
+$$
+w_{\text{new}}
+=
+w_{\text{old}}
+-
+\eta
+\frac{\partial L}{\partial w}
+$$
+
+where
+
+| Symbol | Meaning |
+|--------|---------|
+| $$w_{\text{old}}$$ | Current weight |
+| $$w_{\text{new}}$$ | Updated weight |
+| $$\eta$$ | Learning rate |
+| $$\frac{\partial L}{\partial w}$$ | Gradient computed by backpropagation |
+
+Suppose - 
+$$
+Gradient = -5
+$$
+A **negative gradient** means the weight should be **increased** to reduce the loss. so Substitute the values in formula : -
+
+$$
+w_{\text{new}}
+=
+10
+-
+0.1(-5)
+=
+10.5
+$$
+The weight changed from 10 to 10.5
+
+---
+### 2. **SGD + Momentum**
+
+An improved version of SGD.
+
+Instead of looking only at the current gradient, it also remembers previous update directions (called **momentum**).
+
+This helps:
+- Reduce zig-zagging.
+- Move faster through shallow regions.
+- Reach a minimum in fewer updates.
+
+Think of pushing a heavy ball downhill—it keeps rolling in the same general direction instead of changing direction every step.
+
+---
+
+### 3. **Adam (Adaptive Moment Estimation)**
+
+Adam combines two powerful ideas:
+
+1. **Momentum** – remembers previous gradients.
+2. **Adaptive Learning Rate** – automatically adjusts the step size independently for every weight.
+
+This allows Adam to:
+- Converge faster than SGD.
+- Handle noisy gradients well.
+- Require less manual tuning of the learning rate.
+
+Because of these advantages, Adam became one of the most popular optimizers in deep learning.
+
+---
+
+### 4. **AdamW**
+
+AdamW is an improved version of Adam.
+
+It performs the same adaptive updates as Adam but applies **weight decay** correctly as a separate regularization step.
+
+Benefits:
+- Better generalization.
+- More stable training.
+- Prevents weights from growing unnecessarily large.
+## Usage 
+
+for optimizer defining we simply do
+```python
+optimizer = torch.optim.AdamW( 
+	model.parameters(),
+	 lr=0.0004, 
+	 weight_decay=0.1 
+ )
+```
+
+for optimizer using we simply call ```optimizer.step()``` thats all.

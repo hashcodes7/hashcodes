@@ -1,0 +1,60 @@
+---
+title: "Chapter 10.3 - Autoregressive Generation Loop"
+description: "The content will be uploaded soon"
+---
+
+# Chapter 10.3 - Autoregressive Generation Loop
+
+---
+
+# 📝 Chapter 10: Text Generation
+
+Now that we have a trained (or pretrained) model, how does it actually "speak"? 
+
+Generating text is an iterative process. A language model doesn't output an entire sentence at once; it predicts the **next single token**. We then take that token, add it to our input, and ask the model to predict the *next* one. 
+
+This process is handled by `f_token_generator.py` and `g_text_generator.py`.
+
+---
+
+## 🎲 1. The Core Loop: Generating Tokens
+In `f_token_generator.py`, the `generate_next_tokens()` function is the heart of inference.
+
+```python
+for _ in range(max_new_tokens):
+    # 1. Get logits for the current context
+    logits = model(idx_cond)[:, -1, :] 
+
+    # 2. Pick the next token
+    idx_next = torch.argmax(logits, dim=-1, keepdim=True)
+
+    # 3. Append to the sequence and repeat
+    idx = torch.cat((idx, idx_next), dim=1)
+```
+
+### Advanced Sampling Methods
+Always picking the highest probability token (`torch.argmax`) is called **greedy decoding**. It works, but it can sound repetitive or boring. To make the model more creative, we add two techniques:
+
+1. **Top-K Sampling:** 
+   Instead of considering the entire vocabulary, we only look at the top $K$ most likely tokens. The rest of the tokens get their probabilities forced to negative infinity (`-inf`), meaning they have zero chance of being picked.
+   
+2. **Temperature Scaling:**
+   We divide the logits by a `temperature` value. 
+   - `temperature < 1.0` makes the peaks sharper (more confident, less random).
+   - `temperature > 1.0` flattens the distribution (more random, more creative).
+   
+After applying temperature, we convert logits to probabilities using `Softmax`, and then use `torch.multinomial()` to randomly sample the next token based on those probabilities.
+
+---
+
+## 🗣️ 2. The User Interface: Text Generator
+In `g_text_generator.py`, we wrap the token generation logic into a user-friendly pipeline. 
+
+The `generate_text()` function does three things:
+1. **Encode:** Uses the tokenizer to turn your string `prompt` into token IDs.
+2. **Generate:** Calls `generate_next_tokens()` to get a long list of output token IDs.
+3. **Decode:** Converts those output token IDs back into human-readable text.
+
+<Callout type="important" title="Eval Mode">
+Before generating text, we must set `model.eval()`. This turns off training-specific layers like Dropout, ensuring our generation is deterministic and uses the full strength of the network. We also wrap the generation in `torch.no_grad()` to save memory, since we aren't calculating gradients for backpropagation.
+</Callout>

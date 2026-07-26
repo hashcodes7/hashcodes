@@ -1,0 +1,35 @@
+---
+title: "Chapter 13.3 - Collate Function"
+description: "Packing the backpacks perfectly!"
+---
+
+# Chapter 13.3 - Collate Function
+
+<Callout type="info" title="Overview">
+When the AI goes to school (training), it needs to bring its textbooks in perfectly sized backpacks. But sentences are all different lengths! The Collate Function is like a packing expert that makes sure all sentences fit into the exact same sized box.
+</Callout>
+
+---
+
+## 🎯 Why we do it
+<Callout type="info" title="Rationale">
+GPUs (the chips that train AI) love nice, neat boxes (matrices). If one sentence is 5 words long and another is 10 words long, the GPU gets confused. We use "Padding" to fill the short sentences with blank spaces so everything is exactly the same length!
+</Callout>
+
+## 🛠️ How we do it
+<Callout type="info" title="Methodology">
+We find the longest sentence in our batch. Then, we add `<PAD>` tokens (which are just 0s) to the end of all the shorter sentences until they match the longest one.
+</Callout>
+
+```python
+# Two sentences of different lengths
+sentence_1 = [45, 92, 12] # Length 3
+sentence_2 = [88, 14, 99, 42, 11] # Length 5
+
+# The Collate Function pads sentence_1 with zeros!
+padded_sentence_1 = [45, 92, 12, 0, 0] # Now it's Length 5!
+
+print("Perfectly matched backpacks!")
+print(padded_sentence_1)
+print(sentence_2)
+```

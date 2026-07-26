@@ -1,0 +1,39 @@
+---
+title: "Chapter 10.2 - Temperature & Top-K Sampling"
+description: "Adding some spice and creativity!"
+---
+
+# Chapter 10.2 - Temperature & Top-K Sampling
+
+<Callout type="info" title="Overview">
+If the AI always picks the word with the highest percentage, it gets really boring and repetitive. It's like eating pizza for dinner every single night! Temperature and Top-K let us add a little bit of randomness and creativity to the AI's choices.
+</Callout>
+
+---
+
+## 🎯 Why we do it
+<Callout type="info" title="Rationale">
+Sometimes the second or third best word is actually more interesting! 
+- **Temperature** makes the percentages closer together (higher temperature = more random, lower temperature = more strict). 
+- **Top-K** means we only look at the top few words and completely ignore the crazy weird ones at the bottom.
+</Callout>
+
+## 🛠️ How we do it
+<Callout type="info" title="Methodology">
+We divide our Logits by a Temperature number before doing Softmax. Then, we use a tool to only grab the top `K` choices (like the top 50 words) and pick randomly from those!
+</Callout>
+
+```python
+import torch
+
+logits = torch.tensor([10.0, 9.0, 8.0, 1.0, -5.0])
+
+# 1. Temperature: Divide by a number > 1 to make it more random!
+temperature = 2.0
+spicy_logits = logits / temperature
+
+# 2. Top-K: Only keep the top 3!
+top_values, top_indices = torch.topk(spicy_logits, 3)
+
+print("We only consider these top 3 scores now:", top_values)
+```

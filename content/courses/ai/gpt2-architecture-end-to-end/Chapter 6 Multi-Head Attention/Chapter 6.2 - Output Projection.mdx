@@ -1,0 +1,37 @@
+---
+title: "Chapter 6.2 - Output Projection"
+description: "Mixing the answers back together"
+---
+
+# Chapter 6.2 - Output Projection
+
+<Callout type="info" title="Overview">
+We just gave our AI multiple "heads" to think about a sentence. But right now, they all have separate answers. It's time for a team meeting! Output Projection is how we mix all their ideas together into one amazing conclusion.
+</Callout>
+
+---
+
+## 🎯 Why we do it
+<Callout type="info" title="Rationale">
+If you ask 4 friends for advice, you get 4 different answers. You need to combine their advice to make your final decision. The Output Projection layer takes all the glued-together answers from the different heads and scrambles them up nicely so the AI can use the best parts of each!
+</Callout>
+
+## 🛠️ How we do it
+<Callout type="info" title="Methodology">
+We use a simple Linear Layer (just a matrix multiplication) to mix everything up. We multiply our glued-together vector by a special matrix called `W_O` (Weight Output).
+</Callout>
+
+```python
+import torch
+import torch.nn as nn
+
+# All the heads glued their answers together
+glued_answers = torch.tensor([0.5, 0.2, 0.9, 0.1])
+
+# The mixer (Output Projection)
+mixer = nn.Linear(4, 4)
+
+# Mix it up!
+final_answer = mixer(glued_answers)
+print("The team has decided:", final_answer)
+```

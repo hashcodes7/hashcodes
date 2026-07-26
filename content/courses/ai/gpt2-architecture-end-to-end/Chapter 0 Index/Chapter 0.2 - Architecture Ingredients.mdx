@@ -1,0 +1,77 @@
+---
+title: "Chapter 0.2 - Architecture Ingredients"
+---
+
+# 🛠️ Architecture Ingredients & Pre-Trained Weight Matrices
+
+Below are all the static weight matrices and parameters assumed to be learned during model training. These exact values are referenced and multiplied throughout the interactive visualizations in this course:
+
+### 1. Token Embedding Matrix ($W_E$)
+Projects discrete token IDs into dense continuous embedding vectors ($\text{Vocab Size } 5 \times \text{Model Dim } 3$):
+$$
+W_E = \begin{bmatrix} 0.43 & 0.15 & 0.89 \\ 0.55 & 0.87 & 0.66 \\ 0.57 & 0.85 & 0.64 \\ 0.22 & 0.58 & 0.33 \\ 0.77 & 0.25 & 0.10 \end{bmatrix}
+$$
+
+### 2. Positional Embedding Matrix ($W_P$)
+Encodes spatial order information for sequence positions ($\text{Max Seq Len } 5 \times \text{Model Dim } 3$):
+$$
+W_P = \begin{bmatrix} 0.29 & -0.30 & -0.51 \\ -0.66 & -0.13 & -0.49 \\ -0.10 & -0.36 & 0.08 \\ 1.09 & -1.22 & 0.04 \\ -0.35 & 0.46 & 0.50 \end{bmatrix}
+$$
+
+## 📦 Per-Transformer Layer Parameters
+
+### 3. Query Weight Matrix ($W_Q$)
+Projects input representations to Query vectors for Head 1 ($\text{Model Dim } 3 \times \text{Head Dim } 2$):
+$$
+W_Q = \begin{bmatrix} 0.5 & -0.2 \\ 0.1 & 0.8 \\ -0.4 & 0.3 \end{bmatrix}
+$$
+
+### 4. Key Weight Matrix ($W_K$)
+Projects input representations to Key vectors for Head 1 ($\text{Model Dim } 3 \times \text{Head Dim } 2$):
+$$
+W_K = \begin{bmatrix} -0.3 & 0.6 \\ 0.7 & -0.1 \\ 0.2 & 0.5 \end{bmatrix}
+$$
+
+### 5. Value Weight Matrix ($W_V$)
+Projects input representations to Value vectors for Head 1 ($\text{Model Dim } 3 \times \text{Head Dim } 2$):
+$$
+W_V = \begin{bmatrix} 0.4 & -0.3 \\ 0.1 & 0.8 \\ -0.5 & 0.2 \end{bmatrix}
+$$
+
+### 6. Output Projection Matrix ($W_O$)
+Projects multi-head concatenated outputs back to model dimensions ($\text{Concat Dim } 6 \times \text{Model Dim } 3$):
+$$
+W_O = \begin{bmatrix} 0.3 & -0.2 & 0.5 \\ -0.6 & 0.1 & 0.4 \\ 0.2 & 0.7 & -0.3 \\ 0.8 & -0.5 & 0.2 \\ -0.1 & 0.4 & 0.6 \\ 0.5 & 0.3 & -0.2 \end{bmatrix}
+$$
+
+### 7. LayerNorm 1 Parameters ($\gamma, \beta$)
+Learned element-wise scaling ($\gamma$) and shifting ($\beta$) parameters for 1st Layer Normalization:
+$$
+\gamma = \begin{bmatrix} 1.0 & 1.0 & 1.0 \end{bmatrix}, \quad \beta = \begin{bmatrix} 0.0 & 0.0 & 0.0 \end{bmatrix}
+$$
+
+### 8. FFN Linear Layer 1 Weight Matrix ($W_1$) (+ bias)
+Expands feature space ($\text{Model Dim } 3 \times \text{Hidden Dim } 6$) with zero initial bias vector $b_1$:
+$$
+W_1 = \begin{bmatrix} 0.4 & -0.2 & 0.1 & 0.6 & -0.5 & 0.3 \\ -0.1 & 0.8 & -0.4 & 0.2 & 0.7 & -0.6 \\ 0.5 & 0.3 & 0.9 & -0.2 & 0.1 & 0.4 \end{bmatrix}, \quad b_1 = \begin{bmatrix} 0 & 0 & 0 & 0 & 0 & 0 \end{bmatrix}
+$$
+
+### 9. FFN Linear Layer 2 Weight Matrix ($W_2$) (+ bias)
+Projects back to model space ($\text{Hidden Dim } 6 \times \text{Model Dim } 3$) with zero initial bias vector $b_2$:
+$$
+W_2 = \begin{bmatrix} 0.2 & -0.4 & 0.5 \\ -0.3 & 0.6 & 0.1 \\ 0.7 & -0.2 & -0.5 \\ 0.1 & 0.3 & 0.8 \\ -0.6 & 0.5 & 0.2 \\ 0.4 & -0.1 & 0.3 \end{bmatrix}, \quad b_2 = \begin{bmatrix} 0 & 0 & 0 \end{bmatrix}
+$$
+
+### 10. LayerNorm 2 Parameters ($\gamma, \beta$)
+Learned element-wise scaling ($\gamma$) and shifting ($\beta$) parameters for 2nd Layer Normalization:
+$$
+\gamma = \begin{bmatrix} 1.0 & 1.0 & 1.0 \end{bmatrix}, \quad \beta = \begin{bmatrix} 0.0 & 0.0 & 0.0 \end{bmatrix}
+$$
+
+## 🎯 Post-Transformer Block (LM Head)
+
+### 11. LM Head Matrix ($W_{\text{LM Head}}$)
+Projects final hidden state to vocabulary logit scores ($\text{Model Dim } 3 \times \text{Vocab Size } 5$):
+$$
+W_{\text{LM Head}} = \begin{bmatrix} 0.3 & -0.2 & 0.7 & 0.1 & -0.4 \\ -0.5 & 0.8 & -0.1 & 0.6 & 0.2 \\ 0.4 & 0.3 & -0.6 & 0.5 & -0.7 \end{bmatrix}
+$$

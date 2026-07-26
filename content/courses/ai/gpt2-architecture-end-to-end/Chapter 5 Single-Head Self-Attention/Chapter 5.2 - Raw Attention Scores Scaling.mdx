@@ -1,0 +1,39 @@
+---
+title: "Chapter 5.2 - Raw Attention Scores Scaling"
+description: "Understanding why we scale down our attention scores"
+---
+
+# Chapter 5.2 - Raw Attention Scores Scaling
+
+<Callout type="info" title="Overview">
+Hey there! Have you ever shouted so loud that nobody could understand you? That's what happens to our AI when numbers get too big. In this chapter, we learn how to "lower the volume" of our attention scores so the AI doesn't get confused!
+</Callout>
+
+---
+
+## 🎯 Why we do it
+<Callout type="info" title="Rationale">
+When we calculate how much two words care about each other (the attention score), the numbers can get super huge if we are working with giant vectors. If the numbers are too big, the AI only pays attention to one single word and ignores everything else. That's not fair! We want it to listen to all the words.
+</Callout>
+
+## 🛠️ How we do it
+<Callout type="info" title="Methodology">
+It's super simple! We just take our big attention scores and divide them by a magic number. This magic number is the square root of the size of our vectors (called `d_k`). 
+For example, if our vector size is 4, the square root is 2. So we just divide our scores by 2 to shrink them down!
+</Callout>
+
+```python
+import math
+
+# Let's say this is our big score
+raw_score = 100 
+vector_size = 64
+
+# The magic number!
+magic_number = math.sqrt(vector_size) # This is 8
+
+# Shrink it down!
+safe_score = raw_score / magic_number
+
+print(f"Ah, much better! The score is now {safe_score}")
+```

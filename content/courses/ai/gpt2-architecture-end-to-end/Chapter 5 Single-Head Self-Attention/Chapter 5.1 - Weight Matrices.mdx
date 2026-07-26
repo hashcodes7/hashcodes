@@ -1,0 +1,120 @@
+---
+title: "Chapter 5.1 - Weight Matrices"
+description: "The content will be uploaded soon"
+---
+
+# Chapter 5.1 - Weight Matrices
+
+---
+
+
+<Callout type="info" title="Overview">
+Bro, scene yeh hai ki hum ek LLM model bana rahe hain. Model ko context samajhna padta hai. Attention ka matlab hai ki ek word doosre kis word ko kitni "importance" (ya attention) dega ek sentence ke andar. Jaise "journey" word "starts" aur "step" se related hai. Ye chapter usi baatcheet ke baare mein hai.
+</Callout>
+
+---
+
+## 🎯 Why we do it
+<Callout type="info" title="Rationale">
+Kyun kar rahe hain hum ye? Kyunki ek word akela kuch nahi hota. Jab words ek doosre se "connect" hote hain, tabhi sentence ka meaning banta hai. Hum chahte hain ki humara AI har word ko dekhe, aur samajh sake ki uska baki sentence ke kis word ke saath sabse deep connection hai!
+</Callout>
+
+## 🛠️ How we do it
+<Callout type="info" title="Methodology">
+Isko aise samjho: 
+1. Humare paas input sentence ke saare words vectors mein hain.
+2. Ek word (jisko hum **Query** bolte hain) baaki sab words ke paas jaata hai aur poochta hai: "Bhai, humara rishta kitna strong hai?"
+3. Dono words ka ek "rishta score" nikalta hai (jisey **Attention Score** bolte hain).
+4. In scores ko percentages mein convert karte hain.
+5. End mein sabko mila kar ek super-charged vector banta hai (jisey **Context Vector** bolte hain).
+</Callout>
+
+## 📥 Input
+<Callout type="info" title="Input Format">
+- **Description:** Humara basic input wohi puraane embedded vectors hain jo humne pehle banaye the. Har word ek vector ban chuka hai.
+</Callout>
+>
+> - **Example:** 
+> ```python
+> inputs = tensor([0.43, 0.15, 0.89]) # "Your" ka vector
+> ```
+
+## 📤 Output
+<Callout type="info" title="Resulting State">
+- **Description:** Result ek naya vector hota hai, jisko **Context Vector** kehte hain. Is vector mein sirf us word ki akele ki meaning nahi hoti, balki baaki doston (words) ki bhi thodi-thodi khasiyat judi hoti hai!
+</Callout>
+
+## ⚙️ Working
+<Callout type="info" title="Under the Hood">
+Chal bhai, ab is poori kahani ko code mein dekhte hain!
+</Callout>
+
+*Sabse pehle, dekho humare paas ek sentence hai. Puraane chapters mein humne har word ko ek 3-dimensional vector mein convert kar diya tha. Sentence hai: "Your journey starts with one step". Dekho har word ka apna 3 numbers ka dabba hai.*
+![Embedding Setup](https://sebastianraschka.com/images/LLMs-from-scratch-images/ch03_compressed/07.webp)
+```python
+import torch
+
+inputs = torch.tensor(
+  [[0.43, 0.15, 0.89], # Your     (x^1)
+   [0.55, 0.87, 0.66], # journey  (x^2)
+   [0.57, 0.85, 0.64], # starts   (x^3)
+   [0.22, 0.58, 0.33], # with     (x^4)
+   [0.77, 0.25, 0.10], # one      (x^5)
+   [0.05, 0.80, 0.55]] # step     (x^6)
+)
+print("Input embeddings:\n", inputs)
+```
+
+---
+
+*Ab kahani ka hero hai humara second word: `journey` (isko hum **Query** bolenge). Ab `journey` har doosre word ke paas jayega aur unka Dot Product nikalkar apna "rishta" check karega. Agar score zyada aaya, matlab connection deep hai! In raw scores ko hum **unnormalized attention scores** kehte hain.*
+![Computing Attention Scores](https://sebastianraschka.com/images/LLMs-from-scratch-images/ch03_compressed/08.webp)
+```python
+query = inputs[1]  # 'journey' ban gaya humara Query
+
+# Bhai ki ninja technique (list comprehension) se ek line mein saare scores!
+attn_scores_2 = torch.tensor([torch.dot(x, query) for x in inputs])
+
+print("Rishta Scores (Attention scores) for 'journey':\n", attn_scores_2)
+```
+
+---
+
+*Lekin bhai, raw scores toh kuch bhi ho sakte hain (kabhi 1.5, kabhi 0.8). Toh hume inko ek seedhe scale par lana hoga, taaki in sabka Total Sum exactly 1 (yaani 100%) ban jaaye. Iske liye ek maths ki trick use karte hain jiska naam hai **Softmax**. Softmax lagane ke baad jo nayi values aati hain, unhe hum **attention weights** bolte hain.*
+![Normalizing Attention Scores](https://sebastianraschka.com/images/LLMs-from-scratch-images/ch03_compressed/09.webp)
+```python
+# Softmax trick se sabko normalize kiya
+attn_weights_2 = torch.softmax(attn_scores_2, dim=0)
+
+print("Attention weights (percentages):\n", attn_weights_2)
+print("Total Sum check kar le bhai:", attn_weights_2.sum())
+```
+
+---
+
+*Ab final climax! Humare hero `journey` ko ab pata chal gaya hai ki baaki words uske liye kitne important hain. Ab woh kya karega? Woh baaki saare words ke vectors ko unke "attention weight" se multiply karega aur sabko add kar dega. Isse banta hai ek naya, super-charged **Context Vector**!*
+![Building Context Vectors](https://sebastianraschka.com/images/LLMs-from-scratch-images/ch03_compressed/10.webp)
+```python
+context_vec_2 = torch.zeros(query.shape)
+for i, x_i in enumerate(inputs):
+    # Har vector ko uske weight se multiply karke add kiya
+    context_vec_2 += attn_weights_2[i] * x_i
+
+print("Super-charged Context vector for 'journey':\n", context_vec_2)
+```
+
+---
+
+*Par bhai, AI models apne tarike mein thode aalsi aur super fast hote hain. Woh ek-ek word ke paas chal ke loop mein nahi jaate! Woh **Matrix Multiplication** ka use karte hain taaki yeh saara kaam (saare words ke scores nikalna aur context vectors banana) ek hi baar mein ho jaaye.*
+![Generalizing with Matrix Multiplication](https://sebastianraschka.com/images/LLMs-from-scratch-images/ch03_compressed/12.webp)
+```python
+# Ek saath saare scores nikale matrix math se!
+attn_scores = inputs @ inputs.T
+
+# Sabko ek saath normalize kiya
+attn_weights = torch.softmax(attn_scores, dim=-1)
+
+# Boom! Sabke context vectors ek sec mein ready!
+all_context_vecs = attn_weights @ inputs
+print("All context vectors:\n", all_context_vecs)
+```

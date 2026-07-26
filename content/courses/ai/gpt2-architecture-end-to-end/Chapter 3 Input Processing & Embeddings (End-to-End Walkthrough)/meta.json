@@ -1,0 +1,7 @@
+{
+  "pages": [
+    "Chapter 3.1 - Tokenization & Input Prompt",
+    "Chapter 3.2 - Token Embedding Lookup (We Matrix)",
+    "Chapter 3.3 - Positional Embeddings & Combined Input Matrix"
+  ]
+}

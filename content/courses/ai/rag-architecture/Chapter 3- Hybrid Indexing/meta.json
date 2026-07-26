@@ -1,8 +1,0 @@
-{
-  "title": "Chapter 3: Hybrid Indexing",
-  "pages": [
-    "Chapter 3 Dual-Stage Hybrid Indexing (FAISS + BM25)",
-    "Chapter 3.1 - Dense Vector Indexing (FAISS HNSW Flat)",
-    "Chapter 3.2 - Sparse Lexical Search with BM25"
-  ]
-}

@@ -1,0 +1,202 @@
+---
+title: "Chapter 11.1 - Cross Entropy Loss"
+description: "The content will be uploaded soon"
+---
+
+# Chapter 11.1 - Cross Entropy Loss
+
+
+# Cross Entropy Loss
+
+Cross Entropy Loss measures **how much probability the model assigned to the actual (correct) next token**.
+
+> It **does not care which token was predicted**. It only looks at the probability of the correct target token.
+
+---
+
+## Formula (Single Training Set)
+
+For one training set (one prediction):
+
+$$
+\boxed{
+\text{Cross Entropy Loss}
+=
+-\ln\left(P(\text{Target})\right)
+}
+$$
+
+where
+
+- $P(\text{Target})$ = probability assigned to the actual next token.
+- $\ln$ = natural logarithm.
+
+### Interpretation
+
+| Probability of Correct Target | Loss |
+|-------------------------------:|-----:|
+| 1.00 | 0.000 |
+| 0.90 | 0.105 |
+| 0.50 | 0.693 |
+| 0.20 | 1.609 |
+| 0.10 | 2.303 |
+| 0.01 | 4.605 |
+
+---
+
+## Batch Predictions (taking B1 batch)
+
+| Context Seen      | Output | Probability of Output | Target | Probability of Target | Full Probability Matrix Strip `[hi, my, name, is, harshu, who, really, loves, family]` |
+| ----------------- | ------ | --------------------: | ------ | --------------------: | -------------------------------------------------------------------------------------- |
+| hi                | hi     |                  0.24 | my     |                  0.13 | [0.24, 0.13, 0.11, 0.09, 0.12, 0.10, 0.08, 0.07, 0.06]                                 |
+| hi my             | really |                  0.18 | name   |                  0.10 | [0.09, 0.12, 0.10, 0.11, 0.13, 0.14, 0.18, 0.07, 0.06]                                 |
+| hi my name        | my     |                  0.21 | is     |                  0.12 | [0.08, 0.21, 0.09, 0.12, 0.13, 0.11, 0.10, 0.09, 0.07]                                 |
+| hi my name is     | harshu |                  0.29 | harshu |                  0.29 | [0.05, 0.06, 0.07, 0.09, 0.29, 0.16, 0.12, 0.09, 0.07]                                 |
+| my                | my     |                  0.26 | name   |                  0.12 | [0.08, 0.26, 0.12, 0.10, 0.08, 0.14, 0.09, 0.07, 0.06]                                 |
+| my name           | really |                  0.20 | is     |                  0.09 | [0.07, 0.11, 0.15, 0.09, 0.14, 0.13, 0.20, 0.06, 0.05]                                 |
+| my name is        | who    |                  0.22 | harshu |                  0.11 | [0.06, 0.09, 0.10, 0.13, 0.11, 0.22, 0.12, 0.10, 0.07]                                 |
+| my name is harshu | who    |                  0.31 | who    |                  0.31 | [0.04, 0.06, 0.08, 0.07, 0.09, 0.31, 0.14, 0.13, 0.08]                                 |
+
+---
+
+### Step 1 — Calculate Loss for Every Training Set
+
+Using
+
+$$
+\text{Loss}=-\ln(P(\text{Target}))
+$$
+
+| # | Probability of Target | Calculation | Loss |
+|---:|----------------------:|-------------|-----:|
+|1|0.13|$-\ln(0.13)$|2.040|
+|2|0.10|$-\ln(0.10)$|2.303|
+|3|0.12|$-\ln(0.12)$|2.120|
+|4|0.29|$-\ln(0.29)$|1.238|
+|5|0.12|$-\ln(0.12)$|2.120|
+|6|0.09|$-\ln(0.09)$|2.408|
+|7|0.11|$-\ln(0.11)$|2.207|
+|8|0.31|$-\ln(0.31)$|1.171|
+
+---
+
+### Step 2 — Average All Losses
+
+$$
+\begin{aligned}
+\text{Batch Loss}
+&=
+\frac{
+2.040
++
+2.303
++
+2.120
++
+1.238
++
+2.120
++
+2.408
++
+2.207
++
+1.171
+}{8}
+\\[4pt]
+&=
+\frac{15.607}{8}
+\\[4pt]
+&=
+\boxed{1.951}
+\end{aligned}
+$$
+
+### Batch feeding Input target explained
+Here the entire logits is passed as first input so first tensor is inputs logits tensor 
+so logits are like :
+
+| [0.24, 0.13, 0.11, 0.09, 0.12, 0.10, 0.08, 0.07, 0.06] |
+| ------------------------------------------------------ |
+| [0.09, 0.12, 0.10, 0.11, 0.13, 0.14, 0.18, 0.07, 0.06] |
+| [0.08, 0.21, 0.09, 0.12, 0.13, 0.11, 0.10, 0.09, 0.07] |
+| [0.05, 0.06, 0.07, 0.09, 0.29, 0.16, 0.12, 0.09, 0.07] |
+| [0.08, 0.26, 0.12, 0.10, 0.08, 0.14, 0.09, 0.07, 0.06] |
+| [0.07, 0.11, 0.15, 0.09, 0.14, 0.13, 0.20, 0.06, 0.05] |
+| [0.06, 0.09, 0.10, 0.13, 0.11, 0.22, 0.12, 0.10, 0.07] |
+| [0.04, 0.06, 0.08, 0.07, 0.09, 0.31, 0.14, 0.13, 0.08] |
+while on other hand targets are like this :
+[ [4, 3, 1, 7], [2, 5, 6, 8] ]
+after flattening it looks like this :
+[4, 3, 1, 7, 2, 5, 6, 8] 
+
+or if we say better : 
+## Logits / Probability Tensor (Simplified)
+
+Shape:
+
+$$
+(8,\;9)
+$$
+
+| Row | Probability Distribution `[hi, my, name, is, harshu, who, really, loves, family]` |
+|:--:|:-------------------------------------------------------------------------------------|
+| 1 | [0.24, 0.13, 0.11, 0.09, 0.12, 0.10, 0.08, 0.07, 0.06] |
+| 2 | [0.09, 0.12, 0.10, 0.11, 0.13, 0.14, 0.18, 0.07, 0.06] |
+| 3 | [0.08, 0.21, 0.09, 0.12, 0.13, 0.11, 0.10, 0.09, 0.07] |
+| 4 | [0.05, 0.06, 0.07, 0.09, 0.29, 0.16, 0.12, 0.09, 0.07] |
+| 5 | [0.08, 0.26, 0.12, 0.10, 0.08, 0.14, 0.09, 0.07, 0.06] |
+| 6 | [0.07, 0.11, 0.15, 0.09, 0.14, 0.13, 0.20, 0.06, 0.05] |
+| 7 | [0.06, 0.09, 0.10, 0.13, 0.11, 0.22, 0.12, 0.10, 0.07] |
+| 8 | [0.04, 0.06, 0.08, 0.07, 0.09, 0.31, 0.14, 0.13, 0.08] |
+ and  **targets tensor** is like this initially:
+ targets=
+ [
+ [1,2,3,4]
+ [2,3,4,5]
+ ]
+ after flattening it becoems [1,2,3,4,2,3,4,5]
+ this is simply index no. of the logit that **should have the most probability**
+---
+
+## Both Tensors Together
+
+
+| Row | Logits / Probability Tensor `(8\times9)`                                                          | Target Tensor `(8)` |
+| :-: | :------------------------------------------------------------------------------------------------ | ------------------: |
+|  1  | [0.24, <span style={{color:"#4CAF50"}}><b>0.13</b></span>, 0.11, 0.09, 0.12, 0.10, 0.08, 0.07, 0.06] |               **1** |
+|  2  | [0.09, 0.12, <span style={{color:"#4CAF50"}}><b>0.10</b></span>, 0.11, 0.13, 0.14, 0.18, 0.07, 0.06] |               **2** |
+|  3  | [0.08, 0.21, 0.09, <span style={{color:"#4CAF50"}}><b>0.12</b></span>, 0.13, 0.11, 0.10, 0.09, 0.07] |               **3** |
+|  4  | [0.05, 0.06, 0.07, 0.09, <span style={{color:"#4CAF50"}}><b>0.29</b></span>, 0.16, 0.12, 0.09, 0.07] |               **4** |
+|  5  | [0.08, 0.26, <span style={{color:"#4CAF50"}}><b>0.12</b></span>, 0.10, 0.08, 0.14, 0.09, 0.07, 0.06] |               **2** |
+|  6  | [0.07, 0.11, 0.15, <span style={{color:"#4CAF50"}}><b>0.09</b></span>, 0.14, 0.13, 0.20, 0.06, 0.05] |               **3** |
+|  7  | [0.06, 0.09, 0.10, 0.13, <span style={{color:"#4CAF50"}}><b>0.11</b></span>, 0.22, 0.12, 0.10, 0.07] |               **4** |
+|  8  | [0.04, 0.06, 0.08, 0.07, 0.09, <span style={{color:"#4CAF50"}}><b>0.31</b></span>, 0.14, 0.13, 0.08] |               **5** |
+targets tensor is simply the index of the logit vector which should had the maximum value in probability list.
+
+
+---
+
+
+# Important Observation
+
+Cross entropy **does not care whether the predicted token matches the target directly**. Instead, it looks at **how much probability the model assigned to the correct target token**.
+
+For example:
+
+| Context | Predicted | Correct Target | Probability of Target | Loss |
+|----------|-----------|----------------|----------------------:|-----:|
+| hi my name is | harshu ✅ | harshu | 0.29 | 1.238 |
+| my name is harshu | who ✅ | who | 0.31 | 1.171 |
+
+Although the predictions are correct, the loss is **not zero** because the model is only **29%** and **31%** confident.
+
+Likewise,
+
+| Context | Predicted | Correct Target | Probability of Target | Loss |
+|----------|-----------|----------------|----------------------:|-----:|
+| hi my | really ❌ | name | 0.10 | 2.303 |
+
+The model predicted the wrong token and assigned only **10%** probability to the correct target, resulting in a much higher loss.
+
+---

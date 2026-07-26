@@ -1,7 +1,6 @@
 {
-  "title": "Pathfinding",
   "pages": [
-    "Dijkstra",
-    "A_"
+    "A_",
+    "Dijkstra"
   ]
 }

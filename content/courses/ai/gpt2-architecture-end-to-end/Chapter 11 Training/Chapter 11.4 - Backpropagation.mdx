@@ -1,0 +1,53 @@
+---
+title: "Chapter 11.4 - Backpropagation"
+description: "The content will be uploaded soon"
+---
+
+# Chapter 11.4 - Backpropagation
+
+# `loss.backward()`
+
+After computing the batch loss, we still don't know **how to improve the model**.
+
+The batch loss only tells us the **loss value**
+
+It **doesn't tell us which weights should increase or decrease**.
+
+loss.backward() does this for each single weight in every weight in the weights matrix
+
+$$
+\text{Gradient}
+=
+\frac{\partial \text{Loss}}
+{\partial \text{Weight}}
+$$
+
+This value is called the **gradient**. it calculates
+> **"If I slightly change each weight in the model, how will the loss change?"**
+
+| Gradient | Meaning |
+|----------|---------|
+| **Positive** ($> 0$) | Increasing the weight **increases the loss**. ❌ |
+| **Negative** ($< 0$) | Increasing the weight **decreases the loss**. ✅ |
+| **Zero** ($= 0$) | A tiny change in the weight does not change the loss (locally flat). |
+
+---
+backpropogation attaches the information to these tensors about how they "should change" in order to achieve targets . how it attaches the information we will learn in ch 8.6 Tensors
+The Backpropogation step will calculate this for each type of weight matrix there is 
+these are the matrix:
+
+|Layer|Weight Matrix|Purpose|Updated by Backprop?|
+|---|---|---|---|
+|**Token Embedding**|`Embedding Matrix`|Converts token IDs → vectors|✅ Yes|
+|**Positional Embedding**|`Position Embedding Matrix`|Adds position information|✅ Yes|
+|**Query Projection**|(W_Q)|Creates Query vectors|✅ Yes|
+|**Key Projection**|(W_K)|Creates Key vectors|✅ Yes|
+|**Value Projection**|(W_V)|Creates Value vectors|✅ Yes|
+|**Attention Output Projection**|(W_O)|Combines attention heads|✅ Yes|
+|**Feed Forward Layer 1**|(W_1)|Expands hidden dimension|✅ Yes|
+|**Feed Forward Layer 2**|(W_2)|Compresses back to model dimension|✅ Yes|
+|**Final Output Layer (LM Head)**|(W_out)|Produces vocabulary logits|✅ Yes|
+|**LayerNorm Scale**|(\gamma)|Learns feature scaling|✅ Yes|
+|**LayerNorm Bias**|(\beta)|Learns feature shifting|✅ Yes|
+
+---

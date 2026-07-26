@@ -1,0 +1,8 @@
+{
+  "pages": [
+    "Chapter 10.1 - LM Head Projection Logits",
+    "Chapter 10.2 - Sampling (Temperature, Top-K, Top-P)",
+    "Chapter 10.3 - Autoregressive Generation Loop",
+    "Chapter 10.4 - Complete Inference Walkthrough"
+  ]
+}

@@ -1,0 +1,155 @@
+---
+title: "Chapter 11.2 - Generating Text Batches"
+description: "The content will be uploaded soon"
+---
+
+# Chapter 11.2 - Generating Text Batches
+
+---
+
+<Callout type="info" title="Overview">
+
+</Callout>
+every epoch can contain many batches. every batch can contain many training sets.
+simple analogy is that 
+1 batch= the weights changed once
+1 epoch= the entire dataset has been read through once
+
+
+Suppose we have:
+   - <span style={{color:"#FFD54F"}}><b>1000 Training Sets</b></span>
+   - <span style={{color:"#FFD54F"}}><b>Batch Size = 50</b></span>
+
+2. Number of batches:
+   - **1000 ÷ 50 = 20 batches**
+
+3. Each batch processes **50 training sets** and performs **1 weight update**.
+
+4. Therefore:
+   - **20 batches = 20 weight updates**
+
+5. After all **20 batches** are processed, the model has seen all **1000 training sets** once. This is called **<span style={{color:"#4FC3F7"}}><b>1 Epoch</b></span>**.
+
+6. If we train for **10 epochs**:
+   - **20 batches/epoch × 10 epochs = 200 weight updates**
+
+``` bash
+Epoch 1 
+
+Batch 1 (Examples 1–50) 
+↓ Update weights
+
+Batch 2 (Examples 51–100)
+↓ Update weights... 
+
+Batch 20 (Examples 951–1000) ↓ 
+Update weights✅ 
+
+Entire dataset has now been seen once 
+= 1 Epoch Completed (20 times weight changed)
+```
+
+
+---
+
+sentance = "hi my name is harshu who really loves my family"
+## Batch 1
+
+| Context Seen      | Output | Probability of Output | Target | Probability of Target | Full Probability Matrix Strip `[hi, my, name, is, harshu, who, really, loves, family]` |
+| ----------------- | ------ | --------------------: | ------ | --------------------: | -------------------------------------------------------------------------------------- |
+| hi                | hi     |                  0.24 | my     |                  0.13 | [0.24, 0.13, 0.11, 0.09, 0.12, 0.10, 0.08, 0.07, 0.06]                                 |
+| hi my             | really |                  0.18 | name   |                  0.10 | [0.09, 0.12, 0.10, 0.11, 0.13, 0.14, 0.18, 0.07, 0.06]                                 |
+| hi my name        | my     |                  0.21 | is     |                  0.12 | [0.08, 0.21, 0.09, 0.12, 0.13, 0.11, 0.10, 0.09, 0.07]                                 |
+| hi my name is     | harshu |                  0.29 | harshu |                  0.29 | [0.05, 0.06, 0.07, 0.09, 0.29, 0.16, 0.12, 0.09, 0.07]                                 |
+| my                | my     |                  0.26 | name   |                  0.12 | [0.08, 0.26, 0.12, 0.10, 0.08, 0.14, 0.09, 0.07, 0.06]                                 |
+| my name           | really |                  0.20 | is     |                  0.09 | [0.07, 0.11, 0.15, 0.09, 0.14, 0.13, 0.20, 0.06, 0.05]                                 |
+| my name is        | who    |                  0.22 | harshu |                  0.11 | [0.06, 0.09, 0.10, 0.13, 0.11, 0.22, 0.12, 0.10, 0.07]                                 |
+| my name is harshu | who    |                  0.31 | who    |                  0.31 | [0.04, 0.06, 0.08, 0.07, 0.09, 0.31, 0.14, 0.13, 0.08]                                 |
+
+---
+
+## Batch 2 
+
+| Context Seen | Output | Probability of Output | Target | Probability of Target | Full Probability Matrix Strip `[hi, my, name, is, harshu, who, really, loves, family]` |
+|--------------|--------|----------------------:|--------|----------------------:|------------------------------------------------------------------------------------------|
+| name | name | 0.24 | is | 0.13 | [0.06, 0.12, 0.24, 0.13, 0.09, 0.14, 0.10, 0.07, 0.05] |
+| name is | who | 0.21 | harshu | 0.12 | [0.05, 0.08, 0.10, 0.18, 0.12, 0.21, 0.11, 0.09, 0.06] |
+| name is harshu | really | 0.20 | who | 0.14 | [0.05, 0.07, 0.08, 0.09, 0.16, 0.14, 0.20, 0.13, 0.08] |
+| name is harshu who | really | 0.30 | really | 0.30 | [0.04, 0.05, 0.06, 0.06, 0.09, 0.12, 0.30, 0.18, 0.10] |
+| is | is | 0.25 | harshu | 0.13 | [0.05, 0.09, 0.08, 0.25, 0.13, 0.14, 0.10, 0.09, 0.07] |
+| is harshu | who | 0.29 | who | 0.29 | [0.04, 0.06, 0.06, 0.08, 0.11, 0.29, 0.15, 0.13, 0.08] |
+| is harshu who | loves | 0.28 | really | 0.16 | [0.04, 0.06, 0.06, 0.07, 0.08, 0.17, 0.16, 0.28, 0.08] |
+| is harshu who really | loves | 0.35 | loves | 0.35 | [0.03, 0.04, 0.04, 0.05, 0.05, 0.09, 0.15, 0.35, 0.20] |
+
+---
+
+## Batch 3
+
+| Context Seen            | Output | Probability of Output | Target | Probability of Target | Full Probability Matrix Strip `[hi, my, name, is, harshu, who, really, loves, family]` |
+| ----------------------- | ------ | --------------------: | ------ | --------------------: | -------------------------------------------------------------------------------------- |
+| harshu                  | harshu |                  0.24 | who    |                  0.12 | [0.05, 0.09, 0.08, 0.08, 0.24, 0.12, 0.13, 0.15, 0.06]                                 |
+| harshu who              | really |                  0.28 | really |                  0.28 | [0.04, 0.06, 0.05, 0.05, 0.09, 0.16, 0.28, 0.18, 0.09]                                 |
+| harshu who really       | loves  |                  0.34 | loves  |                  0.34 | [0.03, 0.04, 0.04, 0.05, 0.05, 0.10, 0.16, 0.34, 0.19]                                 |
+| harshu who really loves | family |                  0.33 | my     |                  0.18 | [0.03, 0.18, 0.04, 0.05, 0.05, 0.06, 0.08, 0.18, 0.33]                                 |
+| who                     | who    |                  0.23 | really |                  0.16 | [0.04, 0.09, 0.08, 0.08, 0.09, 0.23, 0.16, 0.14, 0.09]                                 |
+| who really              | loves  |                  0.31 | loves  |                  0.31 | [0.03, 0.05, 0.05, 0.05, 0.06, 0.12, 0.18, 0.31, 0.15]                                 |
+| who really loves        | my     |                  0.39 | my     |                  0.39 | [0.03, 0.39, 0.04, 0.04, 0.04, 0.06, 0.09, 0.18, 0.13]                                 |
+| who really loves my     | my     |                  0.34 | family |                  0.17 | [0.03, 0.34, 0.03, 0.03, 0.03, 0.06, 0.09, 0.22, 0.17]                                 |
+<div align="center">
+
+<h2 style={{color:"red"}}>
+Sentence = "hi my name is harshu who really loves my family"
+</h2>
+
+</div>
+
+
+- Total words (tokens) = **10**
+- Context Length ($T$) = **4**
+- Batch Size ($B$) = **2**
+- Training Sets ($N$) = **24**
+- **Batch Size** Number of context-length input sequences passed to the model in one batch.
+	- eg batch 1 has 2 (hi my name is      &       my name is harshu)
+- **context length** is length of 1 input eg (my name is harshu) =4 tokens =4
+- no. of training sets that can be created =
+
+$$
+\text{Total Training Sets}
+=
+(\text{Total Tokens} - \text{Context Length})
+\times
+\text{Context Length}
+$$
+
+$$
+\text{Number of Batches}
+=
+\frac{\text{Number of Training Sets}}
+{\text{Context Length} \times \text{Batch Size}}
+=
+\frac{24}{4 \times 2}
+=
+3
+$$
+
+If we train for $E$ epochs:
+
+$$
+\text{Total Batch Iterations}
+=
+\text{Number of Batches}
+\times
+\text{Epochs}
+$$
+
+Example ($Epochs=5$):
+
+$$
+\text{Total Batch Iterations}
+=
+3 \times 5
+=
+15
+$$
+
+

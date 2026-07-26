@@ -1,0 +1,36 @@
+---
+title: "Chapter 9.2 - 2nd Layer Normalization"
+description: "Cleaning up the mess again"
+---
+
+# Chapter 9.2 - 2nd Layer Normalization
+
+<Callout type="info" title="Overview">
+After adding things together with our residual connection, our numbers might have gotten a bit too big or too messy. Layer Normalization is like a quick shower for our data, making sure it's clean and perfectly balanced before the next step!
+</Callout>
+
+---
+
+## 🎯 Why we do it
+<Callout type="info" title="Rationale">
+If numbers get too big, they can crash our model or make it learn really slowly. Layer Normalization forces the numbers to have an average of 0 and a variance of 1. It keeps everything neat and tidy!
+</Callout>
+
+## 🛠️ How we do it
+<Callout type="info" title="Methodology">
+We find the average of our numbers and subtract it. Then we divide by the spread (standard deviation). The AI also learns two tiny helper variables called "gamma" and "beta" to give the numbers a little stretch and shift if it wants to.
+</Callout>
+
+```python
+import torch
+import torch.nn as nn
+
+# Messy data
+messy_data = torch.tensor([[100.0, -50.0, 20.0]])
+
+# The Shower (LayerNorm)
+shower = nn.LayerNorm(3)
+
+clean_data = shower(messy_data)
+print("Squeaky clean:", clean_data)
+```

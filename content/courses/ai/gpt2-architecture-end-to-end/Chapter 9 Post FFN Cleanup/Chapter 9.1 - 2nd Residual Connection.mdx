@@ -1,0 +1,34 @@
+---
+title: "Chapter 9.1 - 2nd Residual Connection"
+description: "Another save point!"
+---
+
+# Chapter 9.1 - 2nd Residual Connection
+
+<Callout type="info" title="Overview">
+Yep, you guessed it! It's time for another save point. Just like we did after the Attention step, we are going to add our original data back into the mix after the Feed-Forward Network.
+</Callout>
+
+---
+
+## 🎯 Why we do it
+<Callout type="info" title="Rationale">
+The Feed-Forward Network (FFN) just did a bunch of crazy math to our data. We want to make absolutely sure we didn't accidentally destroy any important information. Adding the old data back in keeps everything stable and healthy!
+</Callout>
+
+## 🛠️ How we do it
+<Callout type="info" title="Methodology">
+We simply take the input that went *into* the FFN and add it to the output that came *out* of the FFN. Simple addition!
+</Callout>
+
+```python
+# The data before the FFN
+old_data = [5, 10, 15]
+
+# The data after the FFN did its work
+ffn_data = [1, 2, -1]
+
+# Save point!
+final_data = [old_data[i] + ffn_data[i] for i in range(3)]
+print("Another safe landing:", final_data)
+```

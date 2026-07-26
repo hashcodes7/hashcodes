@@ -1,8 +1,7 @@
 {
-  "title": "String & Pattern Matching",
   "pages": [
+    "Boyer-Moore",
     "KMP",
-    "Trie",
-    "Boyer-Moore"
+    "Trie"
   ]
 }

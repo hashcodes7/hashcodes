@@ -1,0 +1,27 @@
+---
+title: "Chapter 4.1 - Vector Embeddings (FAISS)"
+description: "Building an HNSW FAISS index."
+---
+
+# Chapter 4.1 - Vector Embeddings (FAISS)
+
+> [!info] 
+> Building an HNSW FAISS index.
+
+Once documents are chunked, we pass them through an Embedding Model (like HuggingFace `all-MiniLM-L6-v2`). This converts the text into a dense array of floats (vectors).
+To search these vectors instantly (even with millions of chunks), we use **FAISS (Facebook AI Similarity Search)**. Specifically, we use the `IndexHNSWFlat` index type.
+
+## HNSW (Hierarchical Navigable Small World)
+
+HNSW builds a multi-layered graph of your vectors. Instead of comparing a user's query vector against every single document (which is O(N) and extremely slow), HNSW traverses the graph hierarchically to find the nearest neighbors in O(log N) time!
+
+```python
+
+import faiss
+
+# Create the HNSW index
+embedding_dim = 384
+index = faiss.IndexHNSWFlat(embedding_dim, 32)
+index.add(document_embeddings)
+
+```

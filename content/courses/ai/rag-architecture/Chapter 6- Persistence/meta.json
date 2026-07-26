@@ -1,8 +1,0 @@
-{
-  "title": "Chapter 6: Persistence",
-  "pages": [
-    "Chapter 6 Persistence & Multi-User Architecture",
-    "Chapter 6.1 - Persistent Vector Cache & Hot Reloading",
-    "Chapter 6.2 - SQLite Persistent DB & PBKDF2 Password Auth"
-  ]
-}

@@ -1,0 +1,53 @@
+---
+title: "Chapter 12.2 - Downloading GPT-2 Weights"
+description: "The content will be uploaded soon"
+---
+
+# Chapter 12.2 - Downloading GPT-2 Weights
+
+# 🧠 Chapter 9.2 Loading OpenAI's Weights (Pretrained)
+
+Why train from scratch for thousands of hours when you can stand on the shoulders of giants? OpenAI released the weights for GPT-2, which means we can download their trained intelligence and plug it directly into our custom architecture!
+
+## 📥 1. Downloading the Checkpoint
+
+In our implementation, `n_gpt_download.py` handles downloading the original TensorFlow checkpoints from OpenAI.
+
+OpenAI provides GPT-2 in a few sizes:
+- **124M** (Small)
+- **355M** (Medium)
+- **774M** (Large)
+- **1558M** (Extra Large)
+
+We use `download_and_load_gpt2()` to pull the weights, the vocabulary (`vocab.bpe`), and the model hyperparameters (`hparams.json`). 
+Once downloaded, the TensorFlow checkpoint (`.ckpt`) contains all the numeric weights organized by layer.
+
+## 🔄 2. The Great Migration: TensorFlow to PyTorch
+
+Our model is built in PyTorch, but OpenAI's original weights are stored in TensorFlow format. Thus, we have a translation problem.
+
+In `o_tensorflow_model_loader.py`, we map the TensorFlow weights block-by-block into our custom PyTorch `GPTModel`.
+
+### 🧩 Mapping the Layers
+
+The function `load_weights_into_gpt(gpt, params)` carefully walks through our model and assigns the downloaded weights:
+
+1. **Embeddings:**
+   - Token Embeddings: `wte` ➡️ `gpt.tok_emb.weight`
+   - Positional Embeddings: `wpe` ➡️ `gpt.pos_emb.weight`
+
+2. **Transformer Blocks (The Loop):**
+   For each block `b`, we do the following:
+   
+   - **Attention:** TensorFlow stores Query, Key, and Value weights as a single large matrix. We use `np.split` to slice it into three parts and assign them to our `W_query`, `W_key`, and `W_value`. Note that we often have to transpose (`.T`) the matrices to match PyTorch's expected linear layer shapes.
+   - **Feed-Forward:** We map the two linear layers (`c_fc` and `c_proj`) into our `ff.layers[0]` and `ff.layers[2]`.
+   - **LayerNorm:** TensorFlow's `g` (gain) and `b` (bias) map directly to our `scale` and `shift` in `norm1` and `norm2`.
+
+3. **Final Touches:**
+   - The final LayerNorm parameters are copied over.
+   - **Weight Tying:** The output projection head `gpt.out_head.weight` gets the exact same weights as the token embedding (`wte`). This saves memory and helps the model predict tokens using the exact same representations it uses to read them!
+
+<Callout type="info" title="The Result">
+
+</Callout>
+> After running the loader, our custom, from-scratch PyTorch model is suddenly infused with the knowledge of billions of text documents!

@@ -1,0 +1,49 @@
+---
+title: "Chapter 13.1 - Introduction to Finetuning"
+description: "The content will be uploaded soon"
+---
+
+# Chapter 13.1 - Introduction to Finetuning
+
+# 🎓 Chapter 11: Instruction Fine-Tuning
+
+A pretrained language model (like GPT-2) is great at predicting the next word, but it's not naturally helpful. If you ask it a question, it might just generate another related question instead of answering! 
+
+To turn a text-completer into an interactive assistant (like ChatGPT), we need **Instruction Fine-Tuning**.
+
+## 📝 1. Formatting the Dataset
+The core idea is to train the model on examples of good behavior. We take pairs of Instructions and Responses, and format them so the model learns the "chat" structure.
+
+In `q_instructionDataSet.py`, we define a custom PyTorch `Dataset` that handles this. We take JSON data and format it into a very specific prompt template:
+
+```text
+Below is an instruction that describes a task. Write a response that appropriately completes the request.
+
+### Instruction:
+[User's question or command]
+
+### Input:
+[Optional context]
+
+### Response:
+[The ideal answer]
+```
+
+The `InstructionDataset` concatenates these parts and tokenizes the *entire string* at once.
+
+## 📦 2. Collating and Padding
+Since our instructions are all different lengths, we can't easily stack them into batches. In `r_collate.py`, we define a custom `collate_fn` for our DataLoader.
+
+1. **Find Max Length:** We find the longest token sequence in the current batch.
+2. **Pad:** We add `<|endoftext|>` padding tokens to the shorter sequences so everything is perfectly rectangular.
+3. **Shift:** Inputs are `tokens[:-1]` and Targets are `tokens[1:]`.
+
+<Callout type="info" title="Masking the Loss">
+A crucial step in fine-tuning is that we only want to calculate loss on the model's actual *Response*, not the padding! 
+In `collate_fn`, we set the target token for padding to `ignore_index = -100`. PyTorch's `CrossEntropyLoss` automatically ignores any target with a value of `-100`. This ensures the model isn't penalized for (or trained on) the padding tokens!
+</Callout>
+
+## 🏋️ 3. Fine-Tuning (The Training Loop)
+In `s-Finetuning.ipynb`, we put it all together. We load the pretrained weights (so the model already understands English) and train it on our formatted instruction dataset.
+
+Because we are starting from pretrained weights, we generally use a **smaller learning rate** so we don't accidentally erase all the knowledge the model learned during pretraining! Once training is done, our model will reliably reply to prompts matching our `### Instruction:` format.

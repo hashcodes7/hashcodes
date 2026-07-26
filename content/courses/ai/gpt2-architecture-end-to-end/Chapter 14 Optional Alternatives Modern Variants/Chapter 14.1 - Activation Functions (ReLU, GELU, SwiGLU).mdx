@@ -1,0 +1,42 @@
+---
+title: "Chapter 14.1 - Activation Functions"
+description: "Upgrading the bouncers (ReLU, GELU, SwiGLU)"
+---
+
+# Chapter 14.1 - Activation Functions (ReLU, GELU, SwiGLU)
+
+<Callout type="info" title="Overview">
+Over the years, scientists have invented better and better "bouncers" (activation functions) for the AI's club. We started with harsh bouncers like ReLU, moved to gentle ones like GELU, and now we have super-smart ones like SwiGLU!
+</Callout>
+
+---
+
+## 🎯 Why we do it
+<Callout type="info" title="Rationale">
+The better the activation function, the faster and smarter the AI learns. 
+- **ReLU** just chopped off negative numbers instantly (a bit too harsh).
+- **GELU** (what GPT-2 uses) gently bends negative numbers to zero.
+- **SwiGLU** (what LLaMA 3 uses) is even more complex and helps the AI learn incredibly tricky patterns!
+</Callout>
+
+## 🛠️ How we do it
+<Callout type="info" title="Methodology">
+You can literally swap these functions out in PyTorch with one line of code!
+</Callout>
+
+```python
+import torch
+import torch.nn.functional as F
+
+numbers = torch.tensor([-2.0, 0.0, 2.0])
+
+# The harsh bouncer (ReLU)
+print("ReLU:", F.relu(numbers))
+
+# The gentle bouncer (GELU)
+print("GELU:", F.gelu(numbers))
+```
+
+import ReluVisualizer from "@/components/ReluVisualizer";
+
+<ReluVisualizer />

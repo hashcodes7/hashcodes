@@ -9,8 +9,12 @@ import GeluVisualizer from "@/components/GeluVisualizer";
 import SoftmaxVisualizer from "@/components/SoftmaxVisualizer";
 import MatrixMultiplicationVisualizer from "@/components/MatrixMultiplicationVisualizer";
 import ReluVisualizer from "@/components/ReluVisualizer";
+import TocProgressBar from "@/components/TocProgressBar";
+
+import defaultMdxComponents from "fumadocs-ui/mdx";
 
 const customComponents = {
+  ...defaultMdxComponents,
   Callout,
   CausalMaskVisualizer,
   GeluVisualizer,
@@ -19,12 +23,28 @@ const customComponents = {
   ReluVisualizer,
 };
 
-// Find any page by comparing decoded slug arrays
+// Recursively decode a URI component until it's fully decoded to clean raw text
+function fullyDecode(str) {
+  if (!str) return "";
+  let decoded = str;
+  while (decoded.includes("%")) {
+    const prev = decoded;
+    try {
+      decoded = decodeURIComponent(decoded);
+    } catch (e) {
+      break;
+    }
+    if (decoded === prev) break;
+  }
+  return decoded;
+}
+
+// Find any page by comparing fully decoded slug arrays
 function findPageByDecodedSlug(pages, targetSlug) {
-  const targetDecoded = targetSlug.map(s => decodeURIComponent(s).toLowerCase()).join("/");
+  const targetDecoded = targetSlug.map(s => fullyDecode(s).toLowerCase()).join("/");
   for (const page of pages) {
     if (page.slugs) {
-      const pageDecoded = page.slugs.map(s => decodeURIComponent(s).toLowerCase()).join("/");
+      const pageDecoded = page.slugs.map(s => fullyDecode(s).toLowerCase()).join("/");
       if (pageDecoded === targetDecoded) {
         return page;
       }
@@ -36,12 +56,14 @@ function findPageByDecodedSlug(pages, targetSlug) {
 // Recursively find a folder node matching the target slug
 function findFolderNodeBySlug(nodes, slug) {
   if (!nodes) return null;
-  const targetPath = slug.join("/").toLowerCase();
+  const targetPath = slug.map(s => fullyDecode(s).toLowerCase()).join("/");
   for (const node of nodes) {
     if (node.type === "folder") {
       const folderPath = (node.$id || (node.$ref && node.$ref.folder) || "")
-        .replace(/\/$/, "")
-        .toLowerCase();
+        .split("/")
+        .map(s => fullyDecode(s).toLowerCase())
+        .join("/");
+      
       if (folderPath === targetPath) {
         return node;
       }
@@ -55,10 +77,10 @@ function findFolderNodeBySlug(nodes, slug) {
 // Find any page node in the tree whose URL ends with the target slug segment (for flat URL fallback)
 function findPageBySlug(nodes, slugSegment) {
   if (!nodes) return null;
-  const decodedSegment = decodeURIComponent(slugSegment).toLowerCase();
+  const decodedSegment = fullyDecode(slugSegment).toLowerCase();
   for (const node of nodes) {
     if (node.type === "page" && node.url) {
-      const pageName = decodeURIComponent(node.url.split("/").pop() || "").toLowerCase();
+      const pageName = fullyDecode(node.url.split("/").pop() || "").toLowerCase();
       if (pageName === decodedSegment) {
         return node;
       }
@@ -96,7 +118,7 @@ export default async function LearnPage(props) {
   // 1. Try standard lookup
   let page = source.getPage(params.slug);
   
-  // 2. Fallback to decoded slug matching to handle encoding discrepancies
+  // 2. Fallback to decoded slug matching to handle encoding/double-encoding discrepancies
   if (!page) {
     page = findPageByDecodedSlug(source.getPages(), params.slug);
   }
@@ -119,8 +141,8 @@ export default async function LearnPage(props) {
       const foundPage = findPageBySlug(source.pageTree.children, lastSegment);
       if (foundPage && foundPage.url) {
         const currentRequestUrl = "/learn/" + params.slug.map(s => encodeURIComponent(s)).join("/");
-        const decodedCurrent = decodeURIComponent(currentRequestUrl).toLowerCase();
-        const decodedTarget = decodeURIComponent(foundPage.url).toLowerCase();
+        const decodedCurrent = fullyDecode(currentRequestUrl).toLowerCase();
+        const decodedTarget = fullyDecode(foundPage.url).toLowerCase();
         if (decodedCurrent !== decodedTarget) {
           redirect(foundPage.url);
         }
@@ -133,9 +155,14 @@ export default async function LearnPage(props) {
   const MDX = page.data.body;
 
   return (
-    <DocsPage toc={page.data.toc} full={page.data.full}>
+    <DocsPage
+      toc={page.data.toc}
+      full={page.data.full}
+      breadcrumb={{ enabled: false }}
+      tableOfContent={{ header: <TocProgressBar /> }}
+    >
       <DocsBody>
-        <h1 style={{ fontSize: "2rem", fontWeight: 800, marginBottom: "1.5rem" }}>
+        <h1 style={{ fontSize: "2.25rem", fontWeight: 800, marginTop: "4rem", marginBottom: "2rem", textAlign: "center" }}>
           {page.data.title}
         </h1>
         <MDX components={customComponents} />
@@ -159,6 +186,7 @@ export async function generateMetadata(props) {
   }
   
   if (!page) return {};
+  
   return {
     title: `${page.data.title} | Verma's AI Notebooks`,
     description: page.data.description,

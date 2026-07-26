@@ -1,10 +1,9 @@
 {
-  "title": "Primitive Structures",
   "pages": [
     "Arrays",
-    "Strings",
+    "Graphs",
     "Hash Maps",
-    "Trees",
-    "Graphs"
+    "Strings",
+    "Trees"
   ]
 }
