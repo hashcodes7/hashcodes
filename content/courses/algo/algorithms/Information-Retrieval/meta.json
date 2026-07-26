@@ -2,7 +2,7 @@
   "pages": [
     "BM25",
     "HNSW",
-    "Hybrid Search",
-    "Vector Search"
+    "Hybrid-Search",
+    "Vector-Search"
   ]
 }

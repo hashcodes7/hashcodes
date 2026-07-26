@@ -1,12 +1,12 @@
 {
   "pages": [
-    "Deep Learning",
-    "Information Retrieval",
-    "Machine Learning",
+    "Deep-Learning",
+    "Information-Retrieval",
+    "Machine-Learning",
     "Optimization",
     "Pathfinding",
-    "Search & Traversal",
+    "Search-and-Traversal",
     "Sorting",
-    "String & Pattern Matching"
+    "String-and-Pattern-Matching"
   ]
 }
