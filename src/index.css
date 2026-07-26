@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap");
 
+html {
+  font-size: 90%;
+}
+
 :root {
   /* Soothing Dark Theme tailored for long study sessions */
   --bg-color: #0b0f17;
