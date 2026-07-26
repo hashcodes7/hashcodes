@@ -1,12 +1,12 @@
 {
   "pages": [
-    "Chapter 0 Index",
-    "Chapter 1 Pre-Requisites & Foundation",
-    "Chapter 2 Ingestion",
-    "Chapter 3 Chunking Strategies",
-    "Chapter 4 Hybrid Indexing",
-    "Chapter 5 Retrieval Fusion & Reranking",
-    "Chapter 6 Generation & Guardrails",
-    "Chapter 7 Persistence"
+    "Chapter-0-Index",
+    "Chapter-1-Pre-Requisites-and-Foundation",
+    "Chapter-2-Ingestion",
+    "Chapter-3-Chunking-Strategies",
+    "Chapter-4-Hybrid-Indexing",
+    "Chapter-5-Retrieval-Fusion-and-Reranking",
+    "Chapter-6-Generation-and-Guardrails",
+    "Chapter-7-Persistence"
   ]
 }
