@@ -1,16 +1,22 @@
 # Dependencies
 node_modules/
+.pnpm-store/
+
+# Build & Compilation Outputs
 /dist
 /dist-ssr
-
-# Next.js
+/build
 .next/
 out/
-
-# Fumadocs compiler outputs
 .source/
+.turbo/
+.vercel/
+*.tsbuildinfo
 
-# Logs
+# Cache
+.cache/
+
+# Logs & Diagnostics
 logs
 *.log
 npm-debug.log*
@@ -19,12 +25,15 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# OS Files
-.DS_Store
-Thumbs.db
-desktop.ini
+# Environment Variables
+.env
+.env*.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# IDEs
+# IDEs & Code Editors
 .vscode/
 !.vscode/extensions.json
 .idea/
@@ -33,7 +42,27 @@ desktop.ini
 *.njsproj
 *.sln
 *.sw?
+*.swp
 
-# Local Environment Variables
-.env*.local
-.env.local
+# AI Assistant & Tool Configuration
+.claude/
+.gemini/
+
+# Notes & Obsidian Settings
+**/.obsidian/
+
+# Operating System & File System Junk
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Testing & Coverage
+coverage/
+.nyc_output/
+playwright-report/
+test-results/

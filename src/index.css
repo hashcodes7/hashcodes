@@ -776,8 +776,8 @@ summary,
 button.fd-folder-trigger {
   font-size: 0.95rem !important;
   font-weight: 800 !important;
-  /* Extra bold white folder names */
-  color: #ffffff !important;
+  /* Extra bold blue folder names for Major Chapters (Chapter 1, 2, 3, etc.) */
+  color: #38bdf8 !important;
   padding-left: 0.75rem !important;
   /* Padding around text */
   padding-right: 2.75rem !important;
@@ -797,6 +797,10 @@ button.fd-folder-trigger {
 }
 
 /* Column 1: Title text span (shrinks and truncates with ellipsis) */
+#nd-sidebar [data-state] button span,
+#nd-sidebar-mobile [data-state] button span,
+#nd-sidebar button[data-state] span,
+#nd-sidebar-mobile button[data-state] span,
 [class*="Folder"] button span,
 [class*="folder"] button span,
 button[data-collapsible] span,
@@ -807,6 +811,7 @@ button[class*="folder"] span,
 [class*="folder"] summary span,
 summary span,
 summary div {
+  color: #38bdf8 !important;
   flex: 1 1 0% !important;
   /* Take remaining space and allow shrinking */
   min-width: 0 !important;

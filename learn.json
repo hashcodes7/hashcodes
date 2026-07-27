@@ -1,6 +1,29 @@
 {
   "learn": [
     {
+      "id": ".obsidian",
+      "title": ".Obsidian",
+      "badge": ".OBSIDIAN",
+      "description": "Explore notebooks on .obsidian.",
+      "courses": [
+        {
+          "id": "plugins",
+          "title": "Plugins",
+          "folder": "courses/.obsidian/plugins",
+          "chapters": [
+            {
+              "name": "mdx",
+              "children": []
+            },
+            {
+              "name": "mdx-as-md-obsidian",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "ai",
       "title": "Artificial Intelligence",
       "badge": "AI",

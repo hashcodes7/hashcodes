@@ -177,5 +177,9 @@ export default defineConfig({
   mdxOptions: {
     remarkPlugins: (v) => [remarkMath, ...v],
     rehypePlugins: (v) => [rehypeKatex, ...v],
+    remarkImageOptions: {
+      external: false,
+      onError: "ignore",
+    },
   }
 });
