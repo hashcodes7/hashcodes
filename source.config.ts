@@ -50,7 +50,7 @@ try {
 
     // 2. Scan and sort category folders
     const categories = fs.readdirSync(coursesDir).filter(item => {
-      return fs.statSync(path.join(coursesDir, item)).isDirectory();
+      return !item.startsWith(".") && fs.statSync(path.join(coursesDir, item)).isDirectory();
     });
     categories.sort(naturalSort);
 
@@ -65,7 +65,7 @@ try {
     categories.forEach(cat => {
       const catDir = path.join(coursesDir, cat);
       const courses = fs.readdirSync(catDir).filter(item => {
-        return fs.statSync(path.join(catDir, item)).isDirectory();
+        return !item.startsWith(".") && fs.statSync(path.join(catDir, item)).isDirectory();
       });
       courses.sort(naturalSort);
 
@@ -86,7 +86,7 @@ try {
       courses.forEach(course => {
         const courseDir = path.join(catDir, course);
         const childItems = fs.readdirSync(courseDir).filter(item => {
-          return item !== "meta.json";
+          return !item.startsWith(".") && item !== "meta.json";
         });
 
         let courseTitle = course.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase());
@@ -100,9 +100,9 @@ try {
           const fullPath = path.join(courseDir, item);
           const stat = fs.statSync(fullPath);
           if (stat.isDirectory()) {
-            chapters.push(item);
+            if (!item.startsWith(".")) chapters.push(item);
           } else if (item.endsWith(".md") || item.endsWith(".mdx")) {
-            flatFiles.push(item.replace(/\.(md|mdx)$/, ""));
+            if (!item.startsWith(".")) flatFiles.push(item.replace(/\.(md|mdx)$/, ""));
           }
         });
 
@@ -115,7 +115,7 @@ try {
         chapters.forEach(chapter => {
           const chapterDir = path.join(courseDir, chapter);
           const files = fs.readdirSync(chapterDir).filter(item => {
-            return (item.endsWith(".md") || item.endsWith(".mdx")) && item !== "meta.json";
+            return !item.startsWith(".") && (item.endsWith(".md") || item.endsWith(".mdx")) && item !== "meta.json";
           });
 
           const pages = files.map(f => f.replace(/\.(md|mdx)$/, ""));

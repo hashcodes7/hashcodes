@@ -20,6 +20,7 @@ function findFirstPage(nodes) {
 export default function LearnLandingPage() {
   // Deep clone catalog to safely mutate it
   const catalog = JSON.parse(JSON.stringify(catalogRaw));
+  catalog.learn = (catalog.learn || []).filter(category => !category.id.startsWith("."));
   
   // Replace the raw folder paths with the actual statically generated first-page URLs
   catalog.learn.forEach(category => {
