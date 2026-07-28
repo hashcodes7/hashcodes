@@ -1,0 +1,12 @@
+{
+  "pages": [
+    "Chapter-0-Index",
+    "Chapter-1-RAG-Questions",
+    "Chapter-2-LLM-Question",
+    "Chapter-3-MLOps-and-Deployment",
+    "Chapter-4-Python-Backend",
+    "Chapter-5-AI-Agents",
+    "Chapter-6-Prompt-Engineering",
+    "Chapter-7-LLM-Infrastructure-and-Inference"
+  ]
+}

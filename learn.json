@@ -143,9 +143,9 @@
           ]
         },
         {
-          "id": "Interview Questions",
+          "id": "interview-questions",
           "title": "Interview Questions",
-          "folder": "courses/ai/Interview Questions",
+          "folder": "courses/ai/interview-questions",
           "chapters": [
             {
               "name": "Chapter-0-Index",
@@ -154,44 +154,44 @@
               ]
             },
             {
-              "name": "Chapter-1-RAG Questions",
+              "name": "Chapter-1-RAG-Questions",
               "children": [
                 "Chapter-1.2---QnA-and-Interview-Questions"
               ]
             },
             {
-              "name": "Chapter-2-LLM Question",
+              "name": "Chapter-2-LLM-Question",
               "children": [
                 "Chapter-1.2---QnA-and-Interview-Questions 1 1"
               ]
             },
             {
-              "name": "Chapter-3-MLOps and Deployment",
+              "name": "Chapter-3-MLOps-and-Deployment",
               "children": [
                 "Chapter-1.2---QnA-and-Interview-Questions 1 1",
                 "Chapter-1.2---QnA-template"
               ]
             },
             {
-              "name": "Chapter-4-Python Backend",
+              "name": "Chapter-4-Python-Backend",
               "children": [
                 "Chapter-1.2---QnA-and-Interview-Questions 1 1"
               ]
             },
             {
-              "name": "Chapter-5-AI Agents",
+              "name": "Chapter-5-AI-Agents",
               "children": [
                 "Chapter-1.2---QnA-and-Interview-Questions 1 1"
               ]
             },
             {
-              "name": "Chapter-6-Prompt Engineering",
+              "name": "Chapter-6-Prompt-Engineering",
               "children": [
                 "Chapter-1.2---QnA-and-Interview-Questions 1 1"
               ]
             },
             {
-              "name": "Chapter-7-LLM Infrastructure & Inference",
+              "name": "Chapter-7-LLM-Infrastructure-and-Inference",
               "children": [
                 "Chapter-1.2---QnA-and-Interview-Questions 1 1"
               ]
