@@ -39,13 +39,19 @@ function fullyDecode(str) {
   return decoded;
 }
 
-// Find any page by comparing fully decoded slug arrays
+// Normalize slug segment for robust matching (lowercase, decode URI, replace dots with hyphens)
+function normalizeSlugSegment(str) {
+  if (!str) return "";
+  return fullyDecode(str).toLowerCase().replace(/\./g, "-");
+}
+
+// Find any page by comparing normalized slug arrays
 function findPageByDecodedSlug(pages, targetSlug) {
-  const targetDecoded = targetSlug.map(s => fullyDecode(s).toLowerCase()).join("/");
+  const targetNormalized = targetSlug.map(s => normalizeSlugSegment(s)).join("/");
   for (const page of pages) {
     if (page.slugs) {
-      const pageDecoded = page.slugs.map(s => fullyDecode(s).toLowerCase()).join("/");
-      if (pageDecoded === targetDecoded) {
+      const pageNormalized = page.slugs.map(s => normalizeSlugSegment(s)).join("/");
+      if (pageNormalized === targetNormalized) {
         return page;
       }
     }
@@ -56,12 +62,12 @@ function findPageByDecodedSlug(pages, targetSlug) {
 // Recursively find a folder node matching the target slug
 function findFolderNodeBySlug(nodes, slug) {
   if (!nodes) return null;
-  const targetPath = slug.map(s => fullyDecode(s).toLowerCase()).join("/");
+  const targetPath = slug.map(s => normalizeSlugSegment(s)).join("/");
   for (const node of nodes) {
     if (node.type === "folder") {
       const folderPath = (node.$id || (node.$ref && node.$ref.folder) || "")
         .split("/")
-        .map(s => fullyDecode(s).toLowerCase())
+        .map(s => normalizeSlugSegment(s))
         .join("/");
       
       if (folderPath === targetPath) {
@@ -77,10 +83,10 @@ function findFolderNodeBySlug(nodes, slug) {
 // Find any page node in the tree whose URL ends with the target slug segment (for flat URL fallback)
 function findPageBySlug(nodes, slugSegment) {
   if (!nodes) return null;
-  const decodedSegment = fullyDecode(slugSegment).toLowerCase();
+  const decodedSegment = normalizeSlugSegment(slugSegment);
   for (const node of nodes) {
     if (node.type === "page" && node.url) {
-      const pageName = fullyDecode(node.url.split("/").pop() || "").toLowerCase();
+      const pageName = normalizeSlugSegment(node.url.split("/").pop() || "");
       if (pageName === decodedSegment) {
         return node;
       }
@@ -197,6 +203,16 @@ export async function generateStaticParams() {
       if (!seenKeys.has(uriEncodedKey)) {
         seenKeys.add(uriEncodedKey);
         expandedParams.push({ slug: uriEncodedSlug });
+      }
+    }
+
+    const hasDots = item.slug.some(s => s.includes("."));
+    if (hasDots) {
+      const hyphenatedSlug = item.slug.map(s => s.replace(/\./g, "-"));
+      const hyphenatedKey = hyphenatedSlug.join("/");
+      if (!seenKeys.has(hyphenatedKey)) {
+        seenKeys.add(hyphenatedKey);
+        expandedParams.push({ slug: hyphenatedSlug });
       }
     }
   }
