@@ -172,7 +172,36 @@ export default async function LearnPage(props) {
 }
 
 export async function generateStaticParams() {
-  return source.generateParams();
+  const baseParams = source.generateParams();
+  const expandedParams = [];
+  const seenKeys = new Set();
+
+  for (const item of baseParams) {
+    const key = item.slug.join("/");
+    if (!seenKeys.has(key)) {
+      seenKeys.add(key);
+      expandedParams.push(item);
+    }
+
+    const hasSpecialChars = item.slug.some(s => s.includes(" ") || s.includes("&") || s.includes("%"));
+    if (hasSpecialChars) {
+      const encodedSlug = item.slug.map(s => encodeURIComponent(s));
+      const encodedKey = encodedSlug.join("/");
+      if (!seenKeys.has(encodedKey)) {
+        seenKeys.add(encodedKey);
+        expandedParams.push({ slug: encodedSlug });
+      }
+
+      const uriEncodedSlug = item.slug.map(s => encodeURI(s));
+      const uriEncodedKey = uriEncodedSlug.join("/");
+      if (!seenKeys.has(uriEncodedKey)) {
+        seenKeys.add(uriEncodedKey);
+        expandedParams.push({ slug: uriEncodedSlug });
+      }
+    }
+  }
+
+  return expandedParams;
 }
 
 export async function generateMetadata(props) {
