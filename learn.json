@@ -162,38 +162,38 @@
             {
               "name": "Chapter-2-LLM-Question",
               "children": [
-                "Chapter-1.2---QnA-and-Interview-Questions 1 1"
+                "Chapter-2.1---LLM-Interview-Questions"
               ]
             },
             {
               "name": "Chapter-3-MLOps-and-Deployment",
               "children": [
-                "Chapter-1.2---QnA-and-Interview-Questions 1 1",
-                "Chapter-1.2---QnA-template"
+                "Chapter-3.1---MLOps-Interview-Questions",
+                "Chapter-3.2---QnA-Template"
               ]
             },
             {
               "name": "Chapter-4-Python-Backend",
               "children": [
-                "Chapter-1.2---QnA-and-Interview-Questions 1 1"
+                "Chapter-4.1---Python-Backend-Interview-Questions"
               ]
             },
             {
               "name": "Chapter-5-AI-Agents",
               "children": [
-                "Chapter-1.2---QnA-and-Interview-Questions 1 1"
+                "Chapter-5.1---AI-Agents-Interview-Questions"
               ]
             },
             {
               "name": "Chapter-6-Prompt-Engineering",
               "children": [
-                "Chapter-1.2---QnA-and-Interview-Questions 1 1"
+                "Chapter-6.1---Prompt-Engineering-Interview-Questions"
               ]
             },
             {
               "name": "Chapter-7-LLM-Infrastructure-and-Inference",
               "children": [
-                "Chapter-1.2---QnA-and-Interview-Questions 1 1"
+                "Chapter-7.1---LLM-Infra-and-Inference-Interview-Questions"
               ]
             }
           ]
