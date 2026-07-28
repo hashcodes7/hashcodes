@@ -150,16 +150,50 @@
             {
               "name": "Chapter-0-Index",
               "children": [
-                "Chapter-0.1---Course-Index",
-                "Chapter-0.2---Architecture-Ingredients",
-                "Chapter-0.3---QnA"
+                "Chapter-0.1---Course-Index"
               ]
             },
             {
-              "name": "Chapter-1-Pre-Requisites-and-Foundation",
+              "name": "Chapter-1-RAG Questions",
               "children": [
-                "Chapter-1.1---Core-Concepts",
                 "Chapter-1.2---QnA-and-Interview-Questions"
+              ]
+            },
+            {
+              "name": "Chapter-2-LLM Question",
+              "children": [
+                "Chapter-1.2---QnA-and-Interview-Questions 1 1"
+              ]
+            },
+            {
+              "name": "Chapter-3-MLOps and Deployment",
+              "children": [
+                "Chapter-1.2---QnA-and-Interview-Questions 1 1",
+                "Chapter-1.2---QnA-template"
+              ]
+            },
+            {
+              "name": "Chapter-4-Python Backend",
+              "children": [
+                "Chapter-1.2---QnA-and-Interview-Questions 1 1"
+              ]
+            },
+            {
+              "name": "Chapter-5-AI Agents",
+              "children": [
+                "Chapter-1.2---QnA-and-Interview-Questions 1 1"
+              ]
+            },
+            {
+              "name": "Chapter-6-Prompt Engineering",
+              "children": [
+                "Chapter-1.2---QnA-and-Interview-Questions 1 1"
+              ]
+            },
+            {
+              "name": "Chapter-7-LLM Infrastructure & Inference",
+              "children": [
+                "Chapter-1.2---QnA-and-Interview-Questions 1 1"
               ]
             }
           ]
