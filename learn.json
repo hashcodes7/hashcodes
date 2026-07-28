@@ -143,6 +143,28 @@
           ]
         },
         {
+          "id": "Interview Questions",
+          "title": "Interview Questions",
+          "folder": "courses/ai/Interview Questions",
+          "chapters": [
+            {
+              "name": "Chapter-0-Index",
+              "children": [
+                "Chapter-0.1---Course-Index",
+                "Chapter-0.2---Architecture-Ingredients",
+                "Chapter-0.3---QnA"
+              ]
+            },
+            {
+              "name": "Chapter-1-Pre-Requisites-and-Foundation",
+              "children": [
+                "Chapter-1.1---Core-Concepts",
+                "Chapter-1.2---QnA-and-Interview-Questions"
+              ]
+            }
+          ]
+        },
+        {
           "id": "rag-architecture",
           "title": "RAG Architecture",
           "folder": "courses/ai/rag-architecture",

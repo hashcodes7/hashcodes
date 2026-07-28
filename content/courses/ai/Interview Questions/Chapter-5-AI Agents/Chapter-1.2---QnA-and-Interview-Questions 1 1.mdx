@@ -1,0 +1,89 @@
+---
+title: "Chapter 5 - AI Agents"
+description: "Comprehensive interview questions about AI Agents."
+---
+# Chapter 5 - AI Agents
+
+> **Info**
+> Comprehensive interview questions about AI Agents.
+
+---
+
+## Interview Questions
+
+### Q1: What is an AI agent and how is it different from a chatbot?
+**Answer:**
+A standard chatbot is reactive; it simply takes an input query and generates a text response based on its parametric memory or provided context. An **AI Agent** is proactive and autonomous. It uses an LLM as its core reasoning engine to plan, make decisions, invoke external tools (like APIs, calculators, or databases), and take iterative actions in an environment to achieve a complex goal.
+
+---
+
+### Q2: How would you design a multi-agent architecture?
+**Answer:**
+A multi-agent architecture (using frameworks like LangGraph, AutoGen, or CrewAI) involves specialized agents with distinct roles, tools, and system prompts. 
+Key design components:
+1. **Supervisor/Router Agent:** Analyzes the user request and delegates tasks to specific worker agents.
+2. **Worker Agents:** Domain-specific experts (e.g., Code Writer, Data Analyst, Web Researcher) equipped with specific tools.
+3. **Critic/Reviewer Agent:** Evaluates the output of worker agents before returning it to the user.
+4. **State Management:** A shared memory or state object passed between agents to maintain global context.
+
+---
+
+### Q3: How do AI agents decide which tool to call?
+**Answer:**
+Agents use **Function Calling** (or Tool Use). The system provides the LLM with a JSON schema describing available tools, their parameters, and what they do. The LLM uses its reasoning capabilities to determine if a tool is needed. If so, instead of returning raw text, it outputs a structured JSON object specifying the tool name and the arguments to pass. The backend executes the tool and feeds the result back to the LLM to continue reasoning.
+
+---
+
+### Q4: How would you prevent infinite agent loops?
+**Answer:**
+1. **Max Iteration Limits:** Hardcode a maximum number of steps or tool calls the agent can make per session (e.g., max 10 steps).
+2. **Budgeting:** Assign a token or compute budget that terminates the agent when depleted.
+3. **Loop Detection:** Track the agent's action history. If it repeats the exact same tool call with the exact same arguments consecutively, forcibly break the loop.
+4. **Human-in-the-Loop:** Pause execution and request user intervention if the agent's confidence score drops or it exceeds a soft limit.
+
+---
+
+### Q5: How would you manage short-term and long-term memory in AI agents?
+**Answer:**
+* **Short-Term Memory:** Managed via the context window. It contains the immediate conversation history and recent tool outputs. When this grows too large, it is summarized or older messages are truncated.
+* **Long-Term Memory:** Managed via an external database (often a Vector DB). The agent stores key facts, user preferences, and past experiences. Before acting, the agent retrieves relevant long-term memories using semantic search to inform its current decisions.
+
+---
+
+### Q6: How would you implement human-in-the-loop approval?
+**Answer:**
+Design the agent workflow as a state machine (e.g., using LangGraph). When the agent reaches a state requiring a sensitive action (like executing code, sending an email, or transferring money), execution pauses, and the state is persisted. A notification is sent to the human operator via a UI. Once the human approves, modifies, or rejects the action, the input is injected back into the state machine, and the agent resumes execution.
+
+---
+
+### Q7: How would you evaluate an AI agent's performance?
+**Answer:**
+Evaluating agents is harder than standard LLMs because of non-deterministic trajectories.
+1. **Task Success Rate:** Did the agent achieve the final goal?
+2. **Trajectory Analysis:** Did it take the optimal path? (Count of unnecessary steps or tool hallucinations).
+3. **Tool Precision:** Did it format tool arguments correctly according to the schema?
+4. **LLM-as-a-Judge:** Use a stronger model (like GPT-4) to grade the agent's reasoning traces and final output against a rubric.
+
+---
+
+### Q8: How would you handle tool failures and retries?
+**Answer:**
+If a tool fails (e.g., API timeout or invalid SQL syntax), the error message should not just crash the system. Instead, the error string is appended to the agent's scratchpad as an observation. The LLM is prompted to analyze the error, correct its parameters, and try again. Implement standard software retries (exponential backoff) for transient network errors before exposing the failure to the LLM.
+
+---
+
+### Q9: How would you secure tool execution in production?
+**Answer:**
+1. **Principle of Least Privilege:** Provide agents only with the exact API scopes and database permissions they absolutely need. Use read-only credentials where possible.
+2. **Sandboxing:** Execute code generated by agents (like Python scripts) in isolated, ephemeral environments like Docker containers or WebAssembly (Wasm) with no network access.
+3. **Approval Gates:** Enforce Human-in-the-Loop for destructive actions (DELETE, POST, UPDATE).
+4. **Schema Validation:** Strictly validate all arguments generated by the LLM before passing them to the actual function.
+
+---
+
+### Q10: How would you optimize latency in multi-agent systems?
+**Answer:**
+1. **Parallelization:** Run independent worker agents concurrently rather than sequentially.
+2. **Model Routing:** Use smaller, faster models (like Llama 3 8B or GPT-4o-mini) for simple tasks (routing, basic extraction) and reserve large models for complex reasoning.
+3. **Prompt Optimization:** Minimize the system prompt size for each agent so they process fewer input tokens.
+4. **Semantic Caching:** Cache the results of frequent, deterministic tool calls or reasoning paths.

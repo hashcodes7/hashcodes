@@ -1,0 +1,92 @@
+---
+title: "Chapter 4 - Python / Backend"
+description: "Comprehensive interview questions about Python Backend and AI inference."
+---
+# Chapter 4 - Python / Backend
+
+> **Info**
+> Comprehensive interview questions about Python Backend and scalable AI inference.
+
+---
+
+## Interview Questions
+
+### Q1: How would you build a scalable FastAPI backend for AI inference?
+**Answer:**
+A scalable FastAPI backend for AI inference requires a multi-layered approach:
+1. **Asynchronous Framework:** Use FastAPI's async capabilities to handle I/O-bound tasks without blocking the main thread.
+2. **Decoupled Inference:** Offload heavy ML model inference to background workers (like Celery or RQ) or a dedicated model serving framework (like vLLM, Triton, or Ray Serve) rather than running inference directly in the API process.
+3. **Load Balancing & Orchestration:** Deploy the API behind a load balancer (e.g., Nginx, HAProxy) using Kubernetes or AWS ECS to auto-scale based on CPU/GPU utilization or queue length.
+4. **Caching:** Implement Redis for semantic caching or exact-match caching to serve repeated queries instantly without hitting the model.
+
+---
+
+### Q2: What is the difference between synchronous and asynchronous APIs?
+**Answer:**
+* **Synchronous APIs** process requests sequentially. If a request involves a long-running task (like generating text from an LLM), the worker thread is blocked until the task completes, meaning it cannot handle other incoming requests during that time.
+* **Asynchronous APIs** (using `asyncio` in Python) allow the server to handle other requests while waiting for I/O operations (like database queries, network calls, or external API calls) to complete. This drastically improves concurrency and throughput for I/O-bound workloads.
+
+---
+
+### Q3: How would you handle concurrent inference requests?
+**Answer:**
+1. **Message Queues:** Route requests through a message broker (RabbitMQ, Kafka, or Redis Pub/Sub). The API layer acts as a producer, and inference workers act as consumers.
+2. **Dynamic Batching:** Group concurrent requests together in a queue and process them in a single forward pass on the GPU to maximize hardware utilization.
+3. **Concurrency Limits:** Use semaphores or rate limiters to prevent overwhelming the GPU memory, returning `429 Too Many Requests` or queuing requests gracefully.
+
+---
+
+### Q4: What causes memory bottlenecks in Python AI systems?
+**Answer:**
+1. **Global Interpreter Lock (GIL):** Prevents true multi-threading in CPU-bound Python tasks, forcing the use of memory-heavy multi-processing.
+2. **Object Overhead:** Python objects have significant memory overhead compared to raw C/C++ data structures.
+3. **Data Duplication:** Passing large tensors or dataframes between processes (e.g., in a Celery queue) often requires serializing and deserializing data, doubling memory usage.
+4. **GPU VRAM Spikes:** Loading multiple large models into VRAM simultaneously or using unoptimized batch sizes without KV cache management.
+
+---
+
+### Q5: How would you optimize API throughput?
+**Answer:**
+1. **Continuous Batching:** For LLMs, process requests at the iteration level rather than the prompt level, allowing new requests to join a batch as soon as others finish.
+2. **Model Quantization:** Use INT8, INT4, or FP8 quantization (e.g., AWQ, GPTQ) to reduce model size and memory bandwidth bottlenecks.
+3. **Optimized Runtimes:** Replace standard Hugging Face `transformers` with optimized engines like TensorRT-LLM, vLLM, or ONNX Runtime.
+4. **Caching & CDN:** Cache frequent API responses at the edge.
+
+---
+
+### Q6: How would you implement request batching for GPU inference?
+**Answer:**
+Instead of processing requests 1-by-1 (batch size = 1), you collect incoming requests over a small time window (e.g., 50ms) or until a maximum batch size is reached. 
+For LLMs, **Continuous Batching (or iteration-level batching)** is the standard: the scheduler continuously injects new requests into the GPU's execution batch as soon as an older sequence completes its generation, maximizing GPU utilization without waiting for the longest sequence in a static batch to finish.
+
+---
+
+### Q7: How would you design rate limiting for AI APIs?
+**Answer:**
+AI APIs should be rate-limited by **Tokens** or **Compute Time**, not just by Request Count.
+1. **Token Bucket Algorithm:** Use Redis to maintain a token bucket for each user. Deduct tokens based on the prompt size + max generated tokens.
+2. **Tiered Limits:** Offer different limits for different user tiers (e.g., Free vs. Pro).
+3. **Headers:** Always return standard headers (`X-RateLimit-Limit`, `X-RateLimit-Remaining`) so clients can implement backoff strategies.
+
+---
+
+### Q8: How would you stream LLM responses token by token?
+**Answer:**
+In FastAPI, use `StreamingResponse` combined with Python asynchronous generators (`yield`).
+The inference engine (or external API like OpenAI) must support streaming. As the model generates each token, the backend yields it in a Server-Sent Events (SSE) format, allowing the client frontend to render the text typewriter-style immediately without waiting for the entire generation to finish.
+
+---
+
+### Q9: How would you handle background tasks in FastAPI?
+**Answer:**
+For lightweight tasks (e.g., sending a confirmation email, logging), use FastAPI's built-in `BackgroundTasks` which runs in the same event loop.
+For heavy tasks (e.g., indexing a large PDF, running a long LLM chain), use a distributed task queue like **Celery** or **ARQ** with Redis/RabbitMQ. The API instantly returns a `task_id` (202 Accepted), and the client polls a status endpoint or listens via WebSockets for completion.
+
+---
+
+### Q10: How would you secure an AI API in production?
+**Answer:**
+1. **Authentication:** Require API keys (validate via Redis/DB) or OAuth2/JWT for user access.
+2. **Input Validation & Sanitization:** Strictly validate request schemas using Pydantic. Use prompt injection filters (like NeMo Guardrails) before passing inputs to the LLM.
+3. **Network Security:** Use HTTPS/TLS, place the API behind a WAF (Web Application Firewall), and restrict internal networking (e.g., the API can only talk to the vector DB via private subnets).
+4. **Data Privacy:** Ensure PII scrubbing before sending data to third-party APIs or logging systems.

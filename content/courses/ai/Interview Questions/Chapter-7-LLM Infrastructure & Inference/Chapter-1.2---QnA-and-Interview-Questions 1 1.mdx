@@ -1,0 +1,85 @@
+---
+title: "Chapter 7 - LLM Infrastructure & Inference"
+description: "Comprehensive interview questions about LLM Infrastructure and Inference."
+---
+# Chapter 7 - LLM Infrastructure & Inference
+
+> **Info**
+> Comprehensive interview questions about LLM Infrastructure and Inference.
+
+---
+
+## Interview Questions
+
+### Q1: What is KV Cache and why is it important?
+**Answer:**
+The Key-Value (KV) Cache is an optimization technique used during autoregressive text generation in transformer models. Instead of recalculating the attention scores for all previous tokens in a sequence every time a new token is generated, the model stores the computed Key and Value tensors for previous tokens in GPU memory. This converts an $O(N^2)$ attention computation into an $O(N)$ computation per step, massively speeding up inference at the cost of higher VRAM usage.
+
+---
+
+### Q2: What is the difference between continuous batching and dynamic batching?
+**Answer:**
+* **Dynamic Batching:** Waits for a small time window to group multiple incoming requests, then runs them through the model together. The batch only finishes when the longest sequence in the batch finishes generating, wasting GPU compute cycles for the shorter sequences that finished early.
+* **Continuous Batching (Iteration-level batching):** Evaluates the batch at every single token generation step. When one sequence finishes, a new sequence from the queue is immediately swapped into the batch for the next forward pass. This drastically improves GPU utilization and throughput.
+
+---
+
+### Q3: What is tensor parallelism vs pipeline parallelism?
+**Answer:**
+These are model parallelism techniques used when a model is too large to fit on a single GPU.
+* **Tensor Parallelism (TP):** Splits individual matrix multiplication operations (like attention heads or linear layers) across multiple GPUs. All GPUs work simultaneously on the same layer, requiring extremely fast interconnects (like NVLink) due to high communication overhead.
+* **Pipeline Parallelism (PP):** Splits the model layer by layer. GPU 1 handles layers 1-10, GPU 2 handles layers 11-20, etc. It has lower communication overhead but suffers from "pipeline bubbles" where GPUs sit idle waiting for the previous stage to finish.
+
+---
+
+### Q4: What is speculative decoding?
+**Answer:**
+Speculative decoding is a technique to speed up inference without degrading quality. It uses a small, fast "draft" model (e.g., a 1B parameter model) to quickly generate a sequence of $K$ draft tokens. Then, the large "target" model (e.g., a 70B parameter model) evaluates all $K$ tokens in a single parallel forward pass to verify if they are correct. Accepted tokens are kept, and rejected tokens are corrected. This bypasses the memory-bandwidth bottleneck of generating tokens one by one on the large model.
+
+---
+
+### Q5: What is quantization and how does it improve inference?
+**Answer:**
+Quantization reduces the precision of the model's weights and activations from FP16 or FP32 down to lower precision formats like INT8 or INT4.
+It improves inference by:
+1. **Reducing Memory Footprint:** Allowing larger models to fit on cheaper or fewer GPUs.
+2. **Increasing Speed:** The primary bottleneck in LLM inference is memory bandwidth (moving data from VRAM to compute cores). Smaller weights load much faster, directly increasing the token generation rate.
+
+---
+
+### Q6: How do vLLM and TensorRT-LLM improve serving performance?
+**Answer:**
+* **vLLM** introduced **PagedAttention**, which manages KV cache memory similarly to how operating systems manage virtual memory. It prevents memory fragmentation and allows the KV cache to scale dynamically, drastically improving batch sizes and throughput.
+* **TensorRT-LLM** uses deep hardware-level optimizations (like kernel fusion, FP8 precision, and optimized attention kernels like FlashAttention) specifically tuned for NVIDIA GPUs to maximize compute efficiency and minimize latency.
+
+---
+
+### Q7: What causes GPU memory fragmentation?
+**Answer:**
+In naive LLM serving, VRAM is pre-allocated continuously for the maximum possible sequence length of the KV cache. Because sequences have varying and unpredictable lengths, large chunks of this allocated memory go unused, causing internal fragmentation. Externally, when sequences finish, they leave gaps of free memory that might be too small for new, long sequences, leading to OOM (Out of Memory) errors despite having enough total free VRAM. vLLM solves this with PagedAttention.
+
+---
+
+### Q8: How would you scale LLM inference for millions of users?
+**Answer:**
+1. **vLLM/Triton:** Serve the models using optimized engines with Continuous Batching and PagedAttention.
+2. **K8s & Autoscaling:** Deploy on Kubernetes with HPA (Horizontal Pod Autoscaler) scaling on custom metrics like queue length or KV cache utilization.
+3. **Load Balancing:** Use an L7 router to distribute traffic evenly across replicas.
+4. **Caching:** Implement semantic caching (e.g., Redis + Vector Search) to serve repeated queries without hitting the GPUs.
+5. **Multi-Region:** Distribute GPU clusters globally to reduce network latency and handle regional traffic spikes.
+
+---
+
+### Q9: How would you choose between open-source and closed-source LLMs?
+**Answer:**
+* **Closed-Source (e.g., GPT-4, Claude 3):** Choose for rapid prototyping, applications requiring maximum reasoning capabilities out of the box, when you lack in-house ML infrastructure expertise, and when data privacy/residency isn't a strict blocker.
+* **Open-Source (e.g., Llama 3, Mistral):** Choose when you need full control over data privacy (air-gapped deployments), want to fine-tune heavily for a narrow domain, need to optimize unit economics at massive scale, or want to avoid vendor lock-in.
+
+---
+
+### Q10: How would you optimize inference cost without sacrificing quality?
+**Answer:**
+1. **Prompt Caching:** Reuse the KV cache for shared system prompts across different users to save compute.
+2. **Semantic Routing:** Route simple queries to cheaper, smaller models (e.g., Llama-3-8B) and only route complex reasoning tasks to expensive models (e.g., GPT-4).
+3. **Quantization:** Use AWQ or GPTQ (4-bit/8-bit) to reduce hardware requirements without significant perplexity degradation.
+4. **Spot Instances:** Run stateless inference workloads on preemptible/spot GPU instances with robust retry mechanisms in the API layer.

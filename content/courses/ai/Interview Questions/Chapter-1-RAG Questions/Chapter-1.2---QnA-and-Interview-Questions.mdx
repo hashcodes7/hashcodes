@@ -1,0 +1,211 @@
+---
+title: "Chapter 1.2 - QnA & Interview Questions"
+description: "Comprehensive interview questions about RAG vs Fine-tuning and advanced architectures."
+---
+# Chapter 1.2 - QnA & Interview Questions
+
+> **Info**
+> Comprehensive interview questions about RAG vs Fine-tuning and advanced architectures.
+
+---
+
+## Tier 1: Fundamentals & Strategy
+
+### Q1: What is Retrieval-Augmented Generation (RAG), and why is it preferred over pure LLM generation for enterprise applications?
+
+**Answer:**
+RAG connects a Large Language Model (LLM) to external, dynamically updated data sources. Instead of relying solely on parametric knowledge stored in the LLM's weights, RAG retrieves relevant document chunks from a vector database or search index during runtime and injects them into the prompt context.
+
+#### Key Advantages
+* **Mitigates Hallucinations:** Provides explicit grounded context for the model to reference.
+* **Freshness:** Enables access to real-time or frequently updated data without retraining.
+* **Data Privacy & Access Control:** Retains data governance by filtering enterprise documents based on user permissions before context injection.
+* **Cost Efficiency:** Significantly cheaper than continually fine-tuning or pre-training proprietary models.
+
+---
+
+### Q2: How do you choose between RAG and Fine-Tuning?
+
+**Answer:**
+Think of fine-tuning as teaching a model **a new style, tone, or format**, while RAG is giving the model an **open-book reference library**.
+
+| Dimension | RAG | Fine-Tuning |
+| :--- | :--- | :--- |
+| **Primary Use Case** | Injecting factual, dynamic knowledge | Changing model behavior, tone, style, or specific syntax |
+| **Data Freshness** | Real-time / Instant updates | Static (requires re-training) |
+| **Auditability** | High (can cite specific retrieved chunks) | Low (black-box model weights) |
+| **Hallucination Rate** | Low (when context is constrained) | Moderate to High |
+| **Cost** | Storage & vector search infra | Compute-heavy GPU training |
+
+**Rule of thumb:** Use **RAG** for factual grounding and dynamic content; use **Fine-Tuning** for output structure alignment or domain-specific language nuances. Combining both (Fine-tuning an LLM to better adhere to retrieved RAG contexts) often yields peak performance.
+
+---
+
+### Q3: What is "Chunking" and how do you choose a chunking strategy?
+
+**Answer:**
+Chunking is the process of breaking down large documents into smaller, coherent text segments before creating vector embeddings.
+
+* **Fixed-size Chunking:** Splits text by character/token count (e.g., 512 tokens with 50-token overlap). Fast and simple, but risks breaking sentences mid-thought.
+* **Sentence / Paragraph Chunking:** Respects natural boundaries using delimiters (`\n\n`, `.`), preserving semantic context.
+* **Semantic Chunking:** Calculates embedding distance between consecutive sentences and splits where semantic similarity drops sharply.
+* **Document Structure-Aware Chunking:** Parses structural markup (Markdown, HTML, PDF headers) to keep sections, tables, and sub-headings intact.
+
+*Trade-off:* Smaller chunks (128–256 tokens) yield higher retrieval precision, but may lack surrounding context. Larger chunks (512–1024 tokens) provide rich context to the LLM, but risk polluting the prompt with irrelevant information.
+
+---
+
+## Tier 2: Search & Retrieval Engineering
+
+### Q4: What is Hybrid Search, and why is Dense Vector Search alone often insufficient?
+
+**Answer:**
+Dense retrieval (vector similarity using cosine distance or dot product) excels at capturing **semantic intent and broad concepts**, but often struggles with exact keyword matching, specific serial numbers, acronyms, or rare terms.
+
+**Hybrid Search** combines two complementary retrieval paradigms:
+1. **Dense Retrieval (Semantic):** Neural network embeddings (e.g., `text-embedding-3-large`, `bge-large-en`).
+2. **Sparse Retrieval (Keyword):** Algorithmic keyword matching like **BM25** or **TF-IDF**.
+
+#### Score Combining Algorithm (RRF)
+Results from both retrievers are merged using **Reciprocal Rank Fusion (RRF)**:
+
+$$RRF\_Score(d) = \sum_{m \in M} \frac{1}{k + r_m(d)}$$
+
+Where $r_m(d)$ is the rank of document $d$ in retriever $m$, and $k$ is a smoothing constant (typically 60).
+
+---
+
+### Q5: What is Re-ranking (Cross-Encoders), and where does it fit in the pipeline?
+
+**Answer:**
+Bi-encoders (standard vector embeddings) process queries and documents independently to generate vectors for fast approximate nearest neighbor (ANN) search. However, they lose subtle query-document interactions.
+
+A **Re-ranker (Cross-Encoder)** takes the top $N$ candidates (e.g., top 50) from the initial vector/hybrid search and passes the query and chunk *together* through a transformer layer to score fine-grained relevancy.
+
+```
+
+[Query] + [Vector Store] ──> Top 50 Chunks (Bi-Encoder)
+
+│
+
+▼
+
+[Top 50 Chunks] ───────────> [Cross-Encoder Re-ranker] ──> Top 5 Chunks ──> [LLM Prompt]
+
+```
+
+* **Why it matters:** Drastically improves precision and reduces the "lost in the middle" phenomenon without the computational cost of running a cross-encoder across millions of vector database records.
+
+---
+
+## Tier 3: Advanced RAG Architecture Patterns
+
+### Q6: How do you solve the "Lost in the Middle" problem?
+
+**Answer:**
+Research shows that LLMs pay stronger attention to context placed at the **very beginning** and **very end** of the prompt context window, often ignoring details tucked in the middle.
+
+**Mitigation Tactics:**
+* **Re-ranking & Re-ordering:** Sort retrieved chunks so that the highest-scoring context sits at the very top or bottom of the context window.
+* **Context Compression:** Summarize or extract key statements from retrieved chunks before appending them to the prompt.
+* **Parent-Child Retriever:** Embed small chunks (e.g., 100 tokens) for precise vector matching, but return the larger parent chunk (e.g., 500 tokens) or full section to the LLM prompt.
+
+---
+
+### Q7: What is Hypothetical Document Embeddings (HyDE)?
+
+**Answer:**
+In standard RAG, matching a short user query (e.g., *"How do I fix error code 404?"*) directly against document chunks often leads to a semantic mismatch because questions look different from answer text.
+
+**HyDE Workflow:**
+1. Send the user query to an LLM to generate a **hypothetical answer** (even if factually inaccurate).
+2. Embed the **hypothetical answer** using the embedding model.
+3. Perform vector search using this hypothetical text vector.
+
+*Rationale:* The hypothetical answer lives in the same semantic space as the target document chunks, leading to significantly higher retrieval similarity.
+
+---
+
+## Tier 4: Evaluation & System Design
+
+### Q8: How do you systematically evaluate a RAG pipeline using the RAG Triad?
+
+**Answer:**
+Evaluating RAG requires separating retrieval performance from generation performance. The **RAG Triad** framework measures three core metrics:
+
+```
+
+```
+       [ User Query ]
+         /        \
+```
+
+Context / \ Groundedness
+
+Relevance/
+
+▼ ▼
+
+[ Context ] ──────> [ Response ]
+
+Answer
+
+Relevance
+
+```
+
+1. **Context Relevance:** Does the retrieved context actually contain the information needed to answer the user query? *(Evaluates Retriever)*
+2. **Groundedness (Faithfulness):** Is the generated response supported *entirely* by the retrieved context, without hallucinating outside facts? *(Evaluates LLM Generation)*
+3. **Answer Relevance:** Does the generated response directly address the user's original query? *(Evaluates End-to-End Output)*
+
+---
+
+### Q9: How do you handle unanswerable queries or out-of-domain questions?
+
+**Answer:**
+* **Distance Thresholding:** Set a minimum cosine similarity threshold. If retrieved chunks fall below the score, trigger a fallback mechanism (*"I don't have enough context to answer that."*).
+* **Self-RAG / Corrective RAG (CRAG):** Implement an evaluator node that checks whether retrieved documents are relevant before generating a response.
+* **Explicit Prompt Framing:** Instruct the model: *"Answer the user query ONLY using the provided facts below. If the information is missing, explicitly state that you do not know."*
+
+---
+
+### Q10: What causes poor retrieval quality in RAG pipelines?
+
+**Answer:**
+1. **Bad Chunking:** Chunks that are too small lack context, while chunks that are too large dilute the semantic meaning.
+2. **Sub-optimal Embedding Models:** Using generic models (like standard `text-embedding-ada`) for highly specialized domain vocabulary (like medical or legal terms) without fine-tuning.
+3. **Over-reliance on Dense Search:** Failing to catch exact keyword matches or serial numbers because sparse retrieval (BM25) wasn't used in a hybrid setup.
+4. **No Reranking:** The vector database returns broadly related documents, but the most critically relevant chunk might be ranked #15 instead of #1.
+
+
+---
+
+### Q11: How would you reduce hallucinations in a RAG system?
+
+**Answer:**
+1. **Strict System Prompts:** Enforce rules like "Answer ONLY using the provided context."
+2. **Chain-of-Verification / Self-Correction:** Have the model evaluate its own output against the retrieved chunks before returning the final response.
+3. **Citation Enforcement:** Require the model to cite exact document IDs or line numbers for every claim it makes.
+4. **Context Truncation:** Remove low-relevance chunks from the prompt, as injecting irrelevant information drastically increases the hallucination rate.
+
+
+---
+
+### Q12: How would you optimize vector database search latency?
+
+**Answer:**
+1. **Approximate Nearest Neighbor (ANN):** Ensure you are using ANN indexes like HNSW (Hierarchical Navigable Small World) or IVF-PQ rather than exhaustive K-Nearest Neighbor (KNN) search.
+2. **Metadata Filtering:** Apply pre-filtering (e.g., `date > 2023`, `category = "finance"`) before executing the vector search to drastically reduce the search space.
+3. **Dimensionality Reduction:** Use embedding models with lower dimensions or apply PCA to reduce vector size.
+4. **Quantization:** Store vectors in INT8 or binary formats (like Cohere's binary embeddings) to speed up distance calculations and reduce memory bandwidth.
+
+
+---
+
+### Q13: How would you handle document updates without rebuilding the entire index?
+
+**Answer:**
+1. **Document ID Tracking:** Assign a unique ID to every parent document and propagate it to all its child chunks as metadata.
+2. **Upsert Operations:** When a document updates, first issue a `DELETE` operation to the vector database for all chunks matching that `document_id`.
+3. **Re-embedding:** Process the updated document, generate new chunks, embed them, and `INSERT` them into the database.
+4. **Soft Deletes:** If the database doesn't support fast deletes, mark the old document IDs as "inactive" in a fast relational database (like Redis or Postgres), and filter them out during the retrieval step.
