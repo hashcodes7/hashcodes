@@ -1143,3 +1143,9 @@ summary svg,
 #nd-toc div[class*="relative"]>div[class*="absolute"] {
   display: none !important;
 }
+
+/* Ensure proper spacing around dividers (hr) in content */
+hr {
+  margin-top: 3rem !important;
+  margin-bottom: 3rem !important;
+}

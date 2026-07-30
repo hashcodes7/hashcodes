@@ -1,13 +1,14 @@
 {
   "pages": [
-    "Chapter-0-Index",
-    "Chapter-1-RAG-Questions",
-    "Chapter-2-LLM-Question",
-    "Chapter-3-MLOps-and-Deployment",
-    "Chapter-4-Python-Backend",
-    "Chapter-5-AI-Agents",
-    "Chapter-6-Prompt-Engineering",
+    "chapter-0-index",
+    "chapter-1-rag-questions",
+    "chapter-2-llm-question",
+    "chapter-3-mlops-and-deployment",
+    "chapter-4-python-backend",
+    "chapter-5-ai-agents",
+    "chapter-6-prompt-engineering",
     "Chapter-7-LLM-Infrastructure-and-Inference",
+    "chapter-7-llm-infrastructure-inference",
     "Chapter-8-Template"
   ]
 }
