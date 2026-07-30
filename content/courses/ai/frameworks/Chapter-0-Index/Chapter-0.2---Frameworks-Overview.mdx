@@ -1,0 +1,46 @@
+---
+title: "Chapter 0.2 - Frameworks Overview"
+---
+
+# The AI Framework Landscape
+
+As Large Language Models (LLMs) evolved from simple single-prompt text generators to autonomous cognitive systems, a rich ecosystem of developer frameworks emerged to simplify prompt chaining, vector retrieval, agent state management, and multi-agent coordination.
+
+<Callout type="info" title="Why Frameworks Matter">
+Building production AI applications requires managing dynamic prompts, state persistence, tool execution, retries, vector indexing, streaming responses, and agent routing. Frameworks abstract these low-level API mechanics into reusable paradigms.
+</Callout>
+
+---
+
+## Evolution of AI Developer Abstractions
+
+```
+[ Raw API Calls ] ──► [ Prompt Chaining (LangChain) ] ──► [ Cyclic Graphs (LangGraph) ] ──► [ Multi-Agent Teams (AutoGen / CrewAI) ]
+```
+
+1. **Primitive API Level (2022)**: Raw HTTP calls to OpenAI, Anthropic, or local model endpoints. High boilerplate code for parsing JSON outputs and managing chat history.
+2. **Sequential Composition (2023 - LangChain / LlamaIndex)**: Standardized abstractions for models, prompts, tools, memory, and RAG document ingestion pipelines using DAG (Directed Acyclic Graph) chains.
+3. **Stateful Graph Machines (2024 - LangGraph)**: Introduction of cyclic state graphs allowing agents to loop, self-correct, execute tools, request human approval, and persist state across sessions.
+4. **Multi-Agent Orchestration (2025+)**: Teams of specialized agents collaborating hierarchically to solve complex, multi-step engineering and research tasks.
+
+---
+
+## Framework Comparison Matrix
+
+| Framework | Core Paradigm | Best Used For | State Management |
+| :--- | :--- | :--- | :--- |
+| **LangChain** | LCEL Component Chaining | Sequential chains, standard RAG, tool calling wrappers | In-memory / Basic Runnable state |
+| **LangGraph** | Cyclic State Graphs & Nodes | Complex autonomous agents, self-correction loops, human-in-the-loop | Stateful checkpointers (PostgreSQL / SQLite) |
+| **LlamaIndex** | Data Connectors & Vector Indexing | Advanced RAG, document parsing, knowledge graphs | Index-level state and node metadata |
+| **AutoGen** | Conversable Multi-Agent Conversations | Multi-agent research, automated software generation | Conversation event logs |
+| **CrewAI** | Role-based Autonomous Crews | Task delegation, structured crew execution | Task & Agent context memory |
+| **Spring AI** | Enterprise Java Abstraction Layer | Enterprise backends, Spring Boot microservices | Spring Session / Vector DB connectors |
+
+---
+
+## When to Choose Which Framework?
+
+- **Use LangChain** when scaffolded pipelines, standard model switching, and uniform LCEL interfaces are needed.
+- **Use LangGraph** when building true autonomous agents that require loops, state persistence, undo/time-travel capability, and human review gates.
+- **Use LlamaIndex** when primary focus is connecting complex multi-format enterprise data to LLMs with advanced retrieval strategies.
+- **Use AutoGen / CrewAI** when decomposing a complex workflow into distinct personas (e.g. Architect, Coder, Reviewer) working autonomously.

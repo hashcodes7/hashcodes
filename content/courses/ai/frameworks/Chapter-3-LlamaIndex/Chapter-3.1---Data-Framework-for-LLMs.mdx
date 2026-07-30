@@ -1,0 +1,46 @@
+---
+title: "Chapter 3.1 - LlamaIndex Architecture"
+---
+
+# LlamaIndex: Data Framework for LLMs
+
+While LangChain and LangGraph focus on general agent execution and state, **LlamaIndex** is specialized for connecting private, unstructured enterprise data to LLMs.
+
+<Callout type="info" title="LlamaIndex Focus">
+LlamaIndex provides high-performance data ingestion connectors (LlamaHub), document chunking, node relationships, vector/summary indexing, and advanced query engines.
+</Callout>
+
+---
+
+## Core LlamaIndex Abstractions
+
+1. **Documents & Nodes**: Unstructured text parsed into chunked `Node` objects with rich metadata relationships (parent, child, next/prev chunk).
+2. **Data Connectors**: Over 100+ connectors to pull data from PDFs, Notion, SQL databases, Slack, Google Drive, and API endpoints.
+3. **Indexes**: Data structures (VectorStoreIndex, SummaryIndex, KnowledgeGraphIndex, TreeIndex) built over Node objects.
+4. **Query Engines**: High-level retrieval pipelines that take user queries, fetch relevant nodes, and generate synthesized answers.
+
+```python
+from llamaindex.core import SimpleDirectoryReader, VectorStoreIndex
+
+# 1. Load Documents
+documents = SimpleDirectoryReader("./data_folder").load_data()
+
+# 2. Build Vector Index
+index = VectorStoreIndex.from_documents(documents)
+
+# 3. Create Query Engine
+query_engine = index.as_query_engine(similarity_top_k=5)
+
+# 4. Query
+response = query_engine.query("What are the key requirements for Project Panama?")
+print(response)
+```
+
+---
+
+## Router & Sub-Question Query Engines
+
+LlamaIndex excels at complex query decomposition:
+
+- **Router Query Engine**: Dynamically routes user queries to the best matching index (e.g. sending summarize requests to a SummaryIndex and specific facts to a VectorStoreIndex).
+- **SubQuestion Query Engine**: Breaks complex questions into smaller sub-queries, executes them against relevant data sources in parallel, and synthesizes a unified answer.

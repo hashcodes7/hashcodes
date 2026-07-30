@@ -26,12 +26,15 @@ export default function CausalMaskVisualizer({
       </p>
 
       {/* Token Selector */}
-      <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "25px" }}>
+      <div role="tablist" aria-label="Query token selector" style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "25px" }}>
         {tokens.map((token, idx) => {
           const isSelected = idx === selectedTokenIndex;
           return (
             <button
               key={idx}
+              role="tab"
+              aria-selected={isSelected}
+              aria-label={`Position ${idx}: ${token}`}
               onClick={() => setSelectedTokenIndex(idx)}
               style={{
                 padding: "8px 14px",

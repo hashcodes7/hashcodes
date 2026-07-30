@@ -1,0 +1,62 @@
+---
+title: "Chapter 2.2 - Human-in-the-Loop & Persistence"
+---
+
+# Human-in-the-Loop & Checkpointing
+
+For high-stakes applications (e.g. executing financial transactions, modifying production databases, sending emails), autonomous agents must not execute destructive actions without explicit human verification.
+
+<Callout type="tip" title="LangGraph Checkpointing">
+LangGraph includes built-in checkpointers (SQLite, PostgreSQL, Memory) that snapshot agent state at every step, allowing execution to pause, wait for human input, and resume seamlessly.
+</Callout>
+
+---
+
+## State Persistence with Checkpointers
+
+By compiling a graph with a `checkpointer`, every state transition is recorded under a unique `thread_id`:
+
+```python
+from langgraph.checkpoint.memory import MemorySaver
+
+memory = MemorySaver()
+graph = builder.compile(checkpointer=memory)
+
+config = {"configurable": {"thread_id": "session_123"}}
+
+# First turn
+events = graph.stream({"messages": [("user", "My name is Harsh")]}, config)
+
+# Second turn retains previous state automatically using thread_id!
+events = graph.stream({"messages": [("user", "What is my name?")]}, config)
+```
+
+---
+
+## Interrupting Execution (`interrupt_before`)
+
+Pause execution before executing critical nodes (like a financial transfer tool node):
+
+```python
+# Compile with interrupt before specific node
+graph = builder.compile(
+    checkpointer=memory,
+    interrupt_before=["execute_bank_transfer_node"]
+)
+
+# Run graph until interrupt
+graph.invoke(input_data, config)
+
+# Human reviews the state
+current_state = graph.get_state(config)
+print("Pending Action:", current_state.next)
+
+# Resume after approval
+graph.invoke(None, config)
+```
+
+---
+
+## Time Travel & State Rewinding
+
+Because state snapshots are saved at each step, developers can inspect historical state steps, modify previous inputs, or fork execution paths to recover from errors.

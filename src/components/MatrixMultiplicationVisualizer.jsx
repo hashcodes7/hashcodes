@@ -25,11 +25,9 @@ export default function MatrixMultiplicationVisualizer({ matrixA, matrixB, nameA
     for (let k = 0; k < colsA; k++) {
       sum += (A[r]?.[k] || 0) * (B[k]?.[c] || 0);
     }
-    // Round to 3 decimal places consistently
     return Number.isInteger(sum) ? sum : Number(sum.toFixed(3));
   };
 
-  // Helper for matrix bracket styles
   const bracketStyle = {
     position: "relative",
     padding: "10px",
@@ -91,9 +89,10 @@ export default function MatrixMultiplicationVisualizer({ matrixA, matrixB, nameA
       box-shadow: 0 0 12px rgba(129, 140, 248, 0.25);
       cursor: pointer;
     }
-    .matrix-cell.res-hover:hover {
+    .matrix-cell.res-hover:hover, .matrix-cell.res-hover:focus {
       border-color: rgba(255, 255, 255, 0.4);
       cursor: pointer;
+      outline: none;
     }
   `;
 
@@ -202,9 +201,18 @@ export default function MatrixMultiplicationVisualizer({ matrixA, matrixB, nameA
                     return (
                       <div 
                         key={j} 
+                        role="button"
+                        tabIndex={0}
+                        aria-label={`Cell Row ${i+1} Column ${j+1}`}
                         className={`matrix-cell res-hover ${isActive ? 'active-res' : ''}`}
                         style={{justifyContent: 'center'}}
                         onClick={() => setActiveCell({ r: i, c: j })}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            setActiveCell({ r: i, c: j });
+                          }
+                        }}
                       >
                         {Number.isInteger(multiplyCell(i, j)) ? multiplyCell(i, j) : multiplyCell(i, j).toFixed(3)}
                       </div>

@@ -1,0 +1,73 @@
+---
+title: "Chapter 2.1 - Stateful Agentic Workflows"
+---
+
+# LangGraph & Cyclic State Machines
+
+While standard LangChain chains follow a Directed Acyclic Graph (DAG) flow, real-world autonomous agents require **loops**, **conditional branching**, **state mutation**, and **self-correction**.
+
+<Callout type="info" title="LangGraph Architecture">
+LangGraph models agent workflows as stateful graphs where **Nodes** represent python functions (LLMs or Tools) and **Edges** determine state transitions based on conditional logic.
+</Callout>
+
+---
+
+## LangGraph Core Components
+
+1. **State Schema**: A TypedDict or Pydantic model representing the shared memory passed between nodes.
+2. **Nodes**: Python functions that receive the current state, perform computation, and return state updates.
+3. **Edges**: Connections routing execution from one node to another.
+4. **Conditional Edges**: Dynamic functions inspecting state to determine the next destination node (e.g., checking if a tool call was requested).
+
+```python
+from typing import Annotated, TypedDict
+from langgraph.graph import StateGraph, START, END
+from langgraph.graph.message import add_messages
+
+# 1. Define State Schema
+class AgentState(TypedDict):
+    messages: Annotated[list, add_messages]
+
+# 2. Initialize State Graph
+builder = StateGraph(AgentState)
+
+# 3. Define Node Functions
+def chatbot_node(state: AgentState):
+    return {"messages": [model.invoke(state["messages"])]}
+
+def tool_execution_node(state: AgentState):
+    # Execute requested tools
+    return {"messages": [...]}
+
+# 4. Add Nodes & Edges
+builder.add_node("chatbot", chatbot_node)
+builder.add_node("tools", tool_execution_node)
+
+builder.add_edge(START, "chatbot")
+
+# Conditional routing edge
+def should_continue(state: AgentState):
+    last_message = state["messages"][-1]
+    if last_message.tool_calls:
+        return "tools"
+    return END
+
+builder.add_conditional_edges("chatbot", should_continue)
+builder.add_edge("tools", "chatbot") # Loop back after executing tools!
+
+# Compile Graph
+graph = builder.compile()
+```
+
+---
+
+## Agent Loop Execution Flow
+
+```
+[ START ] ──► [ Chatbot Node ] ──(Has Tool Call?)──► [ Tool Node ] ──► [ Chatbot Node ]
+                     │
+              (No Tool Call)
+                     │
+                     ▼
+                  [ END ]
+```

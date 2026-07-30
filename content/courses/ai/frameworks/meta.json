@@ -1,0 +1,10 @@
+{
+  "pages": [
+    "Chapter-0-Index",
+    "Chapter-1-LangChain",
+    "Chapter-2-LangGraph",
+    "Chapter-3-LlamaIndex",
+    "Chapter-4-Multi-Agent-Frameworks",
+    "Chapter-5-Enterprise-Frameworks"
+  ]
+}

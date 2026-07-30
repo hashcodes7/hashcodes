@@ -1,0 +1,62 @@
+---
+title: "Chapter 5.1 - Spring AI & Enterprise Frameworks"
+---
+
+# Enterprise AI Integration: Spring AI & LlamaIndex.TS
+
+While Python dominates AI research, enterprise backend systems are built primarily on **Java (Spring Boot)** and **TypeScript / Node.js**.
+
+<Callout type="info" title="Enterprise Standards">
+Enterprise AI frameworks provide native dependency injection, type safety, multi-threading, vector DB integrations, and strict compliance without wrapping Python microservices.
+</Callout>
+
+---
+
+## 1. Spring AI (Java / Spring Boot)
+
+Spring AI brings standard Spring idioms (Portable API abstractions, Spring Boot Auto-configuration) to AI applications:
+
+```java
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AiAssistantService {
+
+    private final ChatClient chatClient;
+
+    public AiAssistantService(ChatClient.Builder chatClientBuilder) {
+        this.chatClient = chatClientBuilder.build();
+    }
+
+    public String generateSummary(String inputText) {
+        return this.chatClient.prompt()
+                .user("Summarize the following architecture: " + inputText)
+                .call()
+                .content();
+    }
+}
+```
+
+### Spring AI Key Features
+- **VectorStore Abstraction**: Unified Java interfaces for Qdrant, Pinecone, Milvus, Redis, and PgVector.
+- **Function Calling**: Automatic binding of Java `@Bean` methods to LLM tool calls using Project Panama and Jackson serialization.
+- **ETL Ingestion Pipelines**: Native Java document readers and splitters.
+
+---
+
+## 2. LlamaIndex.TS (TypeScript / JavaScript)
+
+LlamaIndex.TS brings full-featured vector indexing and query engine capabilities to Edge runtimes (Vercel Edge, Cloudflare Workers, Next.js API routes, Node.js):
+
+```typescript
+import { Document, VectorStoreIndex } from "llamaindex";
+
+const document = new Document({ text: "LangGraph provides cyclic state machines for LLMs." });
+const index = await VectorStoreIndex.fromDocuments([document]);
+
+const queryEngine = index.asQueryEngine();
+const response = await queryEngine.query({ query: "What does LangGraph provide?" });
+
+console.log(response.toString());
+```

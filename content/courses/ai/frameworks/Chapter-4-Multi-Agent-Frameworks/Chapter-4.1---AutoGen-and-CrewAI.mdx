@@ -1,0 +1,68 @@
+---
+title: "Chapter 4.1 - AutoGen & CrewAI Orchestration"
+---
+
+# Multi-Agent Collaboration: AutoGen & CrewAI
+
+When tasks exceed the capability of a single prompt or agent loop, **Multi-Agent Frameworks** coordinate specialized teams of agents with complementary roles, skills, and tools.
+
+<Callout type="info" title="Multi-Agent Advantage">
+Assigning specific personas (e.g. Senior Software Architect, Security Auditor, Code Writer) reduces prompt dilution and improves complex problem solving.
+</Callout>
+
+---
+
+## 1. Microsoft AutoGen
+
+AutoGen enables conversational multi-agent systems where agents communicate via message streams.
+
+- **AssistantAgent**: Performs tasks, writes code, and calls tools.
+- **UserProxyAgent**: Represents the human user, executes generated code in a sandbox, and provides feedback.
+- **GroupChatManager**: Coordinates multi-agent conversations between multiple specialized agents.
+
+```python
+from autogen import AssistantAgent, UserProxyAgent, GroupChat, GroupChatManager
+
+coder = AssistantAgent(name="Coder", llm_config=llm_config)
+reviewer = AssistantAgent(name="Code_Reviewer", llm_config=llm_config)
+user_proxy = UserProxyAgent(name="User", code_execution_config={"work_dir": "workspace"})
+
+group_chat = GroupChat(agents=[user_proxy, coder, reviewer], messages=[], max_round=12)
+manager = GroupChatManager(groupchat=group_chat, llm_config=llm_config)
+
+user_proxy.initiate_chat(manager, message="Build a FastAPI microservice for matrix multiplication.")
+```
+
+---
+
+## 2. CrewAI
+
+CrewAI enforces role-based, structured team hierarchies:
+
+- **Agents**: Configured with explicit `role`, `goal`, and `backstory`.
+- **Tasks**: Discrete units of work assigned to specific agents with expected outputs.
+- **Crew**: The orchestrator running tasks sequentially or hierarchically.
+
+```python
+from crewai import Agent, Task, Crew, Process
+
+researcher = Agent(
+    role="AI Research Analyst",
+    goal="Discover cutting edge papers on local quantization",
+    backstory="You are a veteran AI researcher tracking hardware efficiency trends."
+)
+
+task1 = Task(
+    description="Analyze recent GGUF 4-bit quantization benchmarks for mobile.",
+    agent=researcher,
+    expected_output="A bulleted summary of memory vs accuracy tradeoffs."
+)
+
+crew = Crew(
+    agents=[researcher],
+    tasks=[task1],
+    process=Process.sequential
+)
+
+result = crew.kickoff()
+```

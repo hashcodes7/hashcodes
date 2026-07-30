@@ -36,17 +36,30 @@ function naturalSort(a: string, b: string): number {
   return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
 }
 
+// Helper to write file only if contents have actually changed (prevents triggering file watchers endlessly)
+function writeIfChanged(filePath: string, content: string): boolean {
+  if (fs.existsSync(filePath)) {
+    const existing = fs.readFileSync(filePath, "utf-8");
+    if (existing === content) {
+      return false;
+    }
+  }
+  fs.writeFileSync(filePath, content);
+  return true;
+}
+
 // Dynamically generate all meta.json configurations and build learn.json from disk structure
 try {
   const contentDir = path.resolve("content");
   const coursesDir = path.join(contentDir, "courses");
-  
+  let anyFileUpdated = false;
+
   if (fs.existsSync(coursesDir)) {
     // 1. Generate content/meta.json
-    const rootMeta = {
-      pages: ["courses"]
-    };
-    fs.writeFileSync(path.join(contentDir, "meta.json"), JSON.stringify(rootMeta, null, 2));
+    const rootMeta = { pages: ["courses"] };
+    if (writeIfChanged(path.join(contentDir, "meta.json"), JSON.stringify(rootMeta, null, 2))) {
+      anyFileUpdated = true;
+    }
 
     // 2. Scan and sort category folders
     const categories = fs.readdirSync(coursesDir).filter(item => {
@@ -54,10 +67,10 @@ try {
     });
     categories.sort(naturalSort);
 
-    const coursesMeta = {
-      pages: categories
-    };
-    fs.writeFileSync(path.join(coursesDir, "meta.json"), JSON.stringify(coursesMeta, null, 2));
+    const coursesMeta = { pages: categories };
+    if (writeIfChanged(path.join(coursesDir, "meta.json"), JSON.stringify(coursesMeta, null, 2))) {
+      anyFileUpdated = true;
+    }
 
     const learnCatalog: any[] = [];
 
@@ -69,10 +82,10 @@ try {
       });
       courses.sort(naturalSort);
 
-      const catMeta = {
-        pages: courses
-      };
-      fs.writeFileSync(path.join(catDir, "meta.json"), JSON.stringify(catMeta, null, 2));
+      const catMeta = { pages: courses };
+      if (writeIfChanged(path.join(catDir, "meta.json"), JSON.stringify(catMeta, null, 2))) {
+        anyFileUpdated = true;
+      }
 
       const catMetaInfo = CATEGORY_META[cat.toLowerCase()] || {
         title: cat.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase()),
@@ -90,7 +103,6 @@ try {
         });
 
         let courseTitle = course.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase());
-        // Capitalize common acronyms nicely
         courseTitle = courseTitle.replace(/Gpt2/g, "GPT 2").replace(/Rag/g, "RAG");
 
         const chapters: string[] = [];
@@ -121,10 +133,10 @@ try {
           const pages = files.map(f => f.replace(/\.(md|mdx)$/, ""));
           pages.sort(naturalSort);
 
-          const chapterMeta = {
-            pages: pages
-          };
-          fs.writeFileSync(path.join(chapterDir, "meta.json"), JSON.stringify(chapterMeta, null, 2));
+          const chapterMeta = { pages: pages };
+          if (writeIfChanged(path.join(chapterDir, "meta.json"), JSON.stringify(chapterMeta, null, 2))) {
+            anyFileUpdated = true;
+          }
 
           chaptersList.push({
             name: chapter,
@@ -133,10 +145,10 @@ try {
         });
 
         // Write course-level meta.json
-        const courseMeta = {
-          pages: [...chapters, ...flatFiles]
-        };
-        fs.writeFileSync(path.join(courseDir, "meta.json"), JSON.stringify(courseMeta, null, 2));
+        const courseMeta = { pages: [...chapters, ...flatFiles] };
+        if (writeIfChanged(path.join(courseDir, "meta.json"), JSON.stringify(courseMeta, null, 2))) {
+          anyFileUpdated = true;
+        }
 
         courseCatalogList.push({
           id: course,
@@ -156,11 +168,13 @@ try {
     });
 
     // Write dynamically compiled catalog back to learn.json in the project root
-    fs.writeFileSync(
-      path.resolve("learn.json"),
-      JSON.stringify({ learn: learnCatalog }, null, 2)
-    );
-    console.log("[Fumadocs Compiler] Successfully generated meta.json and learn.json from folder structure!");
+    if (writeIfChanged(path.resolve("learn.json"), JSON.stringify({ learn: learnCatalog }, null, 2))) {
+      anyFileUpdated = true;
+    }
+
+    if (anyFileUpdated) {
+      console.log("[Fumadocs Compiler] Updated meta.json and learn.json (structure changed).");
+    }
   }
 } catch (error) {
   console.error("Error generating meta.json and learn.json from folder structure:", error);

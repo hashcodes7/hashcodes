@@ -1,5 +1,6 @@
 {
   "pages": [
+    "frameworks",
     "gpt2-architecture-end-to-end",
     "interview-questions",
     "rag-architecture",

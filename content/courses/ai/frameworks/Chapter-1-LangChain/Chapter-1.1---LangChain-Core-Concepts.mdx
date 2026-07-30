@@ -1,0 +1,86 @@
+---
+title: "Chapter 1.1 - LangChain Core Concepts"
+---
+
+# LangChain Architecture Fundamentals
+
+LangChain provides a unified interface for composing Large Language Models with external data, tools, and memory modules.
+
+<Callout type="info" title="Core Abstractions">
+LangChain standardizes model interactions across providers (OpenAI, Google Gemini, Anthropic, Ollama, HuggingFace) into modular primitives.
+</Callout>
+
+---
+
+## Key Modules
+
+### 1. Model Interfaces
+LangChain separates model primitives into two categories:
+- **ChatModels**: Take a sequence of structured messages (`SystemMessage`, `HumanMessage`, `AIMessage`) and return a `ChatResult`.
+- **LLMs**: Take a plain text string and return a plain text completion string.
+
+```python
+from langchain_core.messages import SystemMessage, HumanMessage
+from langchain_openai import ChatOpenAI
+
+model = ChatOpenAI(model="gpt-4o", temperature=0.2)
+
+messages = [
+    SystemMessage(content="You are an expert AI systems architect."),
+    HumanMessage(content="Explain the difference between Bi-Encoders and Cross-Encoders.")
+]
+
+response = model.invoke(messages)
+print(response.content)
+```
+
+---
+
+### 2. Prompt Templates
+PromptTemplates dynamicize static text prompts with input variables:
+
+```python
+from langchain_core.prompts import ChatPromptTemplate
+
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "You are an expert code reviewer specializing in {language}."),
+    ("user", "Review the following code snippet:\n{code}")
+])
+
+formatted_messages = prompt.format_messages(
+    language="Python",
+    code="def add(a, b): return a + b"
+)
+```
+
+---
+
+### 3. Output Parsers
+Transform raw unstructured text responses from language models into structured formats (JSON, Pydantic objects, CSVs):
+
+```python
+from pydantic import BaseModel, Field
+from langchain_core.output_parsers import PydanticOutputParser
+
+class TechnicalSummary(BaseModel):
+    key_findings: list[str] = Field(description="List of core insights")
+    complexity_score: int = Field(description="Score from 1 to 10")
+
+parser = PydanticOutputParser(pydantic_object=TechnicalSummary)
+```
+
+---
+
+### 4. Tools & Tool Calling
+Equip models with external execution capabilities (web search, database queries, calculators):
+
+```python
+from langchain_core.tools import tool
+
+@tool
+def calculate_matrix_norm(vector: list[float]) -> float:
+    """Calculates the Euclidean norm of a floating point vector."""
+    return sum(x**2 for x in vector) ** 0.5
+
+model_with_tools = model.bind_tools([calculate_matrix_norm])
+```

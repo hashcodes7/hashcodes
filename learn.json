@@ -7,6 +7,52 @@
       "description": "Neural networks, computer vision, and generative models.",
       "courses": [
         {
+          "id": "frameworks",
+          "title": "Frameworks",
+          "folder": "courses/ai/frameworks",
+          "chapters": [
+            {
+              "name": "Chapter-0-Index",
+              "children": [
+                "Chapter-0.1---Course-Index",
+                "Chapter-0.2---Frameworks-Overview"
+              ]
+            },
+            {
+              "name": "Chapter-1-LangChain",
+              "children": [
+                "Chapter-1.1---LangChain-Core-Concepts",
+                "Chapter-1.2---LCEL-LangChain-Expression-Language"
+              ]
+            },
+            {
+              "name": "Chapter-2-LangGraph",
+              "children": [
+                "Chapter-2.1---Stateful-Agentic-Workflows",
+                "Chapter-2.2---Human-in-the-loop-and-Persistence"
+              ]
+            },
+            {
+              "name": "Chapter-3-LlamaIndex",
+              "children": [
+                "Chapter-3.1---Data-Framework-for-LLMs"
+              ]
+            },
+            {
+              "name": "Chapter-4-Multi-Agent-Frameworks",
+              "children": [
+                "Chapter-4.1---AutoGen-and-CrewAI"
+              ]
+            },
+            {
+              "name": "Chapter-5-Enterprise-Frameworks",
+              "children": [
+                "Chapter-5.1---Spring-AI-and-Llama-Index-TS"
+              ]
+            }
+          ]
+        },
+        {
           "id": "gpt2-architecture-end-to-end",
           "title": "GPT 2 Architecture End To End",
           "folder": "courses/ai/gpt2-architecture-end-to-end",
@@ -156,7 +202,7 @@
             {
               "name": "Chapter-1-RAG-Questions",
               "children": [
-                "Chapter-1.2---QnA-and-Interview-Questions"
+                "Chapter-1.1---QnA-and-Interview-Questions"
               ]
             },
             {
@@ -168,8 +214,7 @@
             {
               "name": "Chapter-3-MLOps-and-Deployment",
               "children": [
-                "Chapter-3.1---MLOps-Interview-Questions",
-                "Chapter-3.2---QnA-Template"
+                "Chapter-3.1---MLOps-Interview-Questions"
               ]
             },
             {
@@ -194,6 +239,12 @@
               "name": "Chapter-7-LLM-Infrastructure-and-Inference",
               "children": [
                 "Chapter-7.1---LLM-Infra-and-Inference-Interview-Questions"
+              ]
+            },
+            {
+              "name": "Chapter-8-Template",
+              "children": [
+                "Chapter-8.1-QnA-Template"
               ]
             }
           ]
